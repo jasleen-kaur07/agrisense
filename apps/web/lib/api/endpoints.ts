@@ -40,6 +40,7 @@ export const locations = {
   states: () => api.get<StateInfo[]>("/locations/states"),
   districts: (state: string) => api.get<District[]>("/locations/districts", { state }),
   search: (q: string, limit = 10) => api.get<District[]>("/locations/search", { q, limit }),
+  nearest: (lat: number, lon: number) => api.get<District>("/locations/nearest", { lat, lon }),
   one: (stateKey: string, districtKey: string) =>
     api.get<District>(`/locations/${encodeURIComponent(stateKey)}/${encodeURIComponent(districtKey)}`),
 };

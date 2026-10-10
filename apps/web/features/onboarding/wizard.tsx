@@ -166,7 +166,7 @@ export function OnboardingWizard() {
           <>
             <h2 className="text-2xl">{t("onboarding.locationTitle")}</h2>
             <p className="text-sm text-ink2">{t("onboarding.locationLead")}</p>
-            <LocationPicker value={loc} onChange={(v) => { setLoc(v); setLocError(undefined); }} error={locError} />
+            <LocationPicker allowGps value={loc} onChange={(v) => { setLoc(v); setLocError(undefined); }} error={locError} />
             {errBox}
             <div className="flex flex-wrap gap-3">
               <Button variant="secondary" onClick={() => setStep(1)}>{t("common.back")}</Button>

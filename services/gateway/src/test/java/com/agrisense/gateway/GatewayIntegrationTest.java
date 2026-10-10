@@ -327,6 +327,19 @@ class GatewayIntegrationTest {
     }
 
     @Test
+    void clientIpHeaderIsSetByGatewayAndCannotBeSpoofed() {
+        client.get().uri("/api/v1/farms").cookie("as_access", valid("FARMER"))
+                .header("X-Client-IP", "6.6.6.6")
+                .header("X-Forwarded-For", "203.0.113.7")
+                .exchange().expectStatus().isOk();
+        assertThat(FARM.last().header("x-client-ip")).isEqualTo("203.0.113.7");
+        client.get().uri("/api/v1/farms").cookie("as_access", valid("FARMER"))
+                .header("X-Client-IP", "6.6.6.6")
+                .exchange().expectStatus().isOk();
+        assertThat(FARM.last().header("x-client-ip")).isNotEqualTo("6.6.6.6").isNotNull();
+    }
+
+    @Test
     void spoofedAuthorizationWithoutCookieStillRejected() {
         client.get().uri("/api/v1/farms").header("Authorization", "Bearer " + valid("ADMIN"))
                 .exchange().expectStatus().isUnauthorized();

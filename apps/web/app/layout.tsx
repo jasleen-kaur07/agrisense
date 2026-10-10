@@ -23,7 +23,7 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
-export default async function RootLayout({ children }: LayoutProps<"/">) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const store = await cookies();
   const raw = store.get(LANG_COOKIE)?.value;
   const lang = isLang(raw) ? raw : "en";

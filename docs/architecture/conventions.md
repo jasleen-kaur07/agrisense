@@ -42,6 +42,7 @@ The gateway strips `/api` and forwards `/v1/...` to the owning service
 * **Refresh rotation**: each refresh issues a new refresh token and invalidates the previous one. Tokens stored as SHA-256 hashes with a `family_id`. Presenting an already-used token revokes the whole family. Logout revokes the family. Password reset/change revokes all families of that user.
 * Passwords: Argon2id, min length 10. Login and reset endpoints are rate limited. Login errors are generic. Forgot-password always returns 202.
 * **Internal calls** (farm-advisory -> data-service / ml-service): header `X-Internal-Token: <INTERNAL_API_TOKEN>` (constant-time compare). `ml-service` accepts only this; `data-service` accepts either a valid user JWT or the internal token. These services are not published outside the Docker network.
+* Gateway sets `X-Client-IP` (its own view of the caller: first `X-Forwarded-For` hop when the peer is a private address, else the socket address) and strips any client-supplied value. Identity uses it for per-IP rate limiting. The web proxy forwards only the last `X-Forwarded-For` hop and only when `TRUST_FORWARDED_FOR=true` (a trusted reverse proxy must overwrite that header in production).
 * Gateway removes any incoming `X-Request-ID`/`X-User-*`/`X-Internal-Token` headers from clients.
 
 ## Correlation, logging, health

@@ -171,6 +171,16 @@ class AuthFlowTest extends IntegrationTestBase {
         assertThat(last.getResponse().getStatus()).isEqualTo(429);
     }
 
+    @Test
+    void rateLimitUsesGatewayClientIpHeaderNotTheSharedProxyHop() throws Exception {
+        // every request arrives via the same proxy hop (X-Forwarded-For) but from different real clients (X-Client-IP)
+        for (int i = 0; i < 31; i++) {
+            MvcResult r = mvc.perform(MockMvcRequestBuildersHelper.loginFrom("10.0.0.1", uniqueEmail())
+                    .header("X-Client-IP", "198.51.100." + (i + 1))).andReturn();
+            assertThat(r.getResponse().getStatus()).isEqualTo(401);
+        }
+    }
+
     /** Fixed-IP request builder (the base helpers pick a fresh IP per call). */
     static final class MockMvcRequestBuildersHelper {
         static org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder loginFrom(String ip, String email) {

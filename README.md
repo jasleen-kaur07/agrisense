@@ -20,6 +20,8 @@ Decisions: `docs/adr/`. Data provenance and licences: `data/SOURCES.md`. ML evid
 
 ## Run locally
 
+Open **http://localhost:3000** after the stack is healthy. Dev bootstrap admin: the `ADMIN_BOOTSTRAP_*` values in `.env`.
+
 Prerequisites: Docker, (for development) JDK 21, Maven, Node 24, Python 3.12+.
 
 ```bash
@@ -34,3 +36,9 @@ Per-service tests (see each service README): `mvn verify` (Java), `pytest` (Pyth
 No irrigation module, Crop Doctor, Crop Care, yield prediction, fertilizer dosage or market prices.
 Model 1 (soil-test) exists for validation only and is disabled for users (`ENABLE_MODEL1=false`) until its
 inputs, units and rainfall definition are verified (`docs/ml/rainfall-definition.md`).
+
+## Status
+
+See `docs/testing.md` for what was actually run and what was not, and `docs/ml/` for model/data evidence.
+Known limits: Hindi draft needs review; crop records end in 2014; weather via Open-Meteo free tier (attribution shown);
+Model 1 disabled; no yield, fertilizer dosage or market-price features.

@@ -2,12 +2,15 @@
 
 import { useId, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Search } from "lucide-react";
+import { LocateFixed, Search } from "lucide-react";
 import { locations } from "@/lib/api/endpoints";
 import type { District } from "@/lib/api/types";
-import { useT } from "@/lib/i18n/provider";
+import { useI18n } from "@/lib/i18n/provider";
 import { SelectInput, TextInput } from "@/components/ui/form";
 import { ErrorPanel } from "@/components/data/states";
+import { Button } from "@/components/ui/button";
+import { ApiError } from "@/lib/api/errors";
+import { formatNumber } from "@/lib/format";
 
 export interface LocationValue {
   stateKey: string;
@@ -19,12 +22,15 @@ export function LocationPicker({
   value,
   onChange,
   error,
+  allowGps = false,
 }: {
   value: LocationValue;
   onChange: (v: LocationValue) => void;
   error?: string;
+  allowGps?: boolean;
 }) {
-  const t = useT();
+  const { t, lang } = useI18n();
+  const [gps, setGps] = useState<{ state: "idle" | "busy" | "ok" | "msg"; text?: string }>({ state: "idle" });
   const [q, setQ] = useState("");
   const listId = useId();
   const states = useQuery({ queryKey: ["states"], queryFn: locations.states, staleTime: 3_600_000 });
@@ -42,6 +48,36 @@ export function LocationPicker({
     staleTime: 60_000,
   });
 
+  // Explicit click only. Coordinates are sent once to the server and never stored here.
+  const findMyLocation = () => {
+    if (typeof navigator === "undefined" || !navigator.geolocation) {
+      setGps({ state: "msg", text: t("location.gpsUnsupported") });
+      return;
+    }
+    setGps({ state: "busy" });
+    navigator.geolocation.getCurrentPosition(
+      async (pos) => {
+        try {
+          const d = await locations.nearest(pos.coords.latitude, pos.coords.longitude);
+          onChange({ stateKey: d.stateKey, districtKey: d.districtKey });
+          setGps({
+            state: "ok",
+            text: t("location.gpsFound", {
+              district: d.district,
+              state: d.state,
+              km: d.distanceKm !== undefined ? formatNumber(d.distanceKm, lang) : "?",
+            }),
+          });
+        } catch (e) {
+          setGps({ state: "msg", text: e instanceof ApiError && e.status === 404 ? t("location.gpsNoneNearby") : t("location.gpsFailed") });
+        }
+      },
+      (err) =>
+        setGps({ state: "msg", text: err.code === err.PERMISSION_DENIED ? t("location.gpsDenied") : t("location.gpsTimeout") }),
+      { timeout: 10000, maximumAge: 0 },
+    );
+  };
+
   const pick = (d: District) => {
     onChange({ stateKey: d.stateKey, districtKey: d.districtKey });
     setQ("");
@@ -51,14 +87,24 @@ export function LocationPicker({
 
   return (
     <div className="space-y-4">
+      {allowGps && (
+        <div>
+          <Button variant="secondary" onClick={findMyLocation} disabled={gps.state === "busy"}>
+            <LocateFixed aria-hidden className="h-4 w-4" />
+            {gps.state === "busy" ? t("location.gpsBusy") : t("location.useMine")}
+          </Button>
+          <p className="mt-1 text-sm text-ink2">{t("location.gpsPrivacy")}</p>
+          <p role="status" className="mt-1 text-sm text-ink2" data-testid="gps-status">{gps.text}</p>
+        </div>
+      )}
       <div className="relative">
         <TextInput
           label={t("location.search")}
-          hint={t("location.searchHint")}
+          placeholder={t("location.searchHint")}
           value={q}
           onChange={(e) => setQ(e.target.value)}
           autoComplete="off"
-          aria-controls={listId}
+          aria-controls={term.length >= 2 ? listId : undefined}
         />
         <Search aria-hidden className="pointer-events-none absolute right-3 top-9 h-4 w-4 text-muted" />
         {term.length >= 2 && (

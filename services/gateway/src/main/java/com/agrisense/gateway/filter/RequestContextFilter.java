@@ -63,8 +63,11 @@ public class RequestContextFilter implements WebFilter, Ordered {
         if (isSuspiciousPath(rawPath)) {
             result = Problems.write(exchange, 400, "bad-request", "Bad request", "Invalid request path.");
         } else {
+            // Authoritative client IP for downstream rate limiting (identity trusts this header; clients cannot set it).
+            String clientIp = RateLimitFilter.clientIp(original);
             ServerHttpRequest mutated = original.mutate().headers(h -> {
                 STRIPPED.forEach(h::remove);
+                h.set("X-Client-IP", clientIp);
                 h.keySet().removeIf(k -> k.toLowerCase(Locale.ROOT).startsWith("x-user-"));
                 h.set(REQUEST_ID, traceId);
             }).build();

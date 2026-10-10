@@ -17,12 +17,18 @@ export async function forwardToGateway(
   // Keep the /api/... path exactly; the gateway owns /api/v1/*.
   const target = `${gatewayUrl()}${incoming.pathname}${incoming.search}`;
 
+  // Client IP for the gateway's rate limiter. Only trusted when a reverse proxy we control sits in front and
+  // overwrites X-Forwarded-For (set TRUST_FORWARDED_FOR=true there); otherwise the header is dropped.
+  const forwardedFor = req.headers.get("x-forwarded-for");
+  const clientIp = process.env.TRUST_FORWARDED_FOR === "true" && forwardedFor ? forwardedFor.split(",").pop()?.trim() : undefined;
+
   const headers = new Headers();
   req.headers.forEach((value, key) => {
     const k = key.toLowerCase();
     if (HOP_BY_HOP.has(k) || STRIP_REQUEST.has(k)) return;
     headers.set(key, value);
   });
+  if (clientIp) headers.set("x-forwarded-for", clientIp);
   headers.set("x-forwarded-host", incoming.host);
   headers.set("x-forwarded-proto", incoming.protocol.replace(":", ""));
 

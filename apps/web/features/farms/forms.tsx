@@ -75,6 +75,7 @@ export function FarmForm({
                   sk.onChange(v.stateKey);
                   dk.onChange(v.districtKey);
                 }}
+                allowGps
                 error={errors.districtKey?.message ?? errors.stateKey?.message}
               />
             )}

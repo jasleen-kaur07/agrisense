@@ -25,9 +25,9 @@ class OpenMeteoProvider(WeatherProvider):
     name = "Open-Meteo"
     attribution = "Weather data by Open-Meteo.com (CC BY 4.0)"
 
-    def __init__(self, base_url: str, timeout_s: float = 6.0, client: httpx.Client | None = None):
+    def __init__(self, base_url: str, timeout_s: float = 3.0, client: httpx.Client | None = None):
         self._url = base_url.rstrip("/") + "/v1/forecast"
-        self._client = client or httpx.Client(timeout=httpx.Timeout(timeout_s, connect=3.0))
+        self._client = client or httpx.Client(timeout=httpx.Timeout(timeout_s, connect=1.5))
 
     def fetch(self, latitude: float, longitude: float) -> dict[str, Any]:
         params = {

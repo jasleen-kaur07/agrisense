@@ -14,7 +14,7 @@ class Settings(BaseSettings):
     open_meteo_base_url: str = "https://api.open-meteo.com"
     weather_cache_ttl_current_min: int = 30  # one TTL for the whole snapshot (current + forecast)
     weather_max_stale_hours: int = 24  # CACHED fallback is only served within this age
-    weather_timeout_s: float = 6.0
+    weather_timeout_s: float = 3.0  # must stay below farm-advisory's 4 s read timeout
     data_dir: Path = Path(__file__).resolve().parent.parent / "data"
     port: int = 8083
 

@@ -95,6 +95,8 @@ export interface District {
   latitude: number;
   longitude: number;
   coordSource?: string;
+  /** Only on /locations/nearest responses. */
+  distanceKm?: number;
 }
 export interface SeasonInfo {
   season: Season;

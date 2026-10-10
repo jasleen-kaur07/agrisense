@@ -89,6 +89,8 @@ export function redirectToLogin(): void {
   if (typeof window === "undefined") return;
   if (window.location.pathname.startsWith("/login")) return;
   const next = window.location.pathname + window.location.search;
+  // Hard navigation on purpose: resets all client state after the session ended.
+  // eslint-disable-next-line @next/next/no-location-assign-relative-destination
   window.location.assign(`/login?next=${encodeURIComponent(next)}`);
 }
 

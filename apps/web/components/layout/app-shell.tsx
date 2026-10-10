@@ -195,7 +195,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           <SkeletonBlock rows={4} />
         ) : me.isError ? (
           <ErrorPanel error={me.error} onRetry={() => void me.refetch()} />
-        ) : !user.onboardingCompleted && !inOnboarding ? (
+        ) : !me.data.onboardingCompleted && !inOnboarding ? (
           <SkeletonBlock rows={2} />
         ) : (
           children
