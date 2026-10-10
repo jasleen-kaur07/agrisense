@@ -36,6 +36,14 @@ def search(request: Request, q: str = Query(min_length=2), limit: int = Query(10
     return request.app.state.gazetteer.search(q, limit)
 
 
+@router.get("/locations/nearest")
+def nearest(request: Request, lat: float = Query(ge=6.0, le=38.0), lon: float = Query(ge=67.0, le=98.0)):
+    found = request.app.state.gazetteer.nearest(lat, lon)
+    if not found:
+        raise ApiError(404, "No supported district nearby", "Choose your state and district manually.", "not-found")
+    return found
+
+
 @router.get("/locations/{state_key}/{district_key}")
 def location(request: Request, state_key: str, district_key: str):
     return _district_or_404(request, state_key, district_key)

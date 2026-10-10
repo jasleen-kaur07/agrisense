@@ -50,9 +50,9 @@ services:
       <<: *internal
       DATABASE_URL: postgresql+psycopg://data_svc:${DATA_DB_PASSWORD}@postgres:5432/agrisense
       IDENTITY_JWKS_URL: http://identity-service:8081/.well-known/jwks.json
-      OPEN_METEO_BASE_URL: https://api.open-meteo.com
+      OPEN_METEO_BASE_URL: ${OPEN_METEO_BASE_URL:-https://api.open-meteo.com}
       WEATHER_CACHE_TTL_CURRENT_MIN: "30"
-      WEATHER_CACHE_TTL_FORECAST_MIN: "180"
+      
     depends_on: { postgres: { condition: service_healthy } }
     healthcheck:
       test: ["CMD", "python", "-c", "import urllib.request,sys; urllib.request.urlopen('http://localhost:8083/ready', timeout=3)"]
@@ -98,6 +98,7 @@ services:
       FARM_ADVISORY_SERVICE_URL: http://farm-advisory-service:8082
       DATA_SERVICE_URL: http://data-service:8083
       ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-http://localhost:3000}
+    ports: ["127.0.0.1:8080:8080"]   # local testing only; production exposes only the web app
     depends_on:
       identity-service: { condition: service_healthy }
       farm-advisory-service: { condition: service_healthy }

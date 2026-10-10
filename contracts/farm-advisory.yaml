@@ -83,7 +83,7 @@ paths:
   /v1/admin/recommendations:
     get: { summary: All recommendations (ADMIN), parameters: [{ name: page, in: query, schema: { type: integer } }, { name: size, in: query, schema: { type: integer } }], responses: { '200': { description: ok, content: { application/json: { schema: { $ref: '#/components/schemas/RecommendationPage' } } } }, '403': { $ref: '#/components/responses/Problem' } } }
   /v1/admin/feedback:
-    get: { summary: All feedback (ADMIN), responses: { '200': { description: ok } , '403': { $ref: '#/components/responses/Problem' } } }
+    get: { summary: All feedback (ADMIN; paged envelope items/page/size/totalItems/totalPages), parameters: [{ name: page, in: query, schema: { type: integer } }, { name: size, in: query, schema: { type: integer } }], responses: { '200': { description: ok } , '403': { $ref: '#/components/responses/Problem' } } }
   /v1/admin/stats:
     get: { summary: Counts for the admin overview (ADMIN), responses: { '200': { description: ok, content: { application/json: { schema: { $ref: '#/components/schemas/AdminStats' } } } }, '403': { $ref: '#/components/responses/Problem' } } }
 components:
@@ -171,6 +171,6 @@ components:
     Alert:
       type: object
       required: [id, type, severity, title, message, createdAt, read]
-      properties: { id: { type: string, format: uuid }, type: { type: string, enum: [HEAVY_RAIN, HIGH_TEMPERATURE, RECHECK_GUIDE] }, severity: { type: string, enum: [INFO, WATCH] }, title: { type: string }, message: { type: string }, fieldId: { type: string, format: uuid, nullable: true }, source: { type: string }, createdAt: { type: string, format: date-time }, read: { type: boolean } }
+      properties: { id: { type: string, format: uuid }, farmId: { type: string, format: uuid, nullable: true }, type: { type: string, enum: [HEAVY_RAIN, HIGH_TEMPERATURE, RECHECK_GUIDE] }, severity: { type: string, enum: [INFO, WATCH] }, title: { type: string }, message: { type: string }, fieldId: { type: string, format: uuid, nullable: true }, source: { type: string }, createdAt: { type: string, format: date-time }, read: { type: boolean } }
     AdminStats: { type: object, properties: { users: { type: integer }, farms: { type: integer }, fields: { type: integer }, recommendations: { type: integer }, feedback: { type: integer } } }
     Problem: { type: object, required: [type, title, status], properties: { type: { type: string }, title: { type: string }, status: { type: integer }, detail: { type: string }, instance: { type: string }, traceId: { type: string }, errors: { type: array, items: { type: object, properties: { field: { type: string }, message: { type: string } } } } } }

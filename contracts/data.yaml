@@ -22,6 +22,11 @@ paths:
       summary: Search supported districts by name
       parameters: [{ name: q, in: query, required: true, schema: { type: string, minLength: 2 } }, { name: limit, in: query, schema: { type: integer, default: 10, maximum: 25 } }]
       responses: { '200': { description: ok, content: { application/json: { schema: { type: array, items: { $ref: '#/components/schemas/District' } } } } } }
+  /v1/locations/nearest:
+    get:
+      summary: Nearest supported district to GPS coordinates (within 150 km), computed server side; coordinates are not stored
+      parameters: [{ name: lat, in: query, required: true, schema: { type: number } }, { name: lon, in: query, required: true, schema: { type: number } }]
+      responses: { '200': { description: ok (District plus distanceKm), content: { application/json: { schema: { $ref: '#/components/schemas/District' } } } }, '404': { $ref: '#/components/responses/Problem' } }
   /v1/locations/{stateKey}/{districtKey}:
     get:
       summary: One district

@@ -117,3 +117,11 @@ def test_admin_summary_requires_admin_user(client, token_for):
     assert client.get("/v1/admin/data/summary", headers={"X-Internal-Token": INTERNAL}).status_code == 403
     body = client.get("/v1/admin/data/summary", headers=admin).json()
     assert body["supportedDistricts"] == 2 and body["lastYear"] == 2014 and "UNVERIFIED" in body["datasetLicenseStatus"]
+
+
+def test_nearest_district_from_gps(client, auth):
+    r = client.get("/v1/locations/nearest", params={"lat": 26.9, "lon": 80.9}, headers=auth).json()
+    assert r["districtKey"] == "LUCKNOW" and r["distanceKm"] < 20
+    far = client.get("/v1/locations/nearest", params={"lat": 12.0, "lon": 77.0}, headers=auth)  # Bengaluru: nothing supported within 150 km in the fixture
+    assert far.status_code == 404 and far.json()["title"] == "No supported district nearby"
+    assert client.get("/v1/locations/nearest", params={"lat": 51.0, "lon": 0.0}, headers=auth).status_code == 422

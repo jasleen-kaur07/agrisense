@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import math
 from pathlib import Path
 
 import pandas as pd
@@ -53,3 +54,20 @@ class Gazetteer:
         contains = f[f["district_key"].str.contains(key, regex=False) & ~f["district_key"].str.startswith(key)]
         both = pd.concat([starts.sort_values("district"), contains.sort_values("district")]).head(limit)
         return [self._item(r) for r in both.itertuples()]
+
+    def nearest(self, latitude: float, longitude: float, max_km: float = 150.0) -> dict | None:
+        """Closest supported district centroid within ``max_km`` (haversine), else None."""
+        f = self.frame
+        lat1, lon1 = math.radians(latitude), math.radians(longitude)
+        lat2, lon2 = f["latitude"].map(math.radians), f["longitude"].map(math.radians)
+        a = ((lat2 - lat1) / 2).map(math.sin) ** 2 + math.cos(lat1) * lat2.map(math.cos) * ((lon2 - lon1) / 2).map(math.sin) ** 2
+        dist = 2 * 6371.0 * a.map(math.sqrt).map(math.asin)
+        i = int(dist.idxmin())
+        if dist.iloc[i] > max_km:
+            return None
+        row = f.iloc[i]
+        item = {
+            "stateKey": row.state_key, "districtKey": row.district_key, "state": row.state, "district": row.district,
+            "latitude": float(row.latitude), "longitude": float(row.longitude), "coordSource": row.coord_source,
+        }
+        return {**item, "distanceKm": round(float(dist.iloc[i]), 1)}

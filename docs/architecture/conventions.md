@@ -77,7 +77,7 @@ Regional results carry `basis`, `yearsCovered`, `stateFallbackUsed`.
 `DATABASE_URL`/`SPRING_DATASOURCE_*` (per-service role), `INTERNAL_API_TOKEN`, `IDENTITY_JWKS_URL`,
 `JWT_PRIVATE_KEY_PEM` (identity; dev generates an ephemeral key if empty), `COOKIE_SECURE`,
 `ALLOWED_ORIGINS`, `DATA_SERVICE_URL`, `ML_SERVICE_URL`, `ENABLE_MODEL1` (default `false`),
-`OPEN_METEO_BASE_URL`, `OPEN_METEO_GEOCODING_URL`, `WEATHER_CACHE_TTL_CURRENT_MIN` (30), `WEATHER_CACHE_TTL_FORECAST_MIN` (180),
+`OPEN_METEO_BASE_URL`, `OPEN_METEO_GEOCODING_URL`, `WEATHER_CACHE_TTL_CURRENT_MIN` (30; one TTL for the whole snapshot, see ADR 0004),
 `MAIL_MODE` (`log` in dev), `ADMIN_BOOTSTRAP_EMAIL`, `ADMIN_BOOTSTRAP_PASSWORD` (dev only).
 
 ## Product rules that code must enforce
