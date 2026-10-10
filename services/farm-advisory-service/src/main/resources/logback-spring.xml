@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+  <appender name="JSON" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+      <customFields>{"service":"farm-advisory-service"}</customFields>
+      <includeMdcKeyName>traceId</includeMdcKeyName>
+      <timeZone>UTC</timeZone>
+      <fieldNames>
+        <timestamp>ts</timestamp>
+        <message>msg</message>
+        <level>level</level>
+        <version>[ignore]</version>
+        <levelValue>[ignore]</levelValue>
+        <thread>[ignore]</thread>
+      </fieldNames>
+    </encoder>
+  </appender>
+  <root level="INFO"><appender-ref ref="JSON"/></root>
+</configuration>

@@ -6,7 +6,7 @@ Andhra Pradesh,Anantapur,ANDHRA PRADESH,ANANTAPUR,14.3121,77.4602,ind_adm2_point
 Andhra Pradesh,Chittoor,ANDHRA PRADESH,CHITTOOR,13.3311,78.9276,ind_adm2_points,exact,1.0,789,1997,2014,347,True
 Andhra Pradesh,East Godavari,ANDHRA PRADESH,EAST GODAVARI,16.7827,82.2432,ind_adm2_points,exact,1.0,765,1997,2014,322,True
 Andhra Pradesh,Guntur,ANDHRA PRADESH,GUNTUR,15.8849,80.5866,ind_adm2_points,exact,1.0,687,1997,2014,294,True
-Andhra Pradesh,Kadapa,ANDHRA PRADESH,KADAPA,,,none,none,0.0,824,1997,2014,383,False
+Andhra Pradesh,Kadapa,ANDHRA PRADESH,KADAPA,14.48,78.8235,open-meteo-geocoding,geocoded,0.0,824,1997,2014,383,True
 Andhra Pradesh,Krishna,ANDHRA PRADESH,KRISHNA,16.1439,81.1481,ind_adm2_points,exact,1.0,636,1997,2014,264,True
 Andhra Pradesh,Kurnool,ANDHRA PRADESH,KURNOOL,15.4376,77.9009,ind_adm2_points,exact,1.0,828,1997,2014,358,True
 Andhra Pradesh,Prakasam,ANDHRA PRADESH,PRAKASAM,15.489,80.1167,ind_adm2_points,exact,1.0,808,1997,2014,344,True
@@ -59,9 +59,9 @@ Assam,Nalbari,ASSAM,NALBARI,26.4632,91.406,ind_adm2_points,exact,1.0,591,1997,20
 Assam,Sivasagar,ASSAM,SIVASAGAR,,,none,none,0.0,564,1997,2014,240,False
 Assam,Sonitpur,ASSAM,SONITPUR,26.7351,92.852,ind_adm2_points,exact,1.0,590,1997,2014,255,True
 Assam,Tinsukia,ASSAM,TINSUKIA,27.5355,95.6906,ind_adm2_points,exact,1.0,571,1997,2014,245,True
-Assam,Udalguri,ASSAM,UDALGURI,,,none,none,0.0,342,2005,2014,247,False
+Assam,Udalguri,ASSAM,UDALGURI,26.7537,92.1021,open-meteo-geocoding,geocoded,0.0,342,2005,2014,247,True
 Bihar,Araria,BIHAR,ARARIA,26.2115,87.3077,ind_adm2_points,exact,1.0,566,1997,2014,178,True
-Bihar,Arwal,BIHAR,ARWAL,,,none,none,0.0,297,2003,2014,169,False
+Bihar,Arwal,BIHAR,ARWAL,25.2428,84.6657,open-meteo-geocoding,geocoded,0.0,297,2003,2014,169,True
 Bihar,Aurangabad,BIHAR,AURANGABAD,24.7743,84.4599,ind_adm2_points,exact,1.0,447,1997,2014,142,True
 Bihar,Banka,BIHAR,BANKA,24.8324,86.8665,ind_adm2_points,exact,1.0,437,1997,2014,148,True
 Bihar,Begusarai,BIHAR,BEGUSARAI,25.543,86.1256,ind_adm2_points,exact,1.0,590,1997,2014,202,True
@@ -99,12 +99,12 @@ Bihar,Siwan,BIHAR,SIWAN,26.1736,84.3377,ind_adm2_points,exact,1.0,551,1997,2014,
 Bihar,Supaul,BIHAR,SUPAUL,26.2816,86.785,ind_adm2_points,exact,1.0,546,1997,2014,182,True
 Bihar,Vaishali,BIHAR,VAISHALI,25.8135,85.3925,ind_adm2_points,exact,1.0,572,1997,2014,193,True
 Chandigarh,Chandigarh,CHANDIGARH,CHANDIGARH,30.7426,76.7587,ind_adm2_points,exact,1.0,90,1998,2010,15,False
-Chhattisgarh,Balod,CHHATTISGARH,BALOD,,,none,none,0.0,135,2011,2014,135,False
-Chhattisgarh,Baloda Bazar,CHHATTISGARH,BALODA BAZAR,,,none,none,0.0,150,2011,2014,150,False
-Chhattisgarh,Balrampur,CHHATTISGARH,BALRAMPUR,,,none,none,0.0,161,2011,2014,161,False
+Chhattisgarh,Balod,CHHATTISGARH,BALOD,20.7308,81.2058,open-meteo-geocoding,geocoded,0.0,135,2011,2014,135,True
+Chhattisgarh,Baloda Bazar,CHHATTISGARH,BALODA BAZAR,21.6568,82.1606,open-meteo-geocoding,geocoded,0.0,150,2011,2014,150,True
+Chhattisgarh,Balrampur,CHHATTISGARH,BALRAMPUR,23.6122,83.6111,open-meteo-geocoding,geocoded,0.0,161,2011,2014,161,True
 Chhattisgarh,Bastar,CHHATTISGARH,BASTAR,19.3939,81.529,ind_adm2_points,exact,1.0,583,2000,2014,266,True
-Chhattisgarh,Bemetara,CHHATTISGARH,BEMETARA,,,none,none,0.0,139,2011,2014,139,False
-Chhattisgarh,Bijapur,CHHATTISGARH,BIJAPUR,,,none,none,0.0,246,2006,2014,188,False
+Chhattisgarh,Bemetara,CHHATTISGARH,BEMETARA,21.7156,81.5342,open-meteo-geocoding,geocoded,0.0,139,2011,2014,139,True
+Chhattisgarh,Bijapur,CHHATTISGARH,BIJAPUR,18.7939,80.816,open-meteo-geocoding,geocoded,0.0,246,2006,2014,188,True
 Chhattisgarh,Bilaspur,CHHATTISGARH,BILASPUR,22.3569,81.9977,ind_adm2_points,exact,1.0,591,2000,2014,271,True
 Chhattisgarh,Dantewada,CHHATTISGARH,DANTEWADA,18.6539,81.072,ind_adm2_points,exact,1.0,497,2000,2014,224,True
 Chhattisgarh,Dhamtari,CHHATTISGARH,DHAMTARI,20.5549,81.7569,ind_adm2_points,exact,1.0,559,2000,2014,257,True
@@ -114,17 +114,17 @@ Chhattisgarh,Janjgir-Champa,CHHATTISGARH,JANJGIR CHAMPA,21.9611,82.805,ind_adm2_
 Chhattisgarh,Jashpur,CHHATTISGARH,JASHPUR,22.7729,83.8704,ind_adm2_points,exact,1.0,568,2000,2014,259,True
 Chhattisgarh,Kabirdham,CHHATTISGARH,KABIRDHAM,,,none,none,0.0,509,2000,2014,228,False
 Chhattisgarh,Kanker,CHHATTISGARH,KANKER,20.1395,81.0691,ind_adm2_points,exact,1.0,548,2000,2014,249,True
-Chhattisgarh,Kondagaon,CHHATTISGARH,KONDAGAON,,,none,none,0.0,145,2011,2014,145,False
+Chhattisgarh,Kondagaon,CHHATTISGARH,KONDAGAON,19.5908,81.664,open-meteo-geocoding,geocoded,0.0,145,2011,2014,145,True
 Chhattisgarh,Korba,CHHATTISGARH,KORBA,22.4917,82.576,ind_adm2_points,exact,1.0,555,2000,2014,267,True
-Chhattisgarh,Korea,CHHATTISGARH,KOREA,,,none,none,0.0,504,2000,2014,236,False
+Chhattisgarh,Korea,CHHATTISGARH,KOREA,23.15,83.9667,open-meteo-geocoding,geocoded,0.0,504,2000,2014,236,True
 Chhattisgarh,Mahasamund,CHHATTISGARH,MAHASAMUND,21.2237,82.6593,ind_adm2_points,exact,1.0,537,2000,2014,248,True
-Chhattisgarh,Mungeli,CHHATTISGARH,MUNGELI,,,none,none,0.0,127,2011,2014,127,False
-Chhattisgarh,Narayanpur,CHHATTISGARH,NARAYANPUR,,,none,none,0.0,236,2005,2014,183,False
+Chhattisgarh,Mungeli,CHHATTISGARH,MUNGELI,22.0657,81.6854,open-meteo-geocoding,geocoded,0.0,127,2011,2014,127,True
+Chhattisgarh,Narayanpur,CHHATTISGARH,NARAYANPUR,19.7179,81.2444,open-meteo-geocoding,geocoded,0.0,236,2005,2014,183,True
 Chhattisgarh,Raigarh,CHHATTISGARH,RAIGARH,22.0083,83.278,ind_adm2_points,exact,1.0,583,2000,2014,270,True
 Chhattisgarh,Raipur,CHHATTISGARH,RAIPUR,20.886,82.2003,ind_adm2_points,exact,1.0,584,2000,2014,256,True
 Chhattisgarh,Rajnandgaon,CHHATTISGARH,RAJNANDGAON,21.0584,80.7853,ind_adm2_points,fuzzy,0.957,617,2000,2014,284,True
-Chhattisgarh,Sukma,CHHATTISGARH,SUKMA,,,none,none,0.0,117,2011,2014,117,False
-Chhattisgarh,Surajpur,CHHATTISGARH,SURAJPUR,,,none,none,0.0,151,2011,2014,151,False
+Chhattisgarh,Sukma,CHHATTISGARH,SUKMA,18.3901,81.6594,open-meteo-geocoding,geocoded,0.0,117,2011,2014,117,True
+Chhattisgarh,Surajpur,CHHATTISGARH,SURAJPUR,23.2135,82.8684,open-meteo-geocoding,geocoded,0.0,151,2011,2014,151,True
 Chhattisgarh,Surguja,CHHATTISGARH,SURGUJA,23.3272,83.2358,ind_adm2_points,exact,1.0,585,2000,2014,272,True
 Dadra And Nagar Haveli,Dadra And Nagar Haveli,DADRA AND NAGAR HAVELI,DADRA AND NAGAR HAVELI,20.2151,73.0945,ind_adm2_points,exact,1.0,263,1998,2014,89,True
 Goa,North Goa,GOA,NORTH GOA,15.5487,73.8067,ind_adm2_points,exact,1.0,107,1997,2014,74,True
@@ -136,7 +136,7 @@ Gujarat,Banas Kantha,GUJARAT,BANAS KANTHA,24.2585,71.9321,ind_adm2_points,exact,
 Gujarat,Bharuch,GUJARAT,BHARUCH,21.7579,72.6733,ind_adm2_points,exact,1.0,410,1997,2012,134,True
 Gujarat,Bhavnagar,GUJARAT,BHAVNAGAR,21.7022,72.1627,ind_adm2_points,exact,1.0,345,1997,2012,109,True
 Gujarat,Dang,GUJARAT,DANG,,,none,none,0.0,238,1997,2012,83,False
-Gujarat,Dohad,GUJARAT,DOHAD,,,none,none,0.0,218,2003,2012,108,False
+Gujarat,Dohad,GUJARAT,DOHAD,22.8328,74.2599,open-meteo-geocoding,geocoded,0.0,218,2003,2012,108,True
 Gujarat,Gandhinagar,GUJARAT,GANDHINAGAR,23.1937,72.6722,ind_adm2_points,exact,1.0,329,1997,2012,112,True
 Gujarat,Jamnagar,GUJARAT,JAMNAGAR,22.4106,69.6206,ind_adm2_points,exact,1.0,369,1997,2012,116,True
 Gujarat,Junagadh,GUJARAT,JUNAGADH,20.9295,70.5473,ind_adm2_points,exact,1.0,365,1997,2012,120,True
@@ -168,13 +168,13 @@ Haryana,Karnal,HARYANA,KARNAL,29.7032,76.8749,ind_adm2_points,exact,1.0,334,1997
 Haryana,Kurukshetra,HARYANA,KURUKSHETRA,30.0565,76.7877,ind_adm2_points,exact,1.0,290,1997,2012,99,True
 Haryana,Mahendragarh,HARYANA,MAHENDRAGARH,28.1352,76.1402,ind_adm2_points,exact,1.0,246,1997,2012,84,True
 Haryana,Mewat,HARYANA,MEWAT,,,none,none,0.0,135,2005,2012,79,False
-Haryana,Palwal,HARYANA,PALWAL,,,none,none,0.0,78,2008,2012,78,False
+Haryana,Palwal,HARYANA,PALWAL,28.1447,77.3255,open-meteo-geocoding,geocoded,0.0,78,2008,2012,78,True
 Haryana,Panchkula,HARYANA,PANCHKULA,30.7009,76.9717,ind_adm2_points,exact,1.0,325,1997,2012,106,True
 Haryana,Panipat,HARYANA,PANIPAT,29.3435,76.929,ind_adm2_points,exact,1.0,316,1997,2012,104,True
 Haryana,Rewari,HARYANA,REWARI,28.1916,76.5596,ind_adm2_points,exact,1.0,285,1997,2012,89,True
 Haryana,Rohtak,HARYANA,ROHTAK,28.8925,76.5312,ind_adm2_points,exact,1.0,278,1997,2012,80,True
 Haryana,Sirsa,HARYANA,SIRSA,29.6358,74.9097,ind_adm2_points,exact,1.0,312,1997,2012,108,True
-Haryana,Sonipat,HARYANA,SONIPAT,,,none,none,0.0,307,1997,2012,90,False
+Haryana,Sonipat,HARYANA,SONIPAT,28.9948,77.0194,open-meteo-geocoding,geocoded,0.0,307,1997,2012,90,True
 Haryana,Yamunanagar,HARYANA,YAMUNANAGAR,30.2647,77.3165,ind_adm2_points,fuzzy,0.957,326,1997,2012,108,True
 Himachal Pradesh,Bilaspur,HIMACHAL PRADESH,BILASPUR,31.378,76.6532,ind_adm2_points,exact,1.0,224,1998,2010,38,False
 Himachal Pradesh,Chamba,HIMACHAL PRADESH,CHAMBA,32.6674,76.3935,ind_adm2_points,exact,1.0,220,1998,2010,47,False
@@ -188,25 +188,25 @@ Himachal Pradesh,Shimla,HIMACHAL PRADESH,SHIMLA,31.1557,77.6257,ind_adm2_points,
 Himachal Pradesh,Sirmaur,HIMACHAL PRADESH,SIRMAUR,30.6828,77.4318,ind_adm2_points,exact,1.0,258,1998,2010,55,True
 Himachal Pradesh,Solan,HIMACHAL PRADESH,SOLAN,31.0386,76.9444,ind_adm2_points,exact,1.0,219,1998,2010,38,False
 Himachal Pradesh,Una,HIMACHAL PRADESH,UNA,31.5833,76.1835,ind_adm2_points,exact,1.0,203,1998,2010,38,False
-Jammu And Kashmir,Anantnag,JAMMU AND KASHMIR,ANANTNAG,,,none,none,0.0,92,1997,2014,18,False
-Jammu And Kashmir,Badgam,JAMMU AND KASHMIR,BADGAM,,,none,none,0.0,98,1997,2014,20,False
+Jammu And Kashmir,Anantnag,JAMMU AND KASHMIR,ANANTNAG,33.7307,75.1542,open-meteo-geocoding,geocoded,0.0,92,1997,2014,18,False
+Jammu And Kashmir,Badgam,JAMMU AND KASHMIR,BADGAM,34.0152,74.7207,open-meteo-geocoding,geocoded,0.0,98,1997,2014,20,False
 Jammu And Kashmir,Bandipora,JAMMU AND KASHMIR,BANDIPORA,,,none,none,0.0,22,2007,2014,11,False
 Jammu And Kashmir,Baramulla,JAMMU AND KASHMIR,BARAMULLA,,,none,none,0.0,82,1997,2014,13,False
 Jammu And Kashmir,Doda,JAMMU AND KASHMIR,DODA,33.3596,76.0716,ind_adm2_points,exact,1.0,118,1997,2014,18,False
-Jammu And Kashmir,Ganderbal,JAMMU AND KASHMIR,GANDERBAL,,,none,none,0.0,14,2007,2014,7,False
+Jammu And Kashmir,Ganderbal,JAMMU AND KASHMIR,GANDERBAL,34.2262,74.7748,open-meteo-geocoding,geocoded,0.0,14,2007,2014,7,False
 Jammu And Kashmir,Jammu,JAMMU AND KASHMIR,JAMMU,32.7132,74.8478,ind_adm2_points,exact,1.0,174,1997,2014,29,False
 Jammu And Kashmir,Kargil,JAMMU AND KASHMIR,KARGIL,33.566,76.6368,ind_adm2_points,exact,1.0,37,1997,2014,9,False
 Jammu And Kashmir,Kathua,JAMMU AND KASHMIR,KATHUA,32.5178,75.589,ind_adm2_points,exact,1.0,170,1997,2014,29,False
-Jammu And Kashmir,Kishtwar,JAMMU AND KASHMIR,KISHTWAR,,,none,none,0.0,30,2007,2014,16,False
-Jammu And Kashmir,Kulgam,JAMMU AND KASHMIR,KULGAM,,,none,none,0.0,25,2007,2014,12,False
-Jammu And Kashmir,Kupwara,JAMMU AND KASHMIR,KUPWARA,,,none,none,0.0,44,1997,2014,3,False
+Jammu And Kashmir,Kishtwar,JAMMU AND KASHMIR,KISHTWAR,33.3135,75.7673,open-meteo-geocoding,geocoded,0.0,30,2007,2014,16,False
+Jammu And Kashmir,Kulgam,JAMMU AND KASHMIR,KULGAM,33.6446,75.0192,open-meteo-geocoding,geocoded,0.0,25,2007,2014,12,False
+Jammu And Kashmir,Kupwara,JAMMU AND KASHMIR,KUPWARA,34.5286,74.264,open-meteo-geocoding,geocoded,0.0,44,1997,2014,3,False
 Jammu And Kashmir,Leh Ladakh,JAMMU AND KASHMIR,LEH LADAKH,,,none,none,0.0,71,1997,2014,16,False
-Jammu And Kashmir,Poonch,JAMMU AND KASHMIR,POONCH,,,none,none,0.0,73,1997,2014,10,False
+Jammu And Kashmir,Poonch,JAMMU AND KASHMIR,POONCH,33.7703,74.0925,open-meteo-geocoding,geocoded,0.0,73,1997,2014,10,False
 Jammu And Kashmir,Pulwama,JAMMU AND KASHMIR,PULWAMA,33.8841,75.0092,ind_adm2_points,exact,1.0,94,1997,2014,16,False
 Jammu And Kashmir,Rajauri,JAMMU AND KASHMIR,RAJAURI,33.2723,74.4078,ind_adm2_points,exact,1.0,120,1997,2014,12,False
-Jammu And Kashmir,Ramban,JAMMU AND KASHMIR,RAMBAN,,,none,none,0.0,13,2007,2014,8,False
-Jammu And Kashmir,Reasi,JAMMU AND KASHMIR,REASI,,,none,none,0.0,37,2007,2014,21,False
-Jammu And Kashmir,Samba,JAMMU AND KASHMIR,SAMBA,,,none,none,0.0,40,2007,2014,21,False
+Jammu And Kashmir,Ramban,JAMMU AND KASHMIR,RAMBAN,33.2428,75.2351,open-meteo-geocoding,geocoded,0.0,13,2007,2014,8,False
+Jammu And Kashmir,Reasi,JAMMU AND KASHMIR,REASI,33.0812,74.8324,open-meteo-geocoding,geocoded,0.0,37,2007,2014,21,False
+Jammu And Kashmir,Samba,JAMMU AND KASHMIR,SAMBA,32.5624,75.1199,open-meteo-geocoding,geocoded,0.0,40,2007,2014,21,False
 Jammu And Kashmir,Shopian,JAMMU AND KASHMIR,SHOPIAN,,,none,none,0.0,13,2007,2014,7,False
 Jammu And Kashmir,Srinagar,JAMMU AND KASHMIR,SRINAGAR,34.2731,75.1102,ind_adm2_points,exact,1.0,111,1997,2014,16,False
 Jammu And Kashmir,Udhampur,JAMMU AND KASHMIR,UDHAMPUR,33.0477,75.1529,ind_adm2_points,exact,1.0,156,1997,2014,28,False
@@ -222,13 +222,13 @@ Jharkhand,Godda,JHARKHAND,GODDA,24.8189,87.2942,ind_adm2_points,exact,1.0,68,200
 Jharkhand,Gumla,JHARKHAND,GUMLA,23.0785,84.5506,ind_adm2_points,exact,1.0,67,2002,2010,6,False
 Jharkhand,Hazaribagh,JHARKHAND,HAZARIBAGH,23.9432,85.4944,ind_adm2_points,fuzzy,0.947,77,2002,2010,6,False
 Jharkhand,Jamtara,JHARKHAND,JAMTARA,23.9787,86.9533,ind_adm2_points,exact,1.0,44,2003,2010,6,False
-Jharkhand,Khunti,JHARKHAND,KHUNTI,,,none,none,0.0,6,2010,2010,6,False
+Jharkhand,Khunti,JHARKHAND,KHUNTI,23.076,85.2782,open-meteo-geocoding,geocoded,0.0,6,2010,2010,6,False
 Jharkhand,Koderma,JHARKHAND,KODERMA,24.5567,85.7169,ind_adm2_points,exact,1.0,56,2002,2010,6,False
 Jharkhand,Latehar,JHARKHAND,LATEHAR,23.7251,84.483,ind_adm2_points,exact,1.0,61,2003,2010,7,False
 Jharkhand,Lohardaga,JHARKHAND,LOHARDAGA,23.4888,84.6605,ind_adm2_points,exact,1.0,61,2002,2010,6,False
 Jharkhand,Pakur,JHARKHAND,PAKUR,24.5726,87.6969,ind_adm2_points,exact,1.0,57,2002,2010,5,False
 Jharkhand,Palamu,JHARKHAND,PALAMU,24.1969,84.2031,ind_adm2_points,exact,1.0,72,2002,2010,7,False
-Jharkhand,Ramgarh,JHARKHAND,RAMGARH,,,none,none,0.0,6,2010,2010,6,False
+Jharkhand,Ramgarh,JHARKHAND,RAMGARH,23.6303,85.5216,open-meteo-geocoding,geocoded,0.0,6,2010,2010,6,False
 Jharkhand,Ranchi,JHARKHAND,RANCHI,23.1842,85.3178,ind_adm2_points,exact,1.0,72,2002,2010,6,False
 Jharkhand,Sahebganj,JHARKHAND,SAHEBGANJ,24.9367,87.6826,ind_adm2_points,fuzzy,0.889,52,2002,2010,6,False
 Jharkhand,Saraikela Kharsawan,JHARKHAND,SARAIKELA KHARSAWAN,22.8559,85.8961,ind_adm2_points,exact,1.0,42,2003,2010,6,False
@@ -263,7 +263,7 @@ Karnataka,Shimoga,KARNATAKA,SHIMOGA,14.0638,75.1788,ind_adm2_points,exact,1.0,82
 Karnataka,Tumkur,KARNATAKA,TUMKUR,13.5925,77.023,ind_adm2_points,exact,1.0,936,1997,2014,394,True
 Karnataka,Udupi,KARNATAKA,UDUPI,13.4504,74.7201,ind_adm2_points,exact,1.0,376,1998,2014,167,True
 Karnataka,Uttar Kannad,KARNATAKA,UTTAR KANNAD,14.539,74.3523,ind_adm2_points,fuzzy,0.96,677,1997,2014,261,True
-Karnataka,Yadgir,KARNATAKA,YADGIR,,,none,none,0.0,212,2010,2014,212,False
+Karnataka,Yadgir,KARNATAKA,YADGIR,16.7701,77.1376,open-meteo-geocoding,geocoded,0.0,212,2010,2014,212,True
 Kerala,Alappuzha,KERALA,ALAPPUZHA,9.5426,76.3801,ind_adm2_points,exact,1.0,290,1997,2014,117,True
 Kerala,Ernakulam,KERALA,ERNAKULAM,10.0049,76.2696,ind_adm2_points,exact,1.0,286,1997,2014,113,True
 Kerala,Idukki,KERALA,IDUKKI,9.8048,77.0459,ind_adm2_points,exact,1.0,346,1997,2014,133,True
@@ -279,7 +279,7 @@ Kerala,Thiruvananthapuram,KERALA,THIRUVANANTHAPURAM,8.5371,76.8871,ind_adm2_poin
 Kerala,Thrissur,KERALA,THRISSUR,10.4589,76.1232,ind_adm2_points,exact,1.0,281,1997,2014,109,True
 Kerala,Wayanad,KERALA,WAYANAD,11.7153,76.0759,ind_adm2_points,exact,1.0,304,1997,2014,118,True
 Madhya Pradesh,Agar Malwa,MADHYA PRADESH,AGAR MALWA,,,none,none,0.0,28,2013,2013,28,False
-Madhya Pradesh,Alirajpur,MADHYA PRADESH,ALIRAJPUR,,,none,none,0.0,178,2008,2013,178,False
+Madhya Pradesh,Alirajpur,MADHYA PRADESH,ALIRAJPUR,22.3039,74.3557,open-meteo-geocoding,geocoded,0.0,178,2008,2013,178,True
 Madhya Pradesh,Anuppur,MADHYA PRADESH,ANUPPUR,23.1818,81.8656,ind_adm2_points,exact,1.0,342,2002,2013,193,True
 Madhya Pradesh,Ashoknagar,MADHYA PRADESH,ASHOKNAGAR,24.631,77.8297,ind_adm2_points,exact,1.0,290,2003,2013,157,True
 Madhya Pradesh,Balaghat,MADHYA PRADESH,BALAGHAT,21.8002,80.4217,ind_adm2_points,exact,1.0,572,1997,2013,232,True
@@ -303,8 +303,8 @@ Madhya Pradesh,Indore,MADHYA PRADESH,INDORE,22.6803,75.9134,ind_adm2_points,exac
 Madhya Pradesh,Jabalpur,MADHYA PRADESH,JABALPUR,23.1853,79.9833,ind_adm2_points,exact,1.0,500,1997,2013,195,True
 Madhya Pradesh,Jhabua,MADHYA PRADESH,JHABUA,22.4196,74.4092,ind_adm2_points,exact,1.0,495,1997,2013,186,True
 Madhya Pradesh,Katni,MADHYA PRADESH,KATNI,23.7244,80.3382,ind_adm2_points,exact,1.0,469,1998,2013,194,True
-Madhya Pradesh,Khandwa,MADHYA PRADESH,KHANDWA,,,none,none,0.0,577,1997,2013,223,False
-Madhya Pradesh,Khargone,MADHYA PRADESH,KHARGONE,,,none,none,0.0,517,1997,2013,199,False
+Madhya Pradesh,Khandwa,MADHYA PRADESH,KHANDWA,21.8243,76.3509,open-meteo-geocoding,geocoded,0.0,577,1997,2013,223,True
+Madhya Pradesh,Khargone,MADHYA PRADESH,KHARGONE,21.8229,75.6139,open-meteo-geocoding,geocoded,0.0,517,1997,2013,199,True
 Madhya Pradesh,Mandla,MADHYA PRADESH,MANDLA,22.7035,80.386,ind_adm2_points,exact,1.0,482,1997,2013,194,True
 Madhya Pradesh,Mandsaur,MADHYA PRADESH,MANDSAUR,24.1928,75.4359,ind_adm2_points,exact,1.0,455,1997,2013,158,True
 Madhya Pradesh,Morena,MADHYA PRADESH,MORENA,26.3731,77.8845,ind_adm2_points,exact,1.0,395,1997,2013,141,True
@@ -324,7 +324,7 @@ Madhya Pradesh,Shajapur,MADHYA PRADESH,SHAJAPUR,23.5666,76.3356,ind_adm2_points,
 Madhya Pradesh,Sheopur,MADHYA PRADESH,SHEOPUR,25.7801,77.1691,ind_adm2_points,exact,1.0,370,1998,2013,141,True
 Madhya Pradesh,Shivpuri,MADHYA PRADESH,SHIVPURI,25.378,77.7486,ind_adm2_points,exact,1.0,490,1997,2013,181,True
 Madhya Pradesh,Sidhi,MADHYA PRADESH,SIDHI,24.1755,82.1054,ind_adm2_points,exact,1.0,498,1997,2013,194,True
-Madhya Pradesh,Singrauli,MADHYA PRADESH,SINGRAULI,,,none,none,0.0,183,2008,2013,183,False
+Madhya Pradesh,Singrauli,MADHYA PRADESH,SINGRAULI,24.1997,82.6753,open-meteo-geocoding,geocoded,0.0,183,2008,2013,183,True
 Madhya Pradesh,Tikamgarh,MADHYA PRADESH,TIKAMGARH,25.141,78.8936,ind_adm2_points,exact,1.0,485,1997,2013,193,True
 Madhya Pradesh,Ujjain,MADHYA PRADESH,UJJAIN,23.3193,75.8038,ind_adm2_points,exact,1.0,458,1997,2013,159,True
 Madhya Pradesh,Umaria,MADHYA PRADESH,UMARIA,23.596,80.9088,ind_adm2_points,exact,1.0,441,1998,2013,183,True
@@ -333,25 +333,25 @@ Maharashtra,Ahmednagar,MAHARASHTRA,AHMEDNAGAR,19.2176,74.6922,ind_adm2_points,ex
 Maharashtra,Akola,MAHARASHTRA,AKOLA,20.7463,77.1212,ind_adm2_points,exact,1.0,355,1997,2014,120,True
 Maharashtra,Amravati,MAHARASHTRA,AMRAVATI,21.1652,77.6758,ind_adm2_points,exact,1.0,400,1997,2014,141,True
 Maharashtra,Aurangabad,MAHARASHTRA,AURANGABAD,20.0979,75.3207,ind_adm2_points,exact,1.0,432,1997,2014,150,True
-Maharashtra,Beed,MAHARASHTRA,BEED,,,none,none,0.0,464,1997,2014,174,False
+Maharashtra,Beed,MAHARASHTRA,BEED,18.9892,75.7563,open-meteo-geocoding,geocoded,0.0,464,1997,2014,174,True
 Maharashtra,Bhandara,MAHARASHTRA,BHANDARA,21.2118,80.1095,ind_adm2_points,exact,1.0,288,1997,2014,88,True
 Maharashtra,Buldhana,MAHARASHTRA,BULDHANA,20.5668,76.3902,ind_adm2_points,fuzzy,0.933,403,1997,2014,138,True
 Maharashtra,Chandrapur,MAHARASHTRA,CHANDRAPUR,20.0956,79.3156,ind_adm2_points,exact,1.0,325,1997,2014,110,True
 Maharashtra,Dhule,MAHARASHTRA,DHULE,21.274,74.5872,ind_adm2_points,exact,1.0,418,1997,2014,146,True
-Maharashtra,Gadchiroli,MAHARASHTRA,GADCHIROLI,,,none,none,0.0,306,1997,2014,110,False
+Maharashtra,Gadchiroli,MAHARASHTRA,GADCHIROLI,20.1806,80.0052,open-meteo-geocoding,geocoded,0.0,306,1997,2014,110,True
 Maharashtra,Gondia,MAHARASHTRA,GONDIA,21.225,80.1752,ind_adm2_points,fuzzy,0.923,229,1999,2014,87,True
 Maharashtra,Hingoli,MAHARASHTRA,HINGOLI,19.5953,77.0924,ind_adm2_points,exact,1.0,377,1999,2014,152,True
 Maharashtra,Jalgaon,MAHARASHTRA,JALGAON,20.8829,75.5514,ind_adm2_points,exact,1.0,402,1997,2014,142,True
 Maharashtra,Jalna,MAHARASHTRA,JALNA,19.9846,75.9847,ind_adm2_points,exact,1.0,435,1997,2014,151,True
 Maharashtra,Kolhapur,MAHARASHTRA,KOLHAPUR,16.4488,74.129,ind_adm2_points,exact,1.0,409,1997,2014,148,True
 Maharashtra,Latur,MAHARASHTRA,LATUR,18.3487,76.7581,ind_adm2_points,exact,1.0,466,1997,2014,172,True
-Maharashtra,Mumbai,MAHARASHTRA,MUMBAI,,,none,none,0.0,1,1997,1997,0,False
+Maharashtra,Mumbai,MAHARASHTRA,MUMBAI,19.0728,72.8826,open-meteo-geocoding,geocoded,0.0,1,1997,1997,0,False
 Maharashtra,Nagpur,MAHARASHTRA,NAGPUR,21.1966,79.0217,ind_adm2_points,exact,1.0,388,1997,2014,142,True
 Maharashtra,Nanded,MAHARASHTRA,NANDED,19.2093,77.6829,ind_adm2_points,exact,1.0,461,1997,2014,166,True
 Maharashtra,Nandurbar,MAHARASHTRA,NANDURBAR,21.5232,74.3264,ind_adm2_points,exact,1.0,377,1999,2014,152,True
 Maharashtra,Nashik,MAHARASHTRA,NASHIK,20.2669,74.0382,ind_adm2_points,exact,1.0,459,1997,2014,160,True
 Maharashtra,Osmanabad,MAHARASHTRA,OSMANABAD,18.1946,75.995,ind_adm2_points,exact,1.0,461,1997,2014,176,True
-Maharashtra,Palghar,MAHARASHTRA,PALGHAR,,,none,none,0.0,11,2011,2014,11,False
+Maharashtra,Palghar,MAHARASHTRA,PALGHAR,19.6969,72.7654,open-meteo-geocoding,geocoded,0.0,11,2011,2014,11,False
 Maharashtra,Parbhani,MAHARASHTRA,PARBHANI,19.3103,76.7016,ind_adm2_points,exact,1.0,467,1997,2014,170,True
 Maharashtra,Pune,MAHARASHTRA,PUNE,18.517,74.1292,ind_adm2_points,exact,1.0,495,1997,2014,174,True
 Maharashtra,Raigad,MAHARASHTRA,RAIGAD,,,none,none,0.0,236,1997,2014,74,False
@@ -393,18 +393,18 @@ Mizoram,Mamit,MIZORAM,MAMIT,23.7385,92.4331,ind_adm2_points,exact,1.0,107,2003,2
 Mizoram,Saiha,MIZORAM,SAIHA,22.3574,93.0283,ind_adm2_points,exact,1.0,69,2003,2009,12,False
 Mizoram,Serchhip,MIZORAM,SERCHHIP,23.2639,92.9142,ind_adm2_points,exact,1.0,41,2004,2009,14,False
 Nagaland,Dimapur,NAGALAND,DIMAPUR,25.8142,93.7507,ind_adm2_points,exact,1.0,414,2000,2014,199,True
-Nagaland,Kiphire,NAGALAND,KIPHIRE,,,none,none,0.0,174,2008,2014,174,False
+Nagaland,Kiphire,NAGALAND,KIPHIRE,25.8679,94.7857,open-meteo-geocoding,geocoded,0.0,174,2008,2014,174,True
 Nagaland,Kohima,NAGALAND,KOHIMA,25.6031,93.786,ind_adm2_points,exact,1.0,430,1997,2014,204,True
-Nagaland,Longleng,NAGALAND,LONGLENG,,,none,none,0.0,156,2008,2014,156,False
+Nagaland,Longleng,NAGALAND,LONGLENG,26.4899,94.8177,open-meteo-geocoding,geocoded,0.0,156,2008,2014,156,True
 Nagaland,Mokokchung,NAGALAND,MOKOKCHUNG,26.4789,94.5224,ind_adm2_points,exact,1.0,435,1997,2014,211,True
 Nagaland,Mon,NAGALAND,MON,26.6921,95.0307,ind_adm2_points,exact,1.0,439,1997,2014,228,True
-Nagaland,Peren,NAGALAND,PEREN,,,none,none,0.0,178,2008,2014,178,False
+Nagaland,Peren,NAGALAND,PEREN,25.5674,93.7606,open-meteo-geocoding,geocoded,0.0,178,2008,2014,178,True
 Nagaland,Phek,NAGALAND,PHEK,25.6327,94.5681,ind_adm2_points,exact,1.0,421,1997,2014,213,True
 Nagaland,Tuensang,NAGALAND,TUENSANG,26.211,94.8581,ind_adm2_points,exact,1.0,393,1997,2014,192,True
 Nagaland,Wokha,NAGALAND,WOKHA,26.2026,94.1991,ind_adm2_points,exact,1.0,455,1997,2014,217,True
 Nagaland,Zunheboto,NAGALAND,ZUNHEBOTO,26.0282,94.5003,ind_adm2_points,exact,1.0,411,1997,2014,197,True
 Odisha,Anugul,ODISHA,ANUGUL,21.1207,84.9984,ind_adm2_points,fuzzy,0.909,476,1997,2014,164,True
-Odisha,Balangir,ODISHA,BALANGIR,,,none,none,0.0,497,1997,2014,161,False
+Odisha,Balangir,ODISHA,BALANGIR,20.7042,83.4903,open-meteo-geocoding,geocoded,0.0,497,1997,2014,161,True
 Odisha,Baleshwar,ODISHA,BALESHWAR,21.4857,87.0809,ind_adm2_points,exact,1.0,369,1997,2014,109,True
 Odisha,Bargarh,ODISHA,BARGARH,21.1324,83.2644,ind_adm2_points,fuzzy,0.933,441,1997,2014,153,True
 Odisha,Bhadrak,ODISHA,BHADRAK,20.9526,86.815,ind_adm2_points,exact,1.0,330,1997,2014,107,True
@@ -420,7 +420,7 @@ Odisha,Jharsuguda,ODISHA,JHARSUGUDA,21.8271,83.9358,ind_adm2_points,exact,1.0,37
 Odisha,Kalahandi,ODISHA,KALAHANDI,19.7843,83.1124,ind_adm2_points,exact,1.0,477,1997,2014,151,True
 Odisha,Kandhamal,ODISHA,KANDHAMAL,20.0929,84.0222,ind_adm2_points,exact,1.0,425,1997,2014,127,True
 Odisha,Kendrapara,ODISHA,KENDRAPARA,20.6063,86.8376,ind_adm2_points,exact,1.0,329,1997,2014,98,True
-Odisha,Kendujhar,ODISHA,KENDUJHAR,,,none,none,0.0,496,1997,2014,155,False
+Odisha,Kendujhar,ODISHA,KENDUJHAR,21.5194,83.3636,open-meteo-geocoding,geocoded,0.0,496,1997,2014,155,True
 Odisha,Khordha,ODISHA,KHORDHA,20.0542,85.5223,ind_adm2_points,exact,1.0,419,1997,2014,133,True
 Odisha,Koraput,ODISHA,KORAPUT,18.8263,82.8128,ind_adm2_points,exact,1.0,492,1997,2014,155,True
 Odisha,Malkangiri,ODISHA,MALKANGIRI,18.2523,81.9829,ind_adm2_points,exact,1.0,364,1997,2014,110,True
@@ -438,11 +438,11 @@ Puducherry,Mahe,PUDUCHERRY,MAHE,12.0064,75.2828,ind_adm2_points,exact,1.0,89,199
 Puducherry,Pondicherry,PUDUCHERRY,PONDICHERRY,,,none,none,0.0,447,1998,2014,273,False
 Puducherry,Yanam,PUDUCHERRY,YANAM,16.7077,82.2619,ind_adm2_points,exact,1.0,126,1998,2014,55,True
 Punjab,Amritsar,PUNJAB,AMRITSAR,31.5487,74.7988,ind_adm2_points,exact,1.0,194,1997,2014,67,True
-Punjab,Barnala,PUNJAB,BARNALA,,,none,none,0.0,67,2007,2014,59,False
+Punjab,Barnala,PUNJAB,BARNALA,30.3745,75.5487,open-meteo-geocoding,geocoded,0.0,67,2007,2014,59,True
 Punjab,Bathinda,PUNJAB,BATHINDA,30.1905,75.0569,ind_adm2_points,exact,1.0,184,1997,2014,62,True
 Punjab,Faridkot,PUNJAB,FARIDKOT,30.5912,74.7975,ind_adm2_points,exact,1.0,143,1997,2014,39,False
 Punjab,Fatehgarh Sahib,PUNJAB,FATEHGARH SAHIB,30.6429,76.3621,ind_adm2_points,exact,1.0,112,1997,2014,34,False
-Punjab,Fazilka,PUNJAB,FAZILKA,,,none,none,0.0,25,2011,2014,25,False
+Punjab,Fazilka,PUNJAB,FAZILKA,30.4021,74.0284,open-meteo-geocoding,geocoded,0.0,25,2011,2014,25,False
 Punjab,Firozepur,PUNJAB,FIROZEPUR,30.6341,74.4025,ind_adm2_points,fuzzy,0.941,192,1997,2014,66,True
 Punjab,Gurdaspur,PUNJAB,GURDASPUR,32.0428,75.3204,ind_adm2_points,exact,1.0,169,1997,2014,61,True
 Punjab,Hoshiarpur,PUNJAB,HOSHIARPUR,31.5516,75.847,ind_adm2_points,exact,1.0,205,1997,2014,79,True
@@ -452,13 +452,13 @@ Punjab,Ludhiana,PUNJAB,LUDHIANA,30.766,75.8311,ind_adm2_points,exact,1.0,185,199
 Punjab,Mansa,PUNJAB,MANSA,29.9195,75.4305,ind_adm2_points,exact,1.0,181,1997,2014,66,True
 Punjab,Moga,PUNJAB,MOGA,30.7565,75.1601,ind_adm2_points,exact,1.0,149,1997,2014,48,False
 Punjab,Muktsar,PUNJAB,MUKTSAR,30.3124,74.5519,ind_adm2_points,exact,1.0,184,1997,2014,65,True
-Punjab,Nawanshahr,PUNJAB,NAWANSHAHR,,,none,none,0.0,127,1997,2014,41,False
-Punjab,Pathankot,PUNJAB,PATHANKOT,,,none,none,0.0,26,2011,2014,26,False
+Punjab,Nawanshahr,PUNJAB,NAWANSHAHR,31.1245,76.1161,open-meteo-geocoding,geocoded,0.0,127,1997,2014,41,False
+Punjab,Pathankot,PUNJAB,PATHANKOT,32.2748,75.6529,open-meteo-geocoding,geocoded,0.0,26,2011,2014,26,False
 Punjab,Patiala,PUNJAB,PATIALA,30.2145,76.2751,ind_adm2_points,exact,1.0,186,1997,2014,56,True
 Punjab,Rupnagar,PUNJAB,RUPNAGAR,30.9109,76.5374,ind_adm2_points,exact,1.0,173,1997,2014,57,True
 Punjab,S.A.S Nagar,PUNJAB,S A S NAGAR,,,none,none,0.0,76,2006,2014,58,False
 Punjab,Sangrur,PUNJAB,SANGRUR,30.185,75.8944,ind_adm2_points,exact,1.0,214,1997,2014,78,True
-Punjab,Tarn Taran,PUNJAB,TARN TARAN,,,none,none,0.0,87,2006,2014,66,False
+Punjab,Tarn Taran,PUNJAB,TARN TARAN,31.4519,74.9278,open-meteo-geocoding,geocoded,0.0,87,2006,2014,66,True
 Rajasthan,Ajmer,RAJASTHAN,AJMER,26.1993,74.699,ind_adm2_points,exact,1.0,409,1997,2010,88,True
 Rajasthan,Alwar,RAJASTHAN,ALWAR,27.5527,76.6536,ind_adm2_points,exact,1.0,436,1997,2010,93,True
 Rajasthan,Banswara,RAJASTHAN,BANSWARA,23.4536,74.4425,ind_adm2_points,exact,1.0,416,1997,2010,85,True
@@ -468,10 +468,10 @@ Rajasthan,Bharatpur,RAJASTHAN,BHARATPUR,27.3241,77.2175,ind_adm2_points,exact,1.
 Rajasthan,Bhilwara,RAJASTHAN,BHILWARA,25.4512,74.6395,ind_adm2_points,exact,1.0,446,1997,2010,92,True
 Rajasthan,Bikaner,RAJASTHAN,BIKANER,28.1249,73.2694,ind_adm2_points,exact,1.0,337,1997,2010,70,True
 Rajasthan,Bundi,RAJASTHAN,BUNDI,25.4858,75.7998,ind_adm2_points,exact,1.0,422,1997,2010,85,True
-Rajasthan,Chittorgarh,RAJASTHAN,CHITTORGARH,,,none,none,0.0,455,1997,2010,93,False
+Rajasthan,Chittorgarh,RAJASTHAN,CHITTORGARH,24.8896,74.624,open-meteo-geocoding,geocoded,0.0,455,1997,2010,93,True
 Rajasthan,Churu,RAJASTHAN,CHURU,28.2933,74.6585,ind_adm2_points,exact,1.0,272,1997,2010,54,True
 Rajasthan,Dausa,RAJASTHAN,DAUSA,26.9123,76.5734,ind_adm2_points,exact,1.0,384,1997,2010,78,True
-Rajasthan,Dholpur,RAJASTHAN,DHOLPUR,,,none,none,0.0,391,1997,2010,83,False
+Rajasthan,Dholpur,RAJASTHAN,DHOLPUR,26.6929,77.8797,open-meteo-geocoding,geocoded,0.0,391,1997,2010,83,True
 Rajasthan,Dungarpur,RAJASTHAN,DUNGARPUR,23.751,73.8477,ind_adm2_points,exact,1.0,386,1997,2010,85,True
 Rajasthan,Ganganagar,RAJASTHAN,GANGANAGAR,29.2568,73.5619,ind_adm2_points,exact,1.0,402,1997,2010,86,True
 Rajasthan,Hanumangarh,RAJASTHAN,HANUMANGARH,29.1813,74.7463,ind_adm2_points,exact,1.0,368,1997,2010,76,True
@@ -485,7 +485,7 @@ Rajasthan,Karauli,RAJASTHAN,KARAULI,26.519,76.9608,ind_adm2_points,exact,1.0,399
 Rajasthan,Kota,RAJASTHAN,KOTA,25.1757,76.1862,ind_adm2_points,exact,1.0,388,1997,2010,82,True
 Rajasthan,Nagaur,RAJASTHAN,NAGAUR,27.0786,74.1422,ind_adm2_points,exact,1.0,356,1997,2010,75,True
 Rajasthan,Pali,RAJASTHAN,PALI,25.8049,73.5529,ind_adm2_points,exact,1.0,402,1997,2010,79,True
-Rajasthan,Pratapgarh,RAJASTHAN,PRATAPGARH,,,none,none,0.0,90,1999,2010,88,False
+Rajasthan,Pratapgarh,RAJASTHAN,PRATAPGARH,24.0322,74.7816,open-meteo-geocoding,geocoded,0.0,90,1999,2010,88,True
 Rajasthan,Rajsamand,RAJASTHAN,RAJSAMAND,25.2489,73.9657,ind_adm2_points,exact,1.0,415,1997,2010,87,True
 Rajasthan,Sawai Madhopur,RAJASTHAN,SAWAI MADHOPUR,26.2511,76.4219,ind_adm2_points,exact,1.0,419,1997,2010,89,True
 Rajasthan,Sikar,RAJASTHAN,SIKAR,27.6464,75.2932,ind_adm2_points,exact,1.0,363,1997,2010,77,True
@@ -502,10 +502,10 @@ Tamil Nadu,Cuddalore,TAMIL NADU,CUDDALORE,11.5759,79.63,ind_adm2_points,exact,1.
 Tamil Nadu,Dharmapuri,TAMIL NADU,DHARMAPURI,12.3001,78.1151,ind_adm2_points,exact,1.0,543,1997,2013,161,True
 Tamil Nadu,Dindigul,TAMIL NADU,DINDIGUL,10.3778,77.7801,ind_adm2_points,exact,1.0,600,1997,2013,177,True
 Tamil Nadu,Erode,TAMIL NADU,ERODE,11.267,77.4203,ind_adm2_points,exact,1.0,571,1997,2013,164,True
-Tamil Nadu,Kanchipuram,TAMIL NADU,KANCHIPURAM,,,none,none,0.0,405,1997,2013,118,False
+Tamil Nadu,Kanchipuram,TAMIL NADU,KANCHIPURAM,12.8352,79.7001,open-meteo-geocoding,geocoded,0.0,405,1997,2013,118,True
 Tamil Nadu,Kanniyakumari,TAMIL NADU,KANNIYAKUMARI,8.1835,77.3205,ind_adm2_points,exact,1.0,254,1997,2013,70,True
 Tamil Nadu,Karur,TAMIL NADU,KARUR,10.7953,78.0875,ind_adm2_points,exact,1.0,462,1997,2013,145,True
-Tamil Nadu,Krishnagiri,TAMIL NADU,KRISHNAGIRI,,,none,none,0.0,341,1999,2013,161,False
+Tamil Nadu,Krishnagiri,TAMIL NADU,KRISHNAGIRI,12.5192,78.2138,open-meteo-geocoding,geocoded,0.0,341,1999,2013,161,True
 Tamil Nadu,Madurai,TAMIL NADU,MADURAI,9.9043,78.0137,ind_adm2_points,exact,1.0,495,1997,2013,153,True
 Tamil Nadu,Nagapattinam,TAMIL NADU,NAGAPATTINAM,10.7895,79.7944,ind_adm2_points,exact,1.0,321,1997,2013,85,True
 Tamil Nadu,Namakkal,TAMIL NADU,NAMAKKAL,11.3377,78.1462,ind_adm2_points,exact,1.0,529,1997,2013,164,True
@@ -520,26 +520,26 @@ Tamil Nadu,Theni,TAMIL NADU,THENI,9.9241,77.4346,ind_adm2_points,exact,1.0,520,1
 Tamil Nadu,Thiruvallur,TAMIL NADU,THIRUVALLUR,13.2759,80.1972,ind_adm2_points,exact,1.0,396,1997,2013,122,True
 Tamil Nadu,Thiruvarur,TAMIL NADU,THIRUVARUR,10.3689,79.6032,ind_adm2_points,exact,1.0,300,1997,2013,76,True
 Tamil Nadu,Tiruchirappalli,TAMIL NADU,TIRUCHIRAPPALLI,10.8378,78.5473,ind_adm2_points,fuzzy,0.938,507,1997,2013,154,True
-Tamil Nadu,Tirunelveli,TAMIL NADU,TIRUNELVELI,,,none,none,0.0,533,1997,2013,160,False
-Tamil Nadu,Tiruppur,TAMIL NADU,TIRUPPUR,,,none,none,0.0,143,2008,2013,143,False
+Tamil Nadu,Tirunelveli,TAMIL NADU,TIRUNELVELI,8.7274,77.6838,open-meteo-geocoding,geocoded,0.0,533,1997,2013,160,True
+Tamil Nadu,Tiruppur,TAMIL NADU,TIRUPPUR,11.1154,77.3546,open-meteo-geocoding,geocoded,0.0,143,2008,2013,143,True
 Tamil Nadu,Tiruvannamalai,TAMIL NADU,TIRUVANNAMALAI,12.4193,79.2327,ind_adm2_points,exact,1.0,496,1997,2013,156,True
-Tamil Nadu,Tuticorin,TAMIL NADU,TUTICORIN,,,none,none,0.0,476,1997,2013,139,False
+Tamil Nadu,Tuticorin,TAMIL NADU,TUTICORIN,8.7231,78.0273,open-meteo-geocoding,geocoded,0.0,476,1997,2013,139,True
 Tamil Nadu,Vellore,TAMIL NADU,VELLORE,12.7849,79.0264,ind_adm2_points,exact,1.0,521,1997,2013,162,True
 Tamil Nadu,Villupuram,TAMIL NADU,VILLUPURAM,12.0656,79.6899,ind_adm2_points,exact,1.0,494,1997,2013,153,True
 Tamil Nadu,Virudhunagar,TAMIL NADU,VIRUDHUNAGAR,9.4689,77.8764,ind_adm2_points,exact,1.0,493,1997,2013,153,True
-Telangana,Adilabad,TELANGANA,ADILABAD,,,none,none,0.0,650,1997,2014,219,False
-Telangana,Hyderabad,TELANGANA,HYDERABAD,,,none,none,0.0,8,1997,2000,0,False
-Telangana,Karimnagar,TELANGANA,KARIMNAGAR,,,none,none,0.0,582,1997,2014,203,False
-Telangana,Khammam,TELANGANA,KHAMMAM,,,none,none,0.0,592,1997,2014,204,False
-Telangana,Mahbubnagar,TELANGANA,MAHBUBNAGAR,,,none,none,0.0,666,1997,2014,226,False
-Telangana,Medak,TELANGANA,MEDAK,,,none,none,0.0,714,1997,2014,250,False
-Telangana,Nalgonda,TELANGANA,NALGONDA,,,none,none,0.0,521,1997,2014,177,False
-Telangana,Nizamabad,TELANGANA,NIZAMABAD,,,none,none,0.0,650,1997,2014,224,False
-Telangana,Rangareddi,TELANGANA,RANGAREDDI,,,none,none,0.0,693,1997,2014,249,False
-Telangana,Warangal,TELANGANA,WARANGAL,,,none,none,0.0,573,1997,2014,197,False
+Telangana,Adilabad,TELANGANA,ADILABAD,19.672,78.5359,open-meteo-geocoding,geocoded,0.0,650,1997,2014,219,True
+Telangana,Hyderabad,TELANGANA,HYDERABAD,17.384,78.4564,open-meteo-geocoding,geocoded,0.0,8,1997,2000,0,False
+Telangana,Karimnagar,TELANGANA,KARIMNAGAR,18.4392,79.1286,open-meteo-geocoding,geocoded,0.0,582,1997,2014,203,True
+Telangana,Khammam,TELANGANA,KHAMMAM,17.2477,80.1437,open-meteo-geocoding,geocoded,0.0,592,1997,2014,204,True
+Telangana,Mahbubnagar,TELANGANA,MAHBUBNAGAR,16.7438,77.986,open-meteo-geocoding,geocoded,0.0,666,1997,2014,226,True
+Telangana,Medak,TELANGANA,MEDAK,18.0453,78.2608,open-meteo-geocoding,geocoded,0.0,714,1997,2014,250,True
+Telangana,Nalgonda,TELANGANA,NALGONDA,17.0544,79.2671,open-meteo-geocoding,geocoded,0.0,521,1997,2014,177,True
+Telangana,Nizamabad,TELANGANA,NIZAMABAD,18.6715,78.0988,open-meteo-geocoding,geocoded,0.0,650,1997,2014,224,True
+Telangana,Rangareddi,TELANGANA,RANGAREDDI,17.0349,78.0833,open-meteo-geocoding,geocoded,0.0,693,1997,2014,249,True
+Telangana,Warangal,TELANGANA,WARANGAL,18.0,79.5833,open-meteo-geocoding,geocoded,0.0,573,1997,2014,197,True
 Tripura,Dhalai,TRIPURA,DHALAI,23.7814,91.9465,ind_adm2_points,exact,1.0,293,1998,2014,146,True
 Tripura,Gomati,TRIPURA,GOMATI,,,none,none,0.0,61,2012,2014,61,False
-Tripura,Khowai,TRIPURA,KHOWAI,,,none,none,0.0,61,2012,2014,61,False
+Tripura,Khowai,TRIPURA,KHOWAI,24.0796,91.5997,open-meteo-geocoding,geocoded,0.0,61,2012,2014,61,True
 Tripura,North Tripura,TRIPURA,NORTH TRIPURA,24.1217,92.1784,ind_adm2_points,exact,1.0,294,1998,2014,147,True
 Tripura,Sepahijala,TRIPURA,SEPAHIJALA,,,none,none,0.0,57,2012,2014,57,False
 Tripura,South Tripura,TRIPURA,SOUTH TRIPURA,23.2119,91.6066,ind_adm2_points,exact,1.0,293,1998,2014,146,True
@@ -549,8 +549,8 @@ Uttar Pradesh,Agra,UTTAR PRADESH,AGRA,26.9951,78.0528,ind_adm2_points,exact,1.0,
 Uttar Pradesh,Aligarh,UTTAR PRADESH,ALIGARH,27.9375,78.0015,ind_adm2_points,exact,1.0,479,1997,2014,209,True
 Uttar Pradesh,Allahabad,UTTAR PRADESH,ALLAHABAD,25.392,82.0517,ind_adm2_points,exact,1.0,470,1997,2014,199,True
 Uttar Pradesh,Ambedkar Nagar,UTTAR PRADESH,AMBEDKAR NAGAR,26.3912,82.6828,ind_adm2_points,exact,1.0,456,1997,2014,196,True
-Uttar Pradesh,Amethi,UTTAR PRADESH,AMETHI,,,none,none,0.0,135,2010,2014,135,False
-Uttar Pradesh,Amroha,UTTAR PRADESH,AMROHA,,,none,none,0.0,364,1997,2014,147,False
+Uttar Pradesh,Amethi,UTTAR PRADESH,AMETHI,26.157,81.8052,open-meteo-geocoding,geocoded,0.0,135,2010,2014,135,True
+Uttar Pradesh,Amroha,UTTAR PRADESH,AMROHA,28.9031,78.4698,open-meteo-geocoding,geocoded,0.0,364,1997,2014,147,True
 Uttar Pradesh,Auraiya,UTTAR PRADESH,AURAIYA,26.6689,79.4264,ind_adm2_points,exact,1.0,465,1997,2014,207,True
 Uttar Pradesh,Azamgarh,UTTAR PRADESH,AZAMGARH,26.0083,83.0122,ind_adm2_points,exact,1.0,525,1997,2014,234,True
 Uttar Pradesh,Baghpat,UTTAR PRADESH,BAGHPAT,29.0458,77.3027,ind_adm2_points,exact,1.0,372,1997,2014,151,True
@@ -562,7 +562,7 @@ Uttar Pradesh,Barabanki,UTTAR PRADESH,BARABANKI,26.9228,81.3576,ind_adm2_points,
 Uttar Pradesh,Bareilly,UTTAR PRADESH,BAREILLY,28.511,79.4319,ind_adm2_points,exact,1.0,496,1997,2014,202,True
 Uttar Pradesh,Basti,UTTAR PRADESH,BASTI,26.8339,82.6979,ind_adm2_points,exact,1.0,454,1997,2014,192,True
 Uttar Pradesh,Bijnor,UTTAR PRADESH,BIJNOR,29.314,78.451,ind_adm2_points,exact,1.0,433,1997,2014,170,True
-Uttar Pradesh,Budaun,UTTAR PRADESH,BUDAUN,,,none,none,0.0,526,1997,2014,220,False
+Uttar Pradesh,Budaun,UTTAR PRADESH,BUDAUN,28.0381,79.1267,open-meteo-geocoding,geocoded,0.0,526,1997,2014,220,True
 Uttar Pradesh,Bulandshahr,UTTAR PRADESH,BULANDSHAHR,28.3488,78.0108,ind_adm2_points,exact,1.0,467,1997,2014,206,True
 Uttar Pradesh,Chandauli,UTTAR PRADESH,CHANDAULI,25.1181,83.2531,ind_adm2_points,exact,1.0,432,1997,2014,182,True
 Uttar Pradesh,Chitrakoot,UTTAR PRADESH,CHITRAKOOT,25.1599,81.0767,ind_adm2_points,exact,1.0,434,1997,2014,186,True
@@ -579,7 +579,7 @@ Uttar Pradesh,Ghazipur,UTTAR PRADESH,GHAZIPUR,25.6247,83.5361,ind_adm2_points,ex
 Uttar Pradesh,Gonda,UTTAR PRADESH,GONDA,27.1572,82.0227,ind_adm2_points,exact,1.0,491,1997,2014,202,True
 Uttar Pradesh,Gorakhpur,UTTAR PRADESH,GORAKHPUR,26.6332,83.355,ind_adm2_points,exact,1.0,497,1997,2014,213,True
 Uttar Pradesh,Hamirpur,UTTAR PRADESH,HAMIRPUR,25.7382,79.8262,ind_adm2_points,exact,1.0,466,1997,2014,203,True
-Uttar Pradesh,Hapur,UTTAR PRADESH,HAPUR,,,none,none,0.0,56,2012,2014,56,False
+Uttar Pradesh,Hapur,UTTAR PRADESH,HAPUR,28.7298,77.7807,open-meteo-geocoding,geocoded,0.0,56,2012,2014,56,True
 Uttar Pradesh,Hardoi,UTTAR PRADESH,HARDOI,27.3374,80.2641,ind_adm2_points,exact,1.0,531,1997,2014,226,True
 Uttar Pradesh,Hathras,UTTAR PRADESH,HATHRAS,27.5781,78.1825,ind_adm2_points,exact,1.0,453,1997,2014,202,True
 Uttar Pradesh,Jalaun,UTTAR PRADESH,JALAUN,26.068,79.3669,ind_adm2_points,exact,1.0,451,1997,2014,199,True
@@ -588,9 +588,9 @@ Uttar Pradesh,Jhansi,UTTAR PRADESH,JHANSI,25.4558,78.8995,ind_adm2_points,exact,
 Uttar Pradesh,Kannauj,UTTAR PRADESH,KANNAUJ,26.994,79.6444,ind_adm2_points,exact,1.0,482,1997,2014,215,True
 Uttar Pradesh,Kanpur Dehat,UTTAR PRADESH,KANPUR DEHAT,26.4305,79.9871,ind_adm2_points,exact,1.0,407,1997,2014,221,True
 Uttar Pradesh,Kanpur Nagar,UTTAR PRADESH,KANPUR NAGAR,,,none,none,0.0,532,1997,2014,229,False
-Uttar Pradesh,Kasganj,UTTAR PRADESH,KASGANJ,,,none,none,0.0,176,2009,2014,176,False
+Uttar Pradesh,Kasganj,UTTAR PRADESH,KASGANJ,27.8088,78.6458,open-meteo-geocoding,geocoded,0.0,176,2009,2014,176,True
 Uttar Pradesh,Kaushambi,UTTAR PRADESH,KAUSHAMBI,25.5359,81.4181,ind_adm2_points,exact,1.0,506,1997,2014,225,True
-Uttar Pradesh,Kheri,UTTAR PRADESH,KHERI,,,none,none,0.0,533,1997,2014,233,False
+Uttar Pradesh,Kheri,UTTAR PRADESH,KHERI,27.9035,80.7975,open-meteo-geocoding,geocoded,0.0,533,1997,2014,233,True
 Uttar Pradesh,Kushi Nagar,UTTAR PRADESH,KUSHI NAGAR,26.8925,83.9226,ind_adm2_points,fuzzy,0.952,507,1997,2014,225,True
 Uttar Pradesh,Lalitpur,UTTAR PRADESH,LALITPUR,24.5888,78.6008,ind_adm2_points,exact,1.0,463,1997,2014,200,True
 Uttar Pradesh,Lucknow,UTTAR PRADESH,LUCKNOW,26.8382,80.8971,ind_adm2_points,exact,1.0,497,1997,2014,213,True
@@ -608,11 +608,11 @@ Uttar Pradesh,Pratapgarh,UTTAR PRADESH,PRATAPGARH,25.8648,81.9353,ind_adm2_point
 Uttar Pradesh,Rae Bareli,UTTAR PRADESH,RAE BARELI,26.2539,81.2226,ind_adm2_points,exact,1.0,531,1997,2014,229,True
 Uttar Pradesh,Rampur,UTTAR PRADESH,RAMPUR,28.8324,79.1098,ind_adm2_points,exact,1.0,468,1997,2014,191,True
 Uttar Pradesh,Saharanpur,UTTAR PRADESH,SAHARANPUR,30.0338,77.5991,ind_adm2_points,exact,1.0,420,1997,2014,179,True
-Uttar Pradesh,Sambhal,UTTAR PRADESH,SAMBHAL,,,none,none,0.0,83,2012,2014,83,False
+Uttar Pradesh,Sambhal,UTTAR PRADESH,SAMBHAL,28.585,78.5696,open-meteo-geocoding,geocoded,0.0,83,2012,2014,83,True
 Uttar Pradesh,Sant Kabeer Nagar,UTTAR PRADESH,SANT KABEER NAGAR,26.7916,83.0388,ind_adm2_points,fuzzy,0.909,449,1997,2014,187,True
 Uttar Pradesh,Sant Ravidas Nagar,UTTAR PRADESH,SANT RAVIDAS NAGAR,25.3646,82.4349,ind_adm2_points,fuzzy,0.973,395,1997,2014,173,True
 Uttar Pradesh,Shahjahanpur,UTTAR PRADESH,SHAHJAHANPUR,27.9914,79.8302,ind_adm2_points,exact,1.0,529,1997,2014,232,True
-Uttar Pradesh,Shamli,UTTAR PRADESH,SHAMLI,,,none,none,0.0,66,2012,2014,66,False
+Uttar Pradesh,Shamli,UTTAR PRADESH,SHAMLI,29.4497,77.3096,open-meteo-geocoding,geocoded,0.0,66,2012,2014,66,True
 Uttar Pradesh,Shravasti,UTTAR PRADESH,SHRAVASTI,27.6049,81.7932,ind_adm2_points,exact,1.0,444,1997,2014,187,True
 Uttar Pradesh,Siddharth Nagar,UTTAR PRADESH,SIDDHARTH NAGAR,27.2074,82.7866,ind_adm2_points,exact,1.0,402,1997,2014,151,True
 Uttar Pradesh,Sitapur,UTTAR PRADESH,SITAPUR,27.502,80.8529,ind_adm2_points,exact,1.0,543,1997,2014,230,True
@@ -639,11 +639,11 @@ West Bengal,Bankura,WEST BENGAL,BANKURA,23.0813,87.1264,ind_adm2_points,exact,1.
 West Bengal,Bardhaman,WEST BENGAL,BARDHAMAN,23.4445,87.8151,ind_adm2_points,fuzzy,0.947,603,1997,2014,222,True
 West Bengal,Birbhum,WEST BENGAL,BIRBHUM,24.0639,87.6515,ind_adm2_points,exact,1.0,568,1997,2014,207,True
 West Bengal,Coochbehar,WEST BENGAL,COOCHBEHAR,,,none,none,0.0,573,1997,2014,224,False
-West Bengal,Darjeeling,WEST BENGAL,DARJEELING,,,none,none,0.0,573,1997,2014,233,False
+West Bengal,Darjeeling,WEST BENGAL,DARJEELING,27.0333,88.2667,open-meteo-geocoding,geocoded,0.0,573,1997,2014,233,True
 West Bengal,Dinajpur Dakshin,WEST BENGAL,DINAJPUR DAKSHIN,,,none,none,0.0,397,1997,2014,114,False
 West Bengal,Dinajpur Uttar,WEST BENGAL,DINAJPUR UTTAR,,,none,none,0.0,597,1997,2014,227,False
-West Bengal,Hooghly,WEST BENGAL,HOOGHLY,,,none,none,0.0,425,1997,2014,151,False
-West Bengal,Howrah,WEST BENGAL,HOWRAH,,,none,none,0.0,371,1997,2014,124,False
+West Bengal,Hooghly,WEST BENGAL,HOOGHLY,22.9088,88.3967,open-meteo-geocoding,geocoded,0.0,425,1997,2014,151,True
+West Bengal,Howrah,WEST BENGAL,HOWRAH,22.5769,88.3186,open-meteo-geocoding,geocoded,0.0,371,1997,2014,124,True
 West Bengal,Jalpaiguri,WEST BENGAL,JALPAIGURI,26.6264,89.0415,ind_adm2_points,exact,1.0,633,1997,2014,257,True
 West Bengal,Maldah,WEST BENGAL,MALDAH,25.0803,88.1719,ind_adm2_points,exact,1.0,561,1997,2014,215,True
 West Bengal,Medinipur East,WEST BENGAL,MEDINIPUR EAST,,,none,none,0.0,347,1997,2014,120,False

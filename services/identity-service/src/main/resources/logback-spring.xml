@@ -1,0 +1,16 @@
+<configuration>
+  <appender name="JSON" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+      <fieldNames>
+        <timestamp>ts</timestamp>
+        <message>msg</message>
+        <version>[ignore]</version>
+        <levelValue>[ignore]</levelValue>
+        <thread>[ignore]</thread>
+      </fieldNames>
+      <customFields>{"service":"identity-service"}</customFields>
+      <includeMdcKeyName>traceId</includeMdcKeyName>
+    </encoder>
+  </appender>
+  <root level="INFO"><appender-ref ref="JSON"/></root>
+</configuration>

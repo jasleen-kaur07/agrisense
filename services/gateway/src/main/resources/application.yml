@@ -1,0 +1,52 @@
+server:
+  port: ${PORT:8080}
+  max-http-request-header-size: 16KB
+  shutdown: graceful
+
+spring:
+  application:
+    name: gateway
+  main:
+    banner-mode: "off"
+  cloud:
+    gateway:
+      server:
+        webflux:
+          httpclient:
+            connect-timeout: 2000
+            response-timeout: 10s
+          routes:
+            - id: identity
+              uri: ${IDENTITY_SERVICE_URL:http://localhost:8081}
+              predicates:
+                - Path=/api/v1/auth/**,/api/v1/profile/**,/api/v1/admin/users/**
+              filters:
+                - StripPrefix=1
+            - id: farm-advisory
+              uri: ${FARM_ADVISORY_SERVICE_URL:http://localhost:8082}
+              predicates:
+                - Path=/api/v1/farms/**,/api/v1/fields/**,/api/v1/recommendations/**,/api/v1/plans/**,/api/v1/alerts/**,/api/v1/feedback/**,/api/v1/admin/recommendations/**,/api/v1/admin/feedback/**,/api/v1/admin/stats/**
+              filters:
+                - StripPrefix=1
+            - id: data
+              uri: ${DATA_SERVICE_URL:http://localhost:8083}
+              predicates:
+                - Path=/api/v1/locations/**,/api/v1/regional/**,/api/v1/seasons/**,/api/v1/weather/**,/api/v1/admin/data/**
+              filters:
+                - StripPrefix=1
+
+logging:
+  structured:
+    format:
+      console: com.agrisense.gateway.logging.JsonLogFormatter
+  level:
+    root: INFO
+
+agrisense:
+  allowed-origins: ${ALLOWED_ORIGINS:}
+  identity-jwks-url: ${IDENTITY_JWKS_URL:http://localhost:8081/.well-known/jwks.json}
+  issuer: agrisense-identity
+  max-body-bytes: 1048576
+  rate-limit:
+    general-per-minute: 120
+    auth-per-minute: 10

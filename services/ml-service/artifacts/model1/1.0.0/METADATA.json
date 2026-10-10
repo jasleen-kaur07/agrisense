@@ -1,0 +1,53 @@
+{
+  "name": "model1-rf",
+  "version": "1.0.0",
+  "status": "EXPERIMENTAL_DISABLED_FOR_USERS",
+  "framework": "scikit-learn 1.9.0 RandomForestClassifier (100 trees)",
+  "files": {
+    "model.pkl": "9ce1ebbd1066fc90e7cfe9dfcc860989acf337c4e372801d7f5107a4f5d46502",
+    "scaler.pkl": "4c7f979f084392966cc137bf7fd91e60e16ea6ddd9e1519b192930a9f1b05c2d"
+  },
+  "provenance": {
+    "model": "team repo outputmodel1/crop_recommendation_rf_model.pkl (unchanged)",
+    "scaler": "RECONSTRUCTED: MinMaxScaler fitted on X_train of train_test_split(test_size=0.2, random_state=42); the team's shipped scaler is degenerate (see docs/ml/model1-card.md)"
+  },
+  "classes": {
+    "1": "Rice",
+    "2": "Maize",
+    "3": "Jute",
+    "4": "Cotton",
+    "5": "Coconut",
+    "6": "Papaya",
+    "7": "Orange",
+    "8": "Apple",
+    "9": "Muskmelon",
+    "10": "Watermelon",
+    "11": "Grapes",
+    "12": "Mango",
+    "13": "Banana",
+    "14": "Pomegranate",
+    "15": "Lentil",
+    "16": "Blackgram",
+    "17": "Mungbean",
+    "18": "Mothbeans",
+    "19": "Pigeonpeas",
+    "20": "Kidneybeans",
+    "21": "Chickpea",
+    "22": "Coffee"
+  },
+  "feature_order": [
+    "N",
+    "P",
+    "K",
+    "temperature",
+    "humidity",
+    "ph",
+    "rainfall"
+  ],
+  "limitations": [
+    "22 crops only",
+    "dataset-internal evaluation; data looks synthetic",
+    "rainfall averaging period UNVERIFIED",
+    "score is an uncalibrated forest vote fraction, not a probability"
+  ]
+}

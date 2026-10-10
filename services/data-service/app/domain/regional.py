@@ -78,6 +78,9 @@ class RegionalEngine:
         self._by_district = {k: g for k, g in stats.groupby(["state_key", "district_key", "season"])}
         self._by_state = {k: g for k, g in stats.groupby(["state_key", "season"])}
         self.last_year = int(stats["year"].max())
+        self.first_year = int(stats["year"].min())
+        self.row_count = len(stats)
+        self._by_district_all = {k: g for k, g in stats.groupby(["state_key", "district_key"])}
 
     @classmethod
     def from_csv(cls, path: Path | str, config: EngineConfig | None = None) -> "RegionalEngine":
@@ -141,6 +144,25 @@ class RegionalEngine:
             district_weight=round(lam, 3),
             caveats=caveats,
         )
+
+    def crop_history(self, state_key: str, district_key: str, crops: list[str], years: int = 10) -> list[dict]:
+        """Yearly share (%) of each crop in the district's recorded area, all seasons combined."""
+        frame = self._by_district_all.get((canonical_state(state_key), normalise(district_key)))
+        series = []
+        wanted = {c.lower(): c for c in crops}
+        if frame is None:
+            return [{"crop": c, "points": []} for c in crops]
+        recent = frame[frame["year"] > frame["year"].max() - years]
+        totals = recent.groupby("year")["area_ha"].sum()
+        for key, label in wanted.items():
+            sub = recent[recent["crop"].str.lower() == key].groupby("year")["area_ha"].sum()
+            points = [
+                {"year": int(y), "sharePct": round(float(sub.get(y, 0.0)) / float(t) * 100, 1)}
+                for y, t in totals.items()
+                if t > 0
+            ]
+            series.append({"crop": label, "points": points})
+        return series
 
     def _year_round(self, s: str, d: str, as_of: int) -> list[str]:
         frame = self._by_district.get((s, d, WHOLE_YEAR))

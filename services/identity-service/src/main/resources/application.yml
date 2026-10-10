@@ -1,0 +1,31 @@
+server:
+  port: ${PORT:8081}
+  shutdown: graceful
+  error:
+    include-stacktrace: never
+    include-message: never
+spring:
+  application.name: identity-service
+  autoconfigure.exclude: org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration
+  datasource:
+    # JDBC URL; the schema comes from currentSchema. SPRING_DATASOURCE_URL/USERNAME/PASSWORD also work.
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5433/agrisense?currentSchema=identity}
+    username: ${DB_USER:identity}
+    password: ${DB_PASSWORD:identity}
+  jpa:
+    open-in-view: false
+    hibernate.ddl-auto: none
+    properties.hibernate.jdbc.time_zone: UTC
+  flyway:
+    schemas: identity
+    default-schema: identity
+    create-schemas: true
+management:
+  endpoints.web.exposure.include: health
+  endpoint.health.probes.enabled: true
+app:
+  cookie-secure: ${COOKIE_SECURE:true}
+  mail-mode: ${MAIL_MODE:none}
+  jwt-private-key-pem: ${JWT_PRIVATE_KEY_PEM:}
+  admin-bootstrap-email: ${ADMIN_BOOTSTRAP_EMAIL:}
+  admin-bootstrap-password: ${ADMIN_BOOTSTRAP_PASSWORD:}

@@ -1,0 +1,445 @@
+{
+ "ANDAMAN AND NICOBAR ISLANDS|NICOBARS": null,
+ "ANDAMAN AND NICOBAR ISLANDS|NORTH AND MIDDLE ANDAMAN": null,
+ "ANDAMAN AND NICOBAR ISLANDS|SOUTH ANDAMANS": null,
+ "ANDHRA PRADESH|KADAPA": {
+  "lat": 14.47995,
+  "lon": 78.82346,
+  "name": "Kadapa"
+ },
+ "ANDHRA PRADESH|SPSR NELLORE": null,
+ "ARUNACHAL PRADESH|ANJAW": null,
+ "ARUNACHAL PRADESH|DIBANG VALLEY": null,
+ "ARUNACHAL PRADESH|LONGDING": null,
+ "ARUNACHAL PRADESH|NAMSAI": null,
+ "ASSAM|BAKSA": null,
+ "ASSAM|CHIRANG": null,
+ "ASSAM|DIMA HASAO": null,
+ "ASSAM|KAMRUP METRO": null,
+ "ASSAM|SIVASAGAR": null,
+ "ASSAM|UDALGURI": {
+  "lat": 26.75367,
+  "lon": 92.10215,
+  "name": "Udalguri"
+ },
+ "BIHAR|ARWAL": {
+  "lat": 25.24281,
+  "lon": 84.66571,
+  "name": "Arwal"
+ },
+ "BIHAR|KAIMUR BHABUA": null,
+ "CHHATTISGARH|BALOD": {
+  "lat": 20.73081,
+  "lon": 81.20578,
+  "name": "Balod"
+ },
+ "CHHATTISGARH|BALODA BAZAR": {
+  "lat": 21.65678,
+  "lon": 82.16062,
+  "name": "Baloda B\u0101z\u0101r"
+ },
+ "CHHATTISGARH|BALRAMPUR": {
+  "lat": 23.61219,
+  "lon": 83.61115,
+  "name": "Balrampur"
+ },
+ "CHHATTISGARH|BEMETARA": {
+  "lat": 21.71556,
+  "lon": 81.53423,
+  "name": "Bemet\u0101ra"
+ },
+ "CHHATTISGARH|BIJAPUR": {
+  "lat": 18.79387,
+  "lon": 80.81599,
+  "name": "B\u012bj\u0101pur"
+ },
+ "CHHATTISGARH|GARIYABAND": null,
+ "CHHATTISGARH|KABIRDHAM": null,
+ "CHHATTISGARH|KONDAGAON": {
+  "lat": 19.59083,
+  "lon": 81.664,
+  "name": "Kondagaon"
+ },
+ "CHHATTISGARH|KOREA": {
+  "lat": 23.15,
+  "lon": 83.96667,
+  "name": "Korea"
+ },
+ "CHHATTISGARH|MUNGELI": {
+  "lat": 22.06566,
+  "lon": 81.68543,
+  "name": "Mungeli"
+ },
+ "CHHATTISGARH|NARAYANPUR": {
+  "lat": 19.71794,
+  "lon": 81.24437,
+  "name": "N\u0101r\u0101inpur"
+ },
+ "CHHATTISGARH|SUKMA": {
+  "lat": 18.39014,
+  "lon": 81.65941,
+  "name": "Sukma"
+ },
+ "CHHATTISGARH|SURAJPUR": {
+  "lat": 23.21347,
+  "lon": 82.86836,
+  "name": "Surajpur"
+ },
+ "GUJARAT|DANG": null,
+ "GUJARAT|DOHAD": {
+  "lat": 22.83283,
+  "lon": 74.25986,
+  "name": "Dohad"
+ },
+ "GUJARAT|TAPI": null,
+ "HARYANA|MEWAT": null,
+ "HARYANA|PALWAL": {
+  "lat": 28.14469,
+  "lon": 77.32546,
+  "name": "Palwal"
+ },
+ "HARYANA|SONIPAT": {
+  "lat": 28.99478,
+  "lon": 77.01937,
+  "name": "Son\u012bpat"
+ },
+ "JAMMU AND KASHMIR|ANANTNAG": {
+  "lat": 33.73068,
+  "lon": 75.15418,
+  "name": "Anantnag"
+ },
+ "JAMMU AND KASHMIR|BADGAM": {
+  "lat": 34.01524,
+  "lon": 74.72074,
+  "name": "Badg\u0101m"
+ },
+ "JAMMU AND KASHMIR|BANDIPORA": null,
+ "JAMMU AND KASHMIR|BARAMULLA": null,
+ "JAMMU AND KASHMIR|GANDERBAL": {
+  "lat": 34.22619,
+  "lon": 74.77478,
+  "name": "Ganderbal"
+ },
+ "JAMMU AND KASHMIR|KISHTWAR": {
+  "lat": 33.31346,
+  "lon": 75.76726,
+  "name": "Kishtw\u0101r"
+ },
+ "JAMMU AND KASHMIR|KULGAM": {
+  "lat": 33.64456,
+  "lon": 75.01923,
+  "name": "Kulgam"
+ },
+ "JAMMU AND KASHMIR|KUPWARA": {
+  "lat": 34.52856,
+  "lon": 74.26396,
+  "name": "Kopawor"
+ },
+ "JAMMU AND KASHMIR|LEH LADAKH": null,
+ "JAMMU AND KASHMIR|POONCH": {
+  "lat": 33.77033,
+  "lon": 74.09254,
+  "name": "P\u016bnch"
+ },
+ "JAMMU AND KASHMIR|RAMBAN": {
+  "lat": 33.24278,
+  "lon": 75.23513,
+  "name": "R\u0101mban"
+ },
+ "JAMMU AND KASHMIR|REASI": {
+  "lat": 33.08115,
+  "lon": 74.83242,
+  "name": "Reasi"
+ },
+ "JAMMU AND KASHMIR|SAMBA": {
+  "lat": 32.56245,
+  "lon": 75.11993,
+  "name": "S\u0101mba"
+ },
+ "JHARKHAND|EAST SINGHBUM": null,
+ "JHARKHAND|KHUNTI": {
+  "lat": 23.07602,
+  "lon": 85.27818,
+  "name": "Khunti"
+ },
+ "JHARKHAND|RAMGARH": {
+  "lat": 23.6303,
+  "lon": 85.52156,
+  "name": "R\u0101mgarh"
+ },
+ "JHARKHAND|WEST SINGHBHUM": null,
+ "KARNATAKA|BENGALURU URBAN": null,
+ "KARNATAKA|CHIKBALLAPUR": null,
+ "KARNATAKA|RAMANAGARA": null,
+ "KARNATAKA|YADGIR": {
+  "lat": 16.77007,
+  "lon": 77.13755,
+  "name": "Yadgir"
+ },
+ "MADHYA PRADESH|AGAR MALWA": null,
+ "MADHYA PRADESH|ALIRAJPUR": {
+  "lat": 22.30393,
+  "lon": 74.35568,
+  "name": "Alirajpur"
+ },
+ "MADHYA PRADESH|KHANDWA": {
+  "lat": 21.82427,
+  "lon": 76.35086,
+  "name": "Khandwa"
+ },
+ "MADHYA PRADESH|KHARGONE": {
+  "lat": 21.82292,
+  "lon": 75.61394,
+  "name": "Khargone"
+ },
+ "MADHYA PRADESH|SINGRAULI": {
+  "lat": 24.19973,
+  "lon": 82.67535,
+  "name": "Singrauli"
+ },
+ "MAHARASHTRA|BEED": {
+  "lat": 18.98921,
+  "lon": 75.75634,
+  "name": "Beed"
+ },
+ "MAHARASHTRA|GADCHIROLI": {
+  "lat": 20.18061,
+  "lon": 80.00522,
+  "name": "Garhchiroli"
+ },
+ "MAHARASHTRA|MUMBAI": {
+  "lat": 19.07283,
+  "lon": 72.88261,
+  "name": "Mumbai"
+ },
+ "MAHARASHTRA|PALGHAR": {
+  "lat": 19.69693,
+  "lon": 72.76543,
+  "name": "P\u0101lghar"
+ },
+ "MAHARASHTRA|RAIGAD": null,
+ "MANIPUR|IMPHAL EAST": null,
+ "MANIPUR|IMPHAL WEST": null,
+ "MEGHALAYA|EAST JAINTIA HILLS": null,
+ "MEGHALAYA|NORTH GARO HILLS": null,
+ "MEGHALAYA|SOUTH WEST GARO HILLS": null,
+ "MEGHALAYA|SOUTH WEST KHASI HILLS": null,
+ "MEGHALAYA|WEST JAINTIA HILLS": null,
+ "NAGALAND|KIPHIRE": {
+  "lat": 25.86785,
+  "lon": 94.78572,
+  "name": "Kiphire"
+ },
+ "NAGALAND|LONGLENG": {
+  "lat": 26.48989,
+  "lon": 94.81772,
+  "name": "Longleng"
+ },
+ "NAGALAND|PEREN": {
+  "lat": 25.56743,
+  "lon": 93.76056,
+  "name": "Lakema"
+ },
+ "ODISHA|BALANGIR": {
+  "lat": 20.70419,
+  "lon": 83.49029,
+  "name": "Bal\u0101ng\u012br"
+ },
+ "ODISHA|KENDUJHAR": {
+  "lat": 21.51945,
+  "lon": 83.36356,
+  "name": "Kendujharan"
+ },
+ "PUDUCHERRY|PONDICHERRY": null,
+ "PUNJAB|BARNALA": {
+  "lat": 30.37451,
+  "lon": 75.5487,
+  "name": "Barn\u0101la"
+ },
+ "PUNJAB|FAZILKA": {
+  "lat": 30.40207,
+  "lon": 74.02836,
+  "name": "Fazilka"
+ },
+ "PUNJAB|NAWANSHAHR": {
+  "lat": 31.1245,
+  "lon": 76.11613,
+  "name": "Nawanshahr"
+ },
+ "PUNJAB|PATHANKOT": {
+  "lat": 32.27484,
+  "lon": 75.65287,
+  "name": "Pathankot"
+ },
+ "PUNJAB|S A S NAGAR": null,
+ "PUNJAB|TARN TARAN": {
+  "lat": 31.45191,
+  "lon": 74.92777,
+  "name": "Tarn Taran"
+ },
+ "RAJASTHAN|CHITTORGARH": {
+  "lat": 24.88963,
+  "lon": 74.62403,
+  "name": "Chittorgarh"
+ },
+ "RAJASTHAN|DHOLPUR": {
+  "lat": 26.69286,
+  "lon": 77.87968,
+  "name": "Dhaulpur"
+ },
+ "RAJASTHAN|PRATAPGARH": {
+  "lat": 24.03215,
+  "lon": 74.78162,
+  "name": "Prat\u0101pgarh"
+ },
+ "SIKKIM|NORTH": null,
+ "SIKKIM|SOUTH": null,
+ "SIKKIM|WEST": null,
+ "TAMIL NADU|KANCHIPURAM": {
+  "lat": 12.83515,
+  "lon": 79.70006,
+  "name": "Kanchipuram"
+ },
+ "TAMIL NADU|KRISHNAGIRI": {
+  "lat": 12.51921,
+  "lon": 78.21382,
+  "name": "Krishnagiri"
+ },
+ "TAMIL NADU|THE NILGIRIS": null,
+ "TAMIL NADU|TIRUNELVELI": {
+  "lat": 8.72742,
+  "lon": 77.6838,
+  "name": "Tirunelveli"
+ },
+ "TAMIL NADU|TIRUPPUR": {
+  "lat": 11.11541,
+  "lon": 77.35456,
+  "name": "Tirupur"
+ },
+ "TAMIL NADU|TUTICORIN": {
+  "lat": 8.72308,
+  "lon": 78.02731,
+  "name": "Tuticorin Airport"
+ },
+ "TELANGANA|ADILABAD": {
+  "lat": 19.67203,
+  "lon": 78.5359,
+  "name": "Adilabad"
+ },
+ "TELANGANA|HYDERABAD": {
+  "lat": 17.38405,
+  "lon": 78.45636,
+  "name": "Hyderabad"
+ },
+ "TELANGANA|KARIMNAGAR": {
+  "lat": 18.43915,
+  "lon": 79.12856,
+  "name": "Kar\u012bmnagar"
+ },
+ "TELANGANA|KHAMMAM": {
+  "lat": 17.24767,
+  "lon": 80.14368,
+  "name": "Khammam"
+ },
+ "TELANGANA|MAHBUBNAGAR": {
+  "lat": 16.74385,
+  "lon": 77.98597,
+  "name": "Mahb\u016bbnagar"
+ },
+ "TELANGANA|MEDAK": {
+  "lat": 18.04531,
+  "lon": 78.26078,
+  "name": "Medak"
+ },
+ "TELANGANA|NALGONDA": {
+  "lat": 17.05439,
+  "lon": 79.26707,
+  "name": "Nalgonda"
+ },
+ "TELANGANA|NIZAMABAD": {
+  "lat": 18.67154,
+  "lon": 78.0988,
+  "name": "Niz\u0101m\u0101b\u0101d"
+ },
+ "TELANGANA|RANGAREDDI": {
+  "lat": 17.03493,
+  "lon": 78.08331,
+  "name": "Rang\u0101reddiguda"
+ },
+ "TELANGANA|WARANGAL": {
+  "lat": 18.0,
+  "lon": 79.58333,
+  "name": "Warangal"
+ },
+ "TRIPURA|GOMATI": null,
+ "TRIPURA|KHOWAI": {
+  "lat": 24.07964,
+  "lon": 91.59972,
+  "name": "Khowai"
+ },
+ "TRIPURA|SEPAHIJALA": null,
+ "TRIPURA|UNAKOTI": null,
+ "UTTAR PRADESH|AMETHI": {
+  "lat": 26.15696,
+  "lon": 81.80519,
+  "name": "Ameth\u012b"
+ },
+ "UTTAR PRADESH|AMROHA": {
+  "lat": 28.90314,
+  "lon": 78.46984,
+  "name": "Amroha"
+ },
+ "UTTAR PRADESH|BUDAUN": {
+  "lat": 28.03811,
+  "lon": 79.12668,
+  "name": "Budaun"
+ },
+ "UTTAR PRADESH|HAPUR": {
+  "lat": 28.72985,
+  "lon": 77.78068,
+  "name": "H\u0101pur"
+ },
+ "UTTAR PRADESH|KANPUR NAGAR": null,
+ "UTTAR PRADESH|KASGANJ": {
+  "lat": 27.80882,
+  "lon": 78.64579,
+  "name": "Kasganj"
+ },
+ "UTTAR PRADESH|KHERI": {
+  "lat": 27.90354,
+  "lon": 80.79754,
+  "name": "Kheri"
+ },
+ "UTTAR PRADESH|SAMBHAL": {
+  "lat": 28.58498,
+  "lon": 78.56959,
+  "name": "Sambhal"
+ },
+ "UTTAR PRADESH|SHAMLI": {
+  "lat": 29.4497,
+  "lon": 77.30959,
+  "name": "Shamli"
+ },
+ "WEST BENGAL|24 PARAGANAS NORTH": null,
+ "WEST BENGAL|24 PARAGANAS SOUTH": null,
+ "WEST BENGAL|COOCHBEHAR": null,
+ "WEST BENGAL|DARJEELING": {
+  "lat": 27.03333,
+  "lon": 88.26667,
+  "name": "Darjeeling"
+ },
+ "WEST BENGAL|DINAJPUR DAKSHIN": null,
+ "WEST BENGAL|DINAJPUR UTTAR": null,
+ "WEST BENGAL|HOOGHLY": {
+  "lat": 22.90877,
+  "lon": 88.39674,
+  "name": "Hugli"
+ },
+ "WEST BENGAL|HOWRAH": {
+  "lat": 22.57688,
+  "lon": 88.31857,
+  "name": "Howrah"
+ },
+ "WEST BENGAL|MEDINIPUR EAST": null,
+ "WEST BENGAL|MEDINIPUR WEST": null
+}
