@@ -1,0 +1,114 @@
+{
+  "runtime_sklearn": "1.9.0",
+  "checks": {
+    "G2_loads_cleanly": true,
+    "G2_crop_mapping_matches_dataset_labels": true,
+    "G2_shipped_scaler_valid": false,
+    "G2_parity_heldout_accuracy_matches_notebook_0.9909_within_0.005": true,
+    "G2_reconstructed_scaler_agreement_ge_0.97": true,
+    "G5_shap_additive_1e-6": "True",
+    "G4_report_produced": true
+  },
+  "artifact_sha256": {
+    "crop_recommendation_rf_model.pkl": "9ce1ebbd1066fc90e7cfe9dfcc860989acf337c4e372801d7f5107a4f5d46502",
+    "crop_recommendation_scaler.pkl": "24423599fe90b6b78fd2edba5359c364b4c9e8cb6a797ac00797ba5d2cf9efff"
+  },
+  "load_warnings": [],
+  "model": {
+    "type": "RandomForestClassifier",
+    "n_estimators": 100,
+    "n_features_in": 7,
+    "classes": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22
+    ],
+    "scaler": "MinMaxScaler"
+  },
+  "shipped_scaler": {
+    "data_min": [
+      10.0,
+      10.0,
+      10.0,
+      15.0,
+      80.0,
+      4.5,
+      10.0
+    ],
+    "data_max": [
+      10.0,
+      10.0,
+      10.0,
+      15.0,
+      80.0,
+      4.5,
+      10.0
+    ],
+    "degenerate_fitted_on_one_sample": true,
+    "agreement_with_labels_on_dataset": 0.07181818181818182
+  },
+  "reconstructed_scaler": {
+    "file": "scaler_reconstructed.pkl",
+    "sha256": "4c7f979f084392966cc137bf7fd91e60e16ea6ddd9e1519b192930a9f1b05c2d",
+    "derivation": "MinMaxScaler fitted on X_train of train_test_split(test_size=0.2, random_state=42), as in crop_recommendation.ipynb",
+    "heldout_accuracy_notebook_split": 0.9954545454545455,
+    "train_accuracy_notebook_split": 1.0,
+    "notebook_reported_accuracy": 0.990909
+  },
+  "shap": {
+    "version": "0.53.0",
+    "max_additivity_error": 4.440892098500626e-16
+  },
+  "cv": {
+    "protocol": "stratified 5-fold, RandomForest(100 trees, seed 42) re-trained per fold; shipped model is NOT used for these numbers",
+    "accuracy": 0.9955,
+    "worst_classes_f1": [
+      [
+        "rice",
+        0.959
+      ],
+      [
+        "jute",
+        0.961
+      ],
+      [
+        "blackgram",
+        0.995
+      ],
+      [
+        "mothbeans",
+        0.995
+      ],
+      [
+        "lentil",
+        0.995
+      ]
+    ],
+    "noise_accuracy_by_std_fraction": {
+      "0.1": 0.962,
+      "0.25": 0.811,
+      "0.5": 0.528
+    },
+    "ece_uncalibrated": 0.039,
+    "note": "dataset-internal; dataset looks synthetic (100 rows/class, bounded per-class ranges)"
+  }
+}

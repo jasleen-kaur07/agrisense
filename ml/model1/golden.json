@@ -1,0 +1,302 @@
+[
+  {
+    "input": {
+      "N": 74.0,
+      "P": 56.0,
+      "K": 22.0,
+      "temperature": 18.28362235,
+      "humidity": 66.65952796,
+      "ph": 6.829199275,
+      "rainfall": 80.97573281
+    },
+    "top3": [
+      {
+        "crop": "Maize",
+        "score": 1.0
+      },
+      {
+        "crop": "Coffee",
+        "score": 0.0
+      },
+      {
+        "crop": "Chickpea",
+        "score": 0.0
+      }
+    ]
+  },
+  {
+    "input": {
+      "N": 36.0,
+      "P": 38.0,
+      "K": 15.0,
+      "temperature": 28.36363858,
+      "humidity": 87.59810657,
+      "ph": 6.3206620120000006,
+      "rainfall": 57.99524359
+    },
+    "top3": [
+      {
+        "crop": "Mungbean",
+        "score": 1.0
+      },
+      {
+        "crop": "Coffee",
+        "score": 0.0
+      },
+      {
+        "crop": "Watermelon",
+        "score": 0.0
+      }
+    ]
+  },
+  {
+    "input": {
+      "N": 33.0,
+      "P": 14.0,
+      "K": 35.0,
+      "temperature": 27.14865285,
+      "humidity": 96.66355213,
+      "ph": 6.027707171,
+      "rainfall": 149.2433497
+    },
+    "top3": [
+      {
+        "crop": "Coconut",
+        "score": 1.0
+      },
+      {
+        "crop": "Coffee",
+        "score": 0.0
+      },
+      {
+        "crop": "Chickpea",
+        "score": 0.0
+      }
+    ]
+  },
+  {
+    "input": {
+      "N": 127.0,
+      "P": 53.0,
+      "K": 24.0,
+      "temperature": 22.21506982,
+      "humidity": 76.17851932,
+      "ph": 6.127939627999999,
+      "rainfall": 70.40557612
+    },
+    "top3": [
+      {
+        "crop": "Cotton",
+        "score": 1.0
+      },
+      {
+        "crop": "Coffee",
+        "score": 0.0
+      },
+      {
+        "crop": "Chickpea",
+        "score": 0.0
+      }
+    ]
+  },
+  {
+    "input": {
+      "N": 106.0,
+      "P": 16.0,
+      "K": 54.0,
+      "temperature": 28.96017885,
+      "humidity": 91.69532178,
+      "ph": 6.585872508,
+      "rainfall": 24.7458198
+    },
+    "top3": [
+      {
+        "crop": "Muskmelon",
+        "score": 1.0
+      },
+      {
+        "crop": "Coffee",
+        "score": 0.0
+      },
+      {
+        "crop": "Chickpea",
+        "score": 0.0
+      }
+    ]
+  },
+  {
+    "input": {
+      "N": 101.0,
+      "P": 58.0,
+      "K": 18.0,
+      "temperature": 25.66891439,
+      "humidity": 81.38103349,
+      "ph": 6.652143699,
+      "rainfall": 78.59595817
+    },
+    "top3": [
+      {
+        "crop": "Cotton",
+        "score": 0.98
+      },
+      {
+        "crop": "Maize",
+        "score": 0.02
+      },
+      {
+        "crop": "Coffee",
+        "score": 0.0
+      }
+    ]
+  },
+  {
+    "input": {
+      "N": 58.0,
+      "P": 46.0,
+      "K": 45.0,
+      "temperature": 42.39413392,
+      "humidity": 90.79028064,
+      "ph": 6.576261427,
+      "rainfall": 88.46607497
+    },
+    "top3": [
+      {
+        "crop": "Papaya",
+        "score": 0.95
+      },
+      {
+        "crop": "Jute",
+        "score": 0.04
+      },
+      {
+        "crop": "Pomegranate",
+        "score": 0.01
+      }
+    ]
+  },
+  {
+    "input": {
+      "N": 89.0,
+      "P": 22.0,
+      "K": 52.0,
+      "temperature": 24.89681131,
+      "humidity": 86.10782926,
+      "ph": 6.217300786,
+      "rainfall": 53.14626213
+    },
+    "top3": [
+      {
+        "crop": "Watermelon",
+        "score": 1.0
+      },
+      {
+        "crop": "Coffee",
+        "score": 0.0
+      },
+      {
+        "crop": "Chickpea",
+        "score": 0.0
+      }
+    ]
+  },
+  {
+    "input": {
+      "N": 17.0,
+      "P": 64.0,
+      "K": 18.0,
+      "temperature": 36.75087487,
+      "humidity": 58.25799145,
+      "ph": 6.07938452,
+      "rainfall": 124.6028153
+    },
+    "top3": [
+      {
+        "crop": "Pigeonpeas",
+        "score": 1.0
+      },
+      {
+        "crop": "Coffee",
+        "score": 0.0
+      },
+      {
+        "crop": "Watermelon",
+        "score": 0.0
+      }
+    ]
+  },
+  {
+    "input": {
+      "N": 29.0,
+      "P": 142.0,
+      "K": 203.0,
+      "temperature": 29.67229086,
+      "humidity": 83.71498986,
+      "ph": 5.891195653,
+      "rainfall": 66.48490371
+    },
+    "top3": [
+      {
+        "crop": "Grapes",
+        "score": 1.0
+      },
+      {
+        "crop": "Chickpea",
+        "score": 0.0
+      },
+      {
+        "crop": "Maize",
+        "score": 0.0
+      }
+    ]
+  },
+  {
+    "input": {
+      "N": 62.0,
+      "P": 59.0,
+      "K": 41.0,
+      "temperature": 24.2248758,
+      "humidity": 74.89465426,
+      "ph": 7.175170657000001,
+      "rainfall": 192.4931257
+    },
+    "top3": [
+      {
+        "crop": "Jute",
+        "score": 0.99
+      },
+      {
+        "crop": "Rice",
+        "score": 0.01
+      },
+      {
+        "crop": "Chickpea",
+        "score": 0.0
+      }
+    ]
+  },
+  {
+    "input": {
+      "N": 13.0,
+      "P": 57.0,
+      "K": 25.0,
+      "temperature": 28.30041493,
+      "humidity": 86.20681554,
+      "ph": 6.86308576,
+      "rainfall": 50.47333854
+    },
+    "top3": [
+      {
+        "crop": "Mungbean",
+        "score": 1.0
+      },
+      {
+        "crop": "Coffee",
+        "score": 0.0
+      },
+      {
+        "crop": "Watermelon",
+        "score": 0.0
+      }
+    ]
+  }
+]

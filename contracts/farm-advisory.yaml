@@ -1,0 +1,176 @@
+openapi: 3.0.3
+info:
+  title: AgriSense farm-advisory-service
+  version: 1.0.0
+  description: Farms, fields, optional soil records, Regional Crop Guide recommendations, history, comparison, sourced action plans, alerts, feedback and admin views. Ownership is enforced server-side (a farmer sees only their own data).
+servers: [{ url: http://farm-advisory-service:8082 }]
+paths:
+  /health: { get: { summary: Liveness, responses: { '200': { description: ok } } } }
+  /ready: { get: { summary: Readiness (DB), responses: { '200': { description: ok }, '503': { description: not ready } } } }
+  /v1/farms:
+    get: { summary: My farms, responses: { '200': { description: ok, content: { application/json: { schema: { type: array, items: { $ref: '#/components/schemas/Farm' } } } } } } }
+    post:
+      summary: Create a farm. State and district must be a supported district from data-service (validated server side; coordinates copied from the gazetteer).
+      requestBody: { required: true, content: { application/json: { schema: { $ref: '#/components/schemas/FarmCreate' } } } }
+      responses: { '201': { description: created, content: { application/json: { schema: { $ref: '#/components/schemas/Farm' } } } }, '422': { $ref: '#/components/responses/Problem' } }
+  /v1/farms/{farmId}:
+    parameters: [{ $ref: '#/components/parameters/FarmId' }]
+    get: { summary: One farm, responses: { '200': { description: ok, content: { application/json: { schema: { $ref: '#/components/schemas/Farm' } } } }, '404': { $ref: '#/components/responses/Problem' } } }
+    put:
+      summary: Rename or relocate
+      requestBody: { required: true, content: { application/json: { schema: { $ref: '#/components/schemas/FarmCreate' } } } }
+      responses: { '200': { description: ok, content: { application/json: { schema: { $ref: '#/components/schemas/Farm' } } } }, '404': { $ref: '#/components/responses/Problem' } }
+    delete: { summary: Delete farm and its fields (recommendation history is kept, detached), responses: { '204': { description: deleted }, '404': { $ref: '#/components/responses/Problem' } } }
+  /v1/farms/{farmId}/fields:
+    parameters: [{ $ref: '#/components/parameters/FarmId' }]
+    get: { summary: Fields of a farm, responses: { '200': { description: ok, content: { application/json: { schema: { type: array, items: { $ref: '#/components/schemas/Field' } } } } } } }
+    post:
+      summary: Create a field. Soil is optional.
+      requestBody: { required: true, content: { application/json: { schema: { $ref: '#/components/schemas/FieldWrite' } } } }
+      responses: { '201': { description: created, content: { application/json: { schema: { $ref: '#/components/schemas/Field' } } } }, '422': { $ref: '#/components/responses/Problem' } }
+  /v1/fields:
+    get: { summary: All my fields (across farms), responses: { '200': { description: ok, content: { application/json: { schema: { type: array, items: { $ref: '#/components/schemas/Field' } } } } } } }
+  /v1/fields/{fieldId}:
+    parameters: [{ $ref: '#/components/parameters/FieldId' }]
+    get: { summary: One field, responses: { '200': { description: ok, content: { application/json: { schema: { $ref: '#/components/schemas/Field' } } } }, '404': { $ref: '#/components/responses/Problem' } } }
+    put:
+      summary: Update a field
+      requestBody: { required: true, content: { application/json: { schema: { $ref: '#/components/schemas/FieldWrite' } } } }
+      responses: { '200': { description: ok, content: { application/json: { schema: { $ref: '#/components/schemas/Field' } } } }, '404': { $ref: '#/components/responses/Problem' } }
+    delete: { summary: Delete a field, responses: { '204': { description: deleted }, '404': { $ref: '#/components/responses/Problem' } } }
+  /v1/fields/{fieldId}/soil:
+    parameters: [{ $ref: '#/components/parameters/FieldId' }]
+    put:
+      summary: Store optional farmer-supplied soil test values (any subset). Stored as source USER. Never required, never inferred.
+      requestBody: { required: true, content: { application/json: { schema: { $ref: '#/components/schemas/SoilRecord' } } } }
+      responses: { '200': { description: ok, content: { application/json: { schema: { $ref: '#/components/schemas/Field' } } } }, '422': { $ref: '#/components/responses/Problem' } }
+    delete: { summary: Remove stored soil values, responses: { '204': { description: removed } } }
+  /v1/recommendations:
+    post:
+      summary: Create a Regional Crop Guide for a field and season. Fetches the regional guide and weather snapshot from data-service and stores them with timestamps.
+      parameters: [{ name: Idempotency-Key, in: header, schema: { type: string, format: uuid } }]
+      requestBody: { required: true, content: { application/json: { schema: { $ref: '#/components/schemas/RecommendationCreate' } } } }
+      responses: { '201': { description: created, content: { application/json: { schema: { $ref: '#/components/schemas/Recommendation' } } } }, '404': { $ref: '#/components/responses/Problem' }, '502': { $ref: '#/components/responses/Problem' }, '503': { $ref: '#/components/responses/Problem' } }
+    get:
+      summary: History (newest first)
+      parameters: [{ name: fieldId, in: query, schema: { type: string, format: uuid } }, { name: page, in: query, schema: { type: integer, default: 0 } }, { name: size, in: query, schema: { type: integer, default: 20, maximum: 100 } }]
+      responses: { '200': { description: ok, content: { application/json: { schema: { $ref: '#/components/schemas/RecommendationPage' } } } } }
+  /v1/recommendations/{id}:
+    parameters: [{ name: id, in: path, required: true, schema: { type: string, format: uuid } }]
+    get: { summary: One stored recommendation, responses: { '200': { description: ok, content: { application/json: { schema: { $ref: '#/components/schemas/Recommendation' } } } }, '404': { $ref: '#/components/responses/Problem' } } }
+    delete: { summary: Delete my recommendation, responses: { '204': { description: deleted } } }
+  /v1/recommendations/{id}/compare:
+    parameters: [{ name: id, in: path, required: true, schema: { type: string, format: uuid } }]
+    get:
+      summary: Compare up to 4 crops from the stored guide using only data-derived columns
+      parameters: [{ name: crops, in: query, required: true, schema: { type: string }, description: comma separated crop names present in the recommendation }]
+      responses: { '200': { description: ok, content: { application/json: { schema: { $ref: '#/components/schemas/Comparison' } } } }, '422': { $ref: '#/components/responses/Problem' } }
+  /v1/recommendations/{id}/plan:
+    parameters: [{ name: id, in: path, required: true, schema: { type: string, format: uuid } }]
+    post:
+      summary: Build (or return) the sourced action plan for a crop in this recommendation
+      requestBody: { required: true, content: { application/json: { schema: { type: object, required: [crop], properties: { crop: { type: string } } } } } }
+      responses: { '200': { description: ok, content: { application/json: { schema: { $ref: '#/components/schemas/ActionPlan' } } } }, '422': { $ref: '#/components/responses/Problem' } }
+  /v1/alerts:
+    get: { summary: My alerts (newest first), parameters: [{ name: unreadOnly, in: query, schema: { type: boolean, default: false } }], responses: { '200': { description: ok, content: { application/json: { schema: { type: array, items: { $ref: '#/components/schemas/Alert' } } } } } } }
+  /v1/alerts/{id}/read:
+    post: { summary: Mark alert read, parameters: [{ name: id, in: path, required: true, schema: { type: string, format: uuid } }], responses: { '204': { description: ok } } }
+  /v1/feedback:
+    post:
+      summary: Send feedback
+      requestBody: { required: true, content: { application/json: { schema: { type: object, required: [category, message], properties: { category: { type: string, enum: [BUG, IDEA, DATA_ISSUE, OTHER] }, message: { type: string, minLength: 5, maxLength: 2000 }, rating: { type: integer, minimum: 1, maximum: 5 } } } } } }
+      responses: { '201': { description: created } }
+  /v1/admin/recommendations:
+    get: { summary: All recommendations (ADMIN), parameters: [{ name: page, in: query, schema: { type: integer } }, { name: size, in: query, schema: { type: integer } }], responses: { '200': { description: ok, content: { application/json: { schema: { $ref: '#/components/schemas/RecommendationPage' } } } }, '403': { $ref: '#/components/responses/Problem' } } }
+  /v1/admin/feedback:
+    get: { summary: All feedback (ADMIN), responses: { '200': { description: ok } , '403': { $ref: '#/components/responses/Problem' } } }
+  /v1/admin/stats:
+    get: { summary: Counts for the admin overview (ADMIN), responses: { '200': { description: ok, content: { application/json: { schema: { $ref: '#/components/schemas/AdminStats' } } } }, '403': { $ref: '#/components/responses/Problem' } } }
+components:
+  parameters:
+    FarmId: { name: farmId, in: path, required: true, schema: { type: string, format: uuid } }
+    FieldId: { name: fieldId, in: path, required: true, schema: { type: string, format: uuid } }
+  responses:
+    Problem: { description: problem+json, content: { application/problem+json: { schema: { $ref: '#/components/schemas/Problem' } } } }
+  schemas:
+    Season: { type: string, enum: [KHARIF, RABI, SUMMER] }
+    FarmCreate:
+      type: object
+      required: [name, stateKey, districtKey]
+      properties: { name: { type: string, minLength: 1, maxLength: 80 }, stateKey: { type: string }, districtKey: { type: string } }
+    Farm:
+      type: object
+      required: [id, name, stateKey, districtKey, state, district, latitude, longitude, createdAt]
+      properties: { id: { type: string, format: uuid }, name: { type: string }, stateKey: { type: string }, districtKey: { type: string }, state: { type: string }, district: { type: string }, latitude: { type: number }, longitude: { type: number }, createdAt: { type: string, format: date-time } }
+    FieldWrite:
+      type: object
+      required: [name, areaAcres]
+      properties: { name: { type: string, minLength: 1, maxLength: 80 }, areaAcres: { type: number, exclusiveMinimum: 0, maximum: 100000 }, soil: { $ref: '#/components/schemas/SoilRecord' } }
+    SoilRecord:
+      type: object
+      description: All values optional. Units are as entered by the farmer from a soil test; the platform does not convert or infer them.
+      properties:
+        nitrogen: { type: number, minimum: 0, nullable: true }
+        phosphorus: { type: number, minimum: 0, nullable: true }
+        potassium: { type: number, minimum: 0, nullable: true }
+        ph: { type: number, minimum: 3, maximum: 10, nullable: true }
+        testedOn: { type: string, format: date, nullable: true }
+    Field:
+      type: object
+      required: [id, farmId, name, areaAcres, createdAt]
+      properties: { id: { type: string, format: uuid }, farmId: { type: string, format: uuid }, farmName: { type: string }, name: { type: string }, areaAcres: { type: number }, soil: { allOf: [{ $ref: '#/components/schemas/SoilRecord' }], nullable: true }, soilSource: { type: string, enum: [USER], nullable: true }, createdAt: { type: string, format: date-time } }
+    RecommendationCreate:
+      type: object
+      required: [fieldId]
+      properties:
+        fieldId: { type: string, format: uuid }
+        season: { allOf: [{ $ref: '#/components/schemas/Season' }], description: defaults to the current season from data-service }
+        mode: { type: string, enum: [REGIONAL], default: REGIONAL, description: SOIL_TEST is not available to users }
+    Recommendation:
+      type: object
+      required: [id, kind, season, location, regional, weather, createdAt, limitations]
+      properties:
+        id: { type: string, format: uuid }
+        fieldId: { type: string, format: uuid, nullable: true }
+        fieldName: { type: string }
+        kind: { type: string, enum: [REGIONAL_PATTERN] }
+        season: { $ref: '#/components/schemas/Season' }
+        location: { type: object, properties: { state: { type: string }, district: { type: string }, stateKey: { type: string }, districtKey: { type: string } } }
+        regional: { type: object, description: 'verbatim RegionalGuide from data.yaml (crops[], yearRoundCrops, coverage, caveats, basis)' }
+        weather: { type: object, description: 'verbatim Weather snapshot from data.yaml, including status and fetchedAt at the time of creation' }
+        soilUsed: { type: boolean, description: always false in REGIONAL mode; soil never changes the regional ranking }
+        dataVersions: { type: object, properties: { regionalStatsLastYear: { type: integer }, engineConfig: { type: object } } }
+        limitations: { type: array, items: { type: string } }
+        createdAt: { type: string, format: date-time }
+    RecommendationPage: { type: object, properties: { items: { type: array, items: { $ref: '#/components/schemas/Recommendation' } }, page: { type: integer }, size: { type: integer }, totalItems: { type: integer }, totalPages: { type: integer } } }
+    Comparison:
+      type: object
+      required: [crops, rows, notes]
+      properties:
+        crops: { type: array, items: { type: string } }
+        rows:
+          type: array
+          items: { type: object, required: [label, values], properties: { label: { type: string }, values: { type: array, items: { type: string, nullable: true }, description: one entry per crop, null when not available }, source: { type: string } } }
+        notes: { type: array, items: { type: string } }
+    ActionPlan:
+      type: object
+      required: [crop, items, disclaimer]
+      properties:
+        crop: { type: string }
+        items:
+          type: array
+          items:
+            type: object
+            required: [kind, title, detail, source]
+            properties:
+              kind: { type: string, enum: [DATA_INSIGHT, CHECKLIST, OFFICIAL_RESOURCE] }
+              title: { type: string }
+              detail: { type: string }
+              source: { type: object, required: [type, label], properties: { type: { type: string, enum: [REGIONAL_DATA, WEATHER_FORECAST, OFFICIAL_PORTAL, GENERAL] }, label: { type: string }, url: { type: string, nullable: true } } }
+        disclaimer: { type: string }
+    Alert:
+      type: object
+      required: [id, type, severity, title, message, createdAt, read]
+      properties: { id: { type: string, format: uuid }, type: { type: string, enum: [HEAVY_RAIN, HIGH_TEMPERATURE, RECHECK_GUIDE] }, severity: { type: string, enum: [INFO, WATCH] }, title: { type: string }, message: { type: string }, fieldId: { type: string, format: uuid, nullable: true }, source: { type: string }, createdAt: { type: string, format: date-time }, read: { type: boolean } }
+    AdminStats: { type: object, properties: { users: { type: integer }, farms: { type: integer }, fields: { type: integer }, recommendations: { type: integer }, feedback: { type: integer } } }
+    Problem: { type: object, required: [type, title, status], properties: { type: { type: string }, title: { type: string }, status: { type: integer }, detail: { type: string }, instance: { type: string }, traceId: { type: string }, errors: { type: array, items: { type: object, properties: { field: { type: string }, message: { type: string } } } } } }

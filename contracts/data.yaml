@@ -1,0 +1,160 @@
+openapi: 3.0.3
+info:
+  title: AgriSense data-service
+  version: 1.0.0
+  description: Gazetteer, weather (Open-Meteo), seasons and the Regional Crop Guide. Regional output is historical prevalence, never suitability.
+servers: [{ url: http://data-service:8083 }]
+security: [{ bearerJwt: [] }, { internalToken: [] }]
+paths:
+  /health: { get: { summary: Liveness, security: [], responses: { '200': { description: ok } } } }
+  /ready: { get: { summary: Readiness (DB + datasets loaded), security: [], responses: { '200': { description: ready }, '503': { description: not ready } } } }
+  /v1/locations/states:
+    get:
+      summary: States that have at least one supported district
+      responses: { '200': { description: ok, content: { application/json: { schema: { type: array, items: { $ref: '#/components/schemas/State' } } } } } }
+  /v1/locations/districts:
+    get:
+      summary: Supported districts of a state
+      parameters: [{ name: state, in: query, required: true, schema: { type: string }, description: stateKey }]
+      responses: { '200': { description: ok, content: { application/json: { schema: { type: array, items: { $ref: '#/components/schemas/District' } } } } } }
+  /v1/locations/search:
+    get:
+      summary: Search supported districts by name
+      parameters: [{ name: q, in: query, required: true, schema: { type: string, minLength: 2 } }, { name: limit, in: query, schema: { type: integer, default: 10, maximum: 25 } }]
+      responses: { '200': { description: ok, content: { application/json: { schema: { type: array, items: { $ref: '#/components/schemas/District' } } } } } }
+  /v1/locations/{stateKey}/{districtKey}:
+    get:
+      summary: One district
+      parameters: [{ name: stateKey, in: path, required: true, schema: { type: string } }, { name: districtKey, in: path, required: true, schema: { type: string } }]
+      responses: { '200': { description: ok, content: { application/json: { schema: { $ref: '#/components/schemas/District' } } } }, '404': { $ref: '#/components/responses/Problem' } }
+  /v1/seasons/current:
+    get:
+      summary: Agricultural season for a date by a documented calendar-month rule
+      parameters: [{ name: date, in: query, schema: { type: string, format: date }, description: defaults to today (UTC) }]
+      responses: { '200': { description: ok, content: { application/json: { schema: { $ref: '#/components/schemas/SeasonInfo' } } } } }
+  /v1/regional/guide:
+    get:
+      summary: Regional Crop Guide (historical prevalence) for a district and season
+      parameters:
+        - { name: state, in: query, required: true, schema: { type: string }, description: stateKey }
+        - { name: district, in: query, required: true, schema: { type: string }, description: districtKey }
+        - { name: season, in: query, required: true, schema: { $ref: '#/components/schemas/Season' } }
+        - { name: asOfYear, in: query, schema: { type: integer }, description: testing only; defaults to last year in the data }
+      responses: { '200': { description: ok, content: { application/json: { schema: { $ref: '#/components/schemas/RegionalGuide' } } } }, '404': { $ref: '#/components/responses/Problem' }, '422': { $ref: '#/components/responses/Problem' } }
+  /v1/regional/crop-history:
+    get:
+      summary: Yearly area share of chosen crops in a district (all seasons combined), for comparison
+      parameters:
+        - { name: state, in: query, required: true, schema: { type: string } }
+        - { name: district, in: query, required: true, schema: { type: string } }
+        - { name: crops, in: query, required: true, schema: { type: string }, description: comma separated crop names (max 5) }
+      responses: { '200': { description: ok, content: { application/json: { schema: { $ref: '#/components/schemas/CropHistory' } } } } }
+  /v1/weather:
+    get:
+      summary: Current weather and 7-day forecast for a district (cached; status is always stated)
+      parameters:
+        - { name: state, in: query, required: true, schema: { type: string } }
+        - { name: district, in: query, required: true, schema: { type: string } }
+      responses: { '200': { description: ok (status may be LIVE, CACHED or UNAVAILABLE), content: { application/json: { schema: { $ref: '#/components/schemas/Weather' } } } }, '404': { $ref: '#/components/responses/Problem' } }
+  /v1/admin/data/summary:
+    get:
+      summary: Dataset coverage summary (admin only)
+      responses: { '200': { description: ok, content: { application/json: { schema: { $ref: '#/components/schemas/DataSummary' } } } }, '403': { $ref: '#/components/responses/Problem' } }
+components:
+  securitySchemes:
+    bearerJwt: { type: http, scheme: bearer, bearerFormat: JWT }
+    internalToken: { type: apiKey, in: header, name: X-Internal-Token }
+  responses:
+    Problem: { description: problem+json, content: { application/problem+json: { schema: { $ref: '#/components/schemas/Problem' } } } }
+  schemas:
+    Season: { type: string, enum: [KHARIF, RABI, SUMMER] }
+    State: { type: object, required: [stateKey, name, districtCount], properties: { stateKey: { type: string }, name: { type: string }, districtCount: { type: integer } } }
+    District:
+      type: object
+      required: [stateKey, districtKey, state, district, latitude, longitude]
+      properties:
+        stateKey: { type: string, example: UTTAR PRADESH }
+        districtKey: { type: string, example: LUCKNOW }
+        state: { type: string, example: Uttar Pradesh }
+        district: { type: string, example: Lucknow }
+        latitude: { type: number }
+        longitude: { type: number }
+        coordSource: { type: string, enum: [ind_adm2_points, open-meteo-geocoding] }
+    SeasonInfo:
+      type: object
+      required: [season, next, rule, months]
+      properties:
+        season: { $ref: '#/components/schemas/Season' }
+        next: { $ref: '#/components/schemas/Season' }
+        months: { type: array, items: { type: integer }, description: calendar months (1-12) of the current season under the rule }
+        rule: { type: string, description: human readable statement that this is a simplified calendar convention, not a regional sowing calendar }
+    RegionalGuide:
+      type: object
+      required: [kind, state, district, season, crops, coverage, basis, caveats]
+      properties:
+        kind: { type: string, enum: [REGIONAL_PATTERN] }
+        state: { type: string }
+        district: { type: string }
+        season: { $ref: '#/components/schemas/Season' }
+        basis: { type: string, example: recency-weighted area share (historical prevalence) }
+        asOfYear: { type: integer }
+        crops:
+          type: array
+          items:
+            type: object
+            required: [rank, crop, prevalencePct, statePct]
+            properties:
+              rank: { type: integer }
+              crop: { type: string }
+              prevalencePct: { type: number, description: blended historical share of recorded cropped area, in percent }
+              districtPct: { type: number, nullable: true, description: null when the state fallback was used }
+              statePct: { type: number }
+        yearRoundCrops: { type: array, items: { type: string }, description: crops reported as Whole Year (for example sugarcane) }
+        coverage:
+          type: object
+          required: [districtRecords, yearsCovered, stateFallbackUsed, districtWeight, firstYear, lastYear]
+          properties:
+            districtRecords: { type: integer }
+            yearsCovered: { type: array, items: { type: integer } }
+            stateFallbackUsed: { type: boolean }
+            districtWeight: { type: number, minimum: 0, maximum: 1 }
+            firstYear: { type: integer }
+            lastYear: { type: integer }
+        caveats: { type: array, items: { type: string } }
+        sources: { type: array, items: { type: string } }
+    CropHistory:
+      type: object
+      required: [series]
+      properties:
+        series:
+          type: array
+          items:
+            type: object
+            required: [crop, points]
+            properties:
+              crop: { type: string }
+              points: { type: array, items: { type: object, properties: { year: { type: integer }, sharePct: { type: number } } } }
+    Weather:
+      type: object
+      required: [status, source, attribution]
+      properties:
+        status: { type: string, enum: [LIVE, CACHED, UNAVAILABLE] }
+        source: { type: string, example: Open-Meteo }
+        attribution: { type: string }
+        fetchedAt: { type: string, format: date-time, nullable: true }
+        timezone: { type: string, nullable: true }
+        current:
+          type: object
+          nullable: true
+          properties: { time: { type: string }, temperatureC: { type: number }, humidityPct: { type: number }, precipitationMm: { type: number }, windKmh: { type: number }, weatherCode: { type: integer, description: WMO code } }
+        daily:
+          type: array
+          items: { type: object, properties: { date: { type: string, format: date }, tempMaxC: { type: number }, tempMinC: { type: number }, precipitationSumMm: { type: number }, precipitationProbabilityMaxPct: { type: number, nullable: true }, weatherCode: { type: integer } } }
+        message: { type: string, nullable: true, description: shown to users when status is UNAVAILABLE }
+    DataSummary:
+      type: object
+      properties: { districts: { type: integer }, supportedDistricts: { type: integer }, statRows: { type: integer }, firstYear: { type: integer }, lastYear: { type: integer }, weatherCacheEntries: { type: integer }, datasetLicenseStatus: { type: string } }
+    Problem:
+      type: object
+      required: [type, title, status]
+      properties: { type: { type: string }, title: { type: string }, status: { type: integer }, detail: { type: string }, instance: { type: string }, traceId: { type: string }, errors: { type: array, items: { type: object, properties: { field: { type: string }, message: { type: string } } } } }

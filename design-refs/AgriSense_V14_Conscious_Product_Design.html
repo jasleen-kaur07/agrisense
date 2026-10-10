@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AgriSense — A calmer way to decide what to grow</title>
+<style>
+:root{
+  --ink:#202724;
+  --ink2:#39433e;
+  --muted:#737a75;
+  --paper:#f5f3ed;
+  --surface:#fffefa;
+  --surface2:#f0eee7;
+  --forest:#202b27;
+  --forest2:#2d3a34;
+  --olive:#7c8e55;
+  --olive-dark:#58683a;
+  --sage:#dce3d6;
+  --sage2:#edf0e8;
+  --terracotta:#c97855;
+  --terracotta-soft:#f1ddd3;
+  --ochre:#c8a454;
+  --ochre-soft:#f2e9ce;
+  --blue:#7894a0;
+  --blue-soft:#dfe9eb;
+  --line:#deded6;
+  --line-dark:#c9cbc2;
+  --white:#fffefa;
+  --shadow:0 8px 28px rgba(34,42,37,.055);
+  --r:14px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;letter-spacing:-.01em}
+button,input,select{font:inherit}button{cursor:pointer}
+.app{min-height:100vh;display:flex}
+.sidebar{position:fixed;inset:0 auto 0 0;width:226px;background:var(--forest);color:#fff;padding:26px 14px;z-index:20;border-right:1px solid #17211e}
+.logo{font-size:21px;font-weight:800;padding:3px 12px 31px;display:flex;gap:9px;align-items:center;letter-spacing:-.04em}.logo span{font-size:21px}
+.nav{display:grid;gap:3px}.nav button{width:100%;border:0;background:transparent;color:#bfc9c3;text-align:left;padding:11px 12px;border-radius:9px;font-size:12.5px;display:flex;gap:11px;align-items:center;transition:.16s ease}.nav button:hover{background:var(--forest2);color:#fff}.nav button.active{background:#eef1e8;color:#263229;font-weight:800}
+.help{position:absolute;bottom:17px;left:14px;right:14px;background:#2a3832;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:13px;font-size:11px}.help b{display:block;margin-bottom:4px}.help button{width:100%;border:0;border-radius:8px;padding:8px;background:#f3f1e9;color:var(--forest);font-weight:800}
+main{margin-left:226px;width:calc(100% - 226px)}
+header{height:68px;background:rgba(245,243,237,.96);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 34px;position:sticky;top:0;z-index:10;backdrop-filter:blur(10px)}
+.locationtop{font-size:11.5px;color:var(--muted);letter-spacing:.01em}.profile{display:flex;align-items:center;gap:10px;font-size:12px}.avatar{width:34px;height:34px;border-radius:9px;background:var(--ink);color:#fff;display:grid;place-items:center;font-weight:800}
+.content{max-width:1480px;margin:auto;padding:30px 34px 54px}.page{display:none}.page.active{display:block}
+h1{font-size:34px;line-height:1.05;margin:0 0 8px;letter-spacing:-1.6px}h2{font-size:18px;margin:0 0 6px;letter-spacing:-.45px}h3{font-size:13.5px;margin:0 0 5px}.muted{color:var(--muted);font-size:12px;line-height:1.55}.sub{color:var(--muted);font-size:13px;margin:0 0 22px}
+.grid{display:grid;gap:14px}.two{grid-template-columns:1.35fr 1fr}.three{grid-template-columns:repeat(3,1fr)}.four{grid-template-columns:repeat(4,1fr)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:19px;box-shadow:var(--shadow)}
+.hero{display:grid;grid-template-columns:1.3fr .7fr;min-height:220px;border:1px solid var(--line);border-radius:16px;overflow:hidden;background:#ebe9df;margin-bottom:18px}.heroText{padding:31px 32px;display:flex;flex-direction:column;justify-content:center}.eyebrow,.sectionKicker{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.13em;color:var(--olive-dark);margin-bottom:9px}.hero h1{font-size:39px;max-width:620px}.heroArt{position:relative;min-height:220px;background:linear-gradient(135deg,#dfe5d7 0%,#e8e1cf 58%,#e4d2c7 100%);overflow:hidden}.heroArt:before,.heroArt:after{content:"";position:absolute;border-radius:50%;border:1px solid rgba(32,43,39,.13)}.heroArt:before{width:280px;height:280px;right:-90px;top:-85px}.heroArt:after{width:190px;height:190px;left:-60px;bottom:-85px}
+.btn{border:0;background:var(--ink);color:#fff;padding:11px 15px;border-radius:9px;font-size:12px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;gap:7px}.btn:hover{background:#303a35}.btn.light{background:#eceee7;color:var(--ink)}.btn.outline{background:transparent;color:var(--ink);border:1px solid var(--line-dark)}.btn.small{padding:8px 11px;font-size:11px}.btn.light.small,.btn.outline.small{font-size:11px}
+.between{display:flex;align-items:center;justify-content:space-between;gap:12px}.actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.commandHero{background:var(--forest);color:#fff;border-radius:16px;min-height:270px;display:grid;grid-template-columns:1fr 310px;overflow:hidden;margin-bottom:18px;border:1px solid #17221e}.commandMain{padding:32px 34px;display:flex;flex-direction:column;justify-content:center}.commandTitle{font-size:38px;line-height:1.04;letter-spacing:-1.7px;max-width:650px;margin-bottom:11px}.commandText{color:#c6cec9;font-size:13px;line-height:1.65;max-width:610px}.commandVisual{position:relative;background:#dfe5d7;min-height:270px;display:flex;align-items:center;justify-content:center}.commandVisual:before{content:"";position:absolute;width:215px;height:215px;border:1px solid rgba(32,43,39,.18);border-radius:50%}.commandVisual:after{content:"";position:absolute;width:125px;height:125px;border:1px solid rgba(32,43,39,.15);border-radius:50%}
+.cropRows{position:relative;z-index:2;width:190px;display:grid;gap:11px;transform:rotate(-7deg)}.cropRows i{display:block;height:9px;border-radius:30px;background:var(--olive)}.cropRows i:nth-child(2){width:82%;background:var(--ochre)}.cropRows i:nth-child(3){width:68%;background:var(--terracotta)}.cropRows i:nth-child(4){width:90%;background:#708c78}.cropRows i:nth-child(5){width:57%;background:var(--blue)}
+.insightGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px}.insightCard{background:var(--surface);border:1px solid var(--line);padding:16px;border-radius:12px;min-height:118px}.metricTop{display:flex;justify-content:space-between;align-items:center;margin-bottom:17px}.metric{font-size:10px;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);font-weight:800}.metricNumber{font-size:25px;line-height:1;font-weight:850;letter-spacing:-1px}.signal{display:flex;gap:7px;align-items:center;font-size:10.5px;color:var(--muted)}.signalIcon{width:25px;height:25px;border-radius:7px;display:grid;place-items:center}.signalIcon.green{background:var(--sage);color:var(--olive-dark)}.signalIcon.blue{background:var(--blue-soft);color:#4f707d}.signalIcon.orange{background:var(--terracotta-soft);color:#9b5035}.signalIcon.yellow{background:var(--ochre-soft);color:#8d702f}
+.featureStrip{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:19px}.featureTile{background:transparent;border:1px solid var(--line);border-radius:12px;padding:15px;display:flex;gap:11px;align-items:center;transition:.15s}.featureTile:hover{background:var(--surface);transform:translateY(-1px)}.tileIcon{width:34px;height:34px;border-radius:9px;display:grid;place-items:center;background:var(--sage2);color:var(--olive-dark);flex:none}.featureTile:nth-child(2) .tileIcon{background:var(--terracotta-soft);color:#985036}.featureTile:nth-child(3) .tileIcon{background:var(--blue-soft);color:#506f7a}.featureTile:nth-child(4) .tileIcon{background:var(--ochre-soft);color:#8c712f}
+.adviceBanner{background:#e8ede2;border:1px solid #d2dac8;border-radius:13px;padding:16px 18px;display:flex;justify-content:space-between;gap:15px;align-items:center;margin-bottom:18px}.adviceChip{font-size:10px;text-transform:uppercase;letter-spacing:.1em;font-weight:850;color:var(--olive-dark);margin-bottom:4px}
+.fieldcard{padding:0;overflow:hidden}.fieldimg{height:132px;background:#dce3d6;position:relative;overflow:hidden}.fieldimg:before{content:"";position:absolute;inset:15px;background:repeating-linear-gradient(165deg,transparent 0 13px,rgba(88,104,58,.18) 14px 16px);transform:rotate(-3deg)}.fieldbody{padding:15px}.meta{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:11px;margin-top:8px}.badge{display:inline-flex;align-items:center;padding:4px 7px;border-radius:6px;background:var(--sage);color:var(--olive-dark);font-size:9.5px;font-weight:800}.badge.warn{background:var(--terracotta-soft);color:#965037}.badge.blue{background:var(--blue-soft);color:#506f7a}
+.weatherRow{display:flex;align-items:center;gap:13px;padding:11px 0;border-bottom:1px solid #ecebe4}.weatherRow:last-child{border-bottom:0}.weatherRow .day{width:44px;font-size:11px;color:var(--muted)}
+.reco{background:var(--surface);border:1px solid var(--line);border-radius:15px;padding:20px}.score{font-size:45px;font-weight:900;letter-spacing:-2px}.visualScore{width:88px;height:88px;border-radius:50%;border:7px solid #dfe6d7;display:grid;place-items:center;position:relative}.visualScore:after{content:"";position:absolute;inset:-7px;border-radius:50%;border:7px solid var(--olive);border-left-color:transparent;border-bottom-color:transparent;transform:rotate(30deg)}.visualTag{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--olive-dark);font-weight:850}.positive,.limiting{padding:12px;border-radius:9px;font-size:11px;line-height:1.55}.positive{background:var(--sage2);border-left:3px solid var(--olive)}.limiting{background:#f5ece7;border-left:3px solid var(--terracotta)}
+.aiBox{background:#eef1e9;border:1px solid #dce2d6;border-radius:12px;padding:17px}.aiBox .info{font-size:12px;line-height:1.65;color:#505a53}.plan{display:grid;grid-template-columns:42px 1fr;gap:12px;padding:13px 0;border-bottom:1px solid var(--line)}.plan:last-child{border-bottom:0}.planIcon{width:38px;height:38px;border-radius:9px;background:var(--forest);color:#fff;display:grid;place-items:center;font-weight:800}
+.scanBox{border:1px dashed #bfc8bc;background:#f0f2ec;border-radius:13px;padding:24px;text-align:center}.scanIcon{width:48px;height:48px;border-radius:12px;background:var(--forest);color:#fff;display:grid;place-items:center;margin:0 auto 11px}.uploadActions{display:flex;justify-content:center;gap:8px;margin-top:14px}.riskLow{color:var(--olive-dark);font-weight:800}.riskMed{color:#a45b3f;font-weight:800}
+
+.locationBox{max-width:720px;margin:auto}.locationChoice{display:grid;gap:9px}.locOption{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:14px;display:flex;gap:11px;align-items:center}.locOption.selected{border-color:var(--olive);background:#f1f3eb}.locIcon{width:34px;height:34px;border-radius:8px;background:var(--sage);display:grid;place-items:center;color:var(--olive-dark)}
+.form{display:grid;gap:12px}.input{width:100%;padding:11px 12px;border:1px solid var(--line-dark);background:#fffefa;border-radius:8px;outline:none;font-size:12px}.input:focus{border-color:var(--olive);box-shadow:0 0 0 3px rgba(124,142,85,.12)}
+.quickActions{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.quick{border:1px solid var(--line);background:var(--surface);padding:14px;border-radius:11px;text-align:left}.quick:hover{border-color:#c8cec2}.quick b{display:block;font-size:12px;margin-bottom:4px}.quick span{font-size:10.5px;color:var(--muted)}
+.table{width:100%;border-collapse:collapse;font-size:11px}.table th,.table td{text-align:left;padding:11px;border-bottom:1px solid var(--line)}.table th{color:var(--muted);font-size:9.5px;text-transform:uppercase;letter-spacing:.08em}.calendar{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}.month{padding:12px;border:1px solid var(--line);background:var(--surface);border-radius:9px;font-size:11px}.month.active{background:var(--forest);color:#fff}.alert{display:flex;gap:11px;padding:13px 0;border-bottom:1px solid var(--line)}.alertIcon{width:31px;height:31px;border-radius:8px;background:var(--terracotta-soft);color:#975038;display:grid;place-items:center;flex:none}.toast{position:fixed;right:22px;bottom:22px;background:var(--forest);color:#fff;padding:12px 15px;border-radius:9px;font-size:11px;box-shadow:0 14px 30px rgba(0,0,0,.18);display:none;z-index:50}.disclaimer{font-size:10px;color:var(--muted);border-top:1px solid var(--line);padding-top:12px;margin-top:16px;line-height:1.6}
+@media(max-width:1050px){.insightGrid,.featureStrip{grid-template-columns:repeat(2,1fr)}.hero,.commandHero{grid-template-columns:1fr}.heroArt{min-height:150px}.commandVisual{min-height:180px}.quickActions{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:760px){.sidebar{width:70px;padding:22px 9px}.logo{font-size:0;justify-content:center;padding:4px 0 27px}.logo span{font-size:21px}.nav button{justify-content:center;padding:11px 0}.nav button span{display:none}.help{display:none}main{margin-left:70px;width:calc(100% - 70px)}header{padding:0 18px}.content{padding:22px 18px 40px}.two,.three,.four{grid-template-columns:1fr}.insightGrid,.featureStrip,.quickActions{grid-template-columns:1fr 1fr}.heroText{padding:24px}.hero h1,.commandTitle{font-size:31px}.commandMain{padding:25px}.calendar{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:500px){.insightGrid,.featureStrip,.quickActions{grid-template-columns:1fr}.profile div{display:none}.content{padding-left:14px;padding-right:14px}h1{font-size:29px}}
+
+
+/* V7 — minimal dashboard: calm, compact, low-visual-noise */
+.dashHead{margin-bottom:28px}
+.dashSummary{display:grid;grid-template-columns:repeat(4,1fr);background:#fffdf8;border:1px solid #ddd9ce;border-radius:12px;margin-bottom:22px;overflow:hidden}
+.summaryItem{padding:20px 22px;border-right:1px solid #e5e1d7;min-height:112px}
+.summaryItem:last-child{border-right:0}
+.summaryItem span{display:block;font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:#77756e;margin-bottom:12px}
+.summaryItem strong{display:block;font-family:Georgia,serif;font-size:25px;font-weight:500;color:#27352d;margin-bottom:5px}
+.summaryItem small{color:#77756e;font-size:12px}
+.goodText{color:#5c704f!important}
+.dashGrid{display:grid;grid-template-columns:1.15fr .85fr;gap:22px;margin-bottom:18px}
+.todayCard,.adviceCard{padding:25px}
+.taskRow{display:grid;grid-template-columns:34px 1fr auto;align-items:center;gap:14px;padding:18px 0;border-top:1px solid #e7e2d8}
+.taskRow:first-of-type{margin-top:18px}
+.taskRow p{margin:5px 0 0;font-size:13px}
+.taskMark{font-size:11px;color:#77756e;border:1px solid #d8d3c7;width:28px;height:28px;display:grid;place-items:center;border-radius:50%}
+.textBtn{background:none;border:0;color:#536849;font-weight:600;cursor:pointer;padding:8px 0}
+.adviceCard .sectionKicker{margin-bottom:18px}
+.adviceCrop{display:flex;align-items:center;gap:13px;padding-bottom:18px;border-bottom:1px solid #e7e2d8;margin-bottom:16px}
+.adviceCrop h2{margin:0 0 3px;font-size:19px}
+.adviceCrop .muted{margin:0;font-size:12px}
+.adviceCrop>strong{margin-left:auto;font-family:Georgia,serif;font-size:27px;color:#536849;font-weight:500}
+.cropMini{width:42px;height:42px;background:#edf0e6;display:grid;place-items:center;border-radius:9px;font-size:21px}
+.adviceCard>.btn{margin-top:10px;width:100%}
+.quickBar{display:flex;align-items:center;border-top:1px solid #ddd9ce;border-bottom:1px solid #ddd9ce;min-height:62px}
+.quickLabel{font-size:10px;letter-spacing:.12em;color:#88847b;margin-right:26px}
+.quickBar button{background:none;border:0;border-right:1px solid #e2ded4;padding:0 25px;height:32px;color:#39453d;font-weight:600;cursor:pointer}
+.quickBar button:last-child{border-right:0}
+.quickBar button span{color:#7b846f;margin-left:8px}
+@media(max-width:900px){.dashSummary{grid-template-columns:repeat(2,1fr)}.summaryItem:nth-child(2){border-right:0}.summaryItem:nth-child(-n+2){border-bottom:1px solid #e5e1d7}.dashGrid{grid-template-columns:1fr}.quickBar{overflow:auto;white-space:nowrap}.quickLabel{min-width:max-content}}
+@media(max-width:600px){.dashSummary{grid-template-columns:1fr}.summaryItem{border-right:0;border-bottom:1px solid #e5e1d7}.summaryItem:last-child{border-bottom:0}.taskRow{grid-template-columns:30px 1fr}.textBtn{grid-column:2;justify-self:start;padding-top:0}.dashHead .btn{padding:11px 14px}}
+
+
+/* V8 — core agricultural decision modules */
+.dashGrid{display:grid;grid-template-columns:1.15fr .85fr;gap:14px;margin-bottom:18px}
+.taskRow{display:grid;grid-template-columns:38px 1fr auto;gap:12px;align-items:center;padding:15px 0;border-bottom:1px solid var(--line)}
+.taskRow:last-child{border-bottom:0}.taskMark{width:30px;height:30px;border-radius:8px;background:var(--sage);color:var(--olive-dark);display:grid;place-items:center;font-size:10px;font-weight:850}.textBtn{border:0;background:none;color:var(--olive-dark);font-weight:850;font-size:11px}.quickBar{display:flex;align-items:center;gap:0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:transparent}.quickBar button{border:0;background:transparent;padding:14px 17px;font-size:11px;color:var(--ink2);border-left:1px solid var(--line)}.quickBar button:hover{background:var(--surface)}.quickBar button span{color:var(--muted);margin-left:8px}.quickLabel{font-size:9px;font-weight:850;letter-spacing:.12em;color:var(--muted);padding:14px 17px}.micro{font-size:10px;color:var(--muted)}.signalLeft{display:flex;gap:10px;align-items:center}.metricNumber{font-weight:850;letter-spacing:-1px}.priceUp{color:var(--olive-dark)}.priceDown{color:#a25b40}
+@media(max-width:900px){.dashGrid{grid-template-columns:1fr}.quickBar{flex-wrap:wrap}.quickLabel{width:100%;padding-bottom:7px}.quickBar button{flex:1;min-width:130px}.dashSummary{grid-template-columns:repeat(2,1fr)}.summaryItem:nth-child(2){border-right:0}.summaryItem:nth-child(3),.summaryItem:nth-child(4){border-top:1px solid #e5e1d7}.summaryItem:nth-child(4){border-right:0}}
+
+/* Subtle product animations */
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes softPulse{0%,100%{box-shadow:0 0 0 0 rgba(124,142,85,.16)}50%{box-shadow:0 0 0 7px rgba(124,142,85,0)}}
+@keyframes weatherFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+@keyframes barGrow{from{transform:scaleX(0);transform-origin:left}to{transform:scaleX(1);transform-origin:left}}
+.page.active{animation:fadeUp .32s ease both}
+.card,.feature-card,.recommendation-card,.weather-card,.stat-card{transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease}
+.card:hover,.feature-card:hover,.recommendation-card:hover,.weather-card:hover,.stat-card:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(32,39,36,.07)}
+button,.nav-item,.quick-action,.link{transition:transform .18s ease,background-color .18s ease,color .18s ease}
+button:hover,.quick-action:hover{transform:translateY(-1px)}
+.primary-action{animation:softPulse 2.8s ease-in-out infinite}
+.weather-icon{animation:weatherFloat 3.5s ease-in-out infinite}
+.progress,.score-bar,.market-bar{animation:barGrow .8s cubic-bezier(.2,.8,.2,1) both}
+.dashboard-grid>*{animation:fadeUp .4s ease both}
+.dashboard-grid>*:nth-child(2){animation-delay:.05s}.dashboard-grid>*:nth-child(3){animation-delay:.1s}.dashboard-grid>*:nth-child(4){animation-delay:.15s}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+
+/* Product-ready refinement */
+.dashHead{padding:4px 0 18px}.dashHead .btn{padding:12px 17px}.dashSummary{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-bottom:22px;background:transparent}.summaryItem{padding:16px 18px;border-right:1px solid var(--line)}.summaryItem:last-child{border-right:0}.summaryItem span{display:block;font-size:9px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);font-weight:800;margin-bottom:8px}.summaryItem strong{display:block;font-size:22px;letter-spacing:-.7px;font-weight:750}.summaryItem small{display:block;margin-top:5px;color:var(--muted);font-size:10.5px}.taskRow{display:grid;grid-template-columns:30px 1fr auto;gap:12px;align-items:center;padding:14px 0;border-bottom:1px solid var(--line)}.taskRow:last-child{border-bottom:0}.taskMark{width:26px;height:26px;border:1px solid var(--line-dark);display:grid;place-items:center;font-size:9px;font-weight:800;color:var(--olive-dark);border-radius:7px}.textBtn{border:0;background:transparent;color:var(--olive-dark);font-size:11px;font-weight:800;padding:7px}.quickBar{display:flex;align-items:center;gap:4px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:5px 0}.quickLabel{font-size:9px;letter-spacing:.12em;font-weight:800;color:var(--muted);padding:0 12px 0 2px}.quickBar button{border:0;background:transparent;color:var(--ink2);padding:9px 12px;font-size:11px;border-radius:7px}.quickBar button:hover{background:var(--surface2);color:var(--olive-dark)}
+
+/* V10 top-taskbar product system */
+body{background:#f6f4ee;color:#202724}
+.app{display:block;min-height:100vh}.sidebar{display:none}
+main{width:100%;margin:0;padding:0}/* V11 ART-DIRECTED DESIGN SYSTEM */
+:root{--ink:#252b28;--ink2:#46504a;--muted:#777c76;--paper:#f4f0e7;--surface:#fffdf8;--surface2:#ece8dc;--forest:#19342d;--forest2:#27473d;--olive:#6f7f50;--olive-dark:#52623a;--sage:#dfe4d5;--sage2:#edf0e7;--terracotta:#b96e51;--terracotta-soft:#eedbd0;--ochre:#b99a59;--ochre-soft:#eee5cf;--blue:#708c94;--blue-soft:#dde7e8;--line:#dcd8cd;--line-dark:#c7c3b8;--white:#fffdf8;--shadow:0 12px 34px rgba(35,43,38,.045);--r:12px}
+body{background:var(--paper);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;letter-spacing:-.012em}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.18;background-image:radial-gradient(rgba(36,47,41,.09) .55px,transparent .55px);background-size:6px 6px;z-index:-1}
+.topbar{position:sticky;top:0;z-index:50;background:rgba(248,245,238,.94);backdrop-filter:blur(18px);border-bottom:1px solid var(--line);box-shadow:0 2px 14px rgba(25,52,45,.025)}
+.topbar-inner{height:72px;max-width:1440px;margin:auto;padding:0 38px;display:flex;align-items:center;gap:38px}
+.brand{border:0;background:transparent;padding:0;display:flex;align-items:center;gap:11px;color:var(--forest);font-size:18px;font-weight:820;letter-spacing:-.045em;white-space:nowrap}.brand-mark{width:30px;height:30px;border-radius:8px;background:var(--forest);color:#e9eddf;display:grid;place-items:center;font-family:Georgia,serif;font-size:16px;font-weight:400;box-shadow:inset 0 0 0 1px rgba(255,255,255,.12)}
+.topnav{display:flex;align-items:center;gap:2px;flex:1;height:100%}.topnav-link{position:relative;border:0;background:transparent;color:#6c726c;font-size:11.5px;font-weight:700;padding:10px 14px;border-radius:0;transition:.2s ease}.topnav-link:after{content:"";position:absolute;left:14px;right:14px;bottom:8px;height:1px;background:var(--olive);transform:scaleX(0);transform-origin:left;transition:.22s ease}.topnav-link:hover{color:var(--forest);background:rgba(223,228,213,.28)}.topnav-link.active{color:var(--forest);background:transparent}.topnav-link.active:after{transform:scaleX(1)}
+.chev{font-size:11px;margin-left:4px;color:#969a92}.nav-group{position:relative;height:100%;display:flex;align-items:center}.nav-menu{display:none;position:absolute;top:61px;left:-12px;width:250px;background:rgba(255,253,248,.98);border:1px solid var(--line);box-shadow:0 20px 50px rgba(30,45,39,.11);padding:8px;border-radius:10px}.nav-menu.open{display:grid;animation:menuIn .18s ease}.nav-menu button{border:0;background:transparent;text-align:left;padding:12px 13px;border-radius:7px;color:var(--ink);display:grid;gap:3px}.nav-menu button:hover{background:var(--sage2)}.nav-menu strong{font-size:11px;font-weight:780}.nav-menu small{font-size:9.5px;color:var(--muted)}
+.top-actions{display:flex;align-items:center;gap:10px}.location-chip,.profile-chip,.icon-btn{border:1px solid var(--line);background:rgba(255,253,248,.72);color:var(--ink)}.location-chip{display:flex;align-items:center;gap:9px;text-align:left;border-radius:7px;padding:7px 10px}.location-chip>span:first-child{font-size:15px;color:var(--olive)}.location-chip small{display:block;font-size:7px;letter-spacing:.13em;color:#979b94;font-weight:800}.location-chip b{display:block;font-size:10px;font-weight:760}.icon-btn{width:34px;height:34px;border-radius:7px;position:relative}.icon-btn i{position:absolute;right:7px;top:7px;width:5px;height:5px;background:var(--terracotta);border-radius:50%}.profile-chip{border:0;background:transparent;display:flex;align-items:center;gap:8px;font-size:10.5px;font-weight:800;padding:3px}.avatar{width:30px;height:30px;background:var(--sage);color:var(--forest2);border-radius:50%;display:grid;place-items:center;font-weight:820}
+.contextbar{border-top:1px solid rgba(220,216,205,.72);background:rgba(255,253,248,.72)}.context-inner{max-width:1440px;margin:auto;padding:0 38px;height:40px;display:flex;align-items:center;gap:28px}.context-title{font-family:Georgia,serif;font-size:11px;font-weight:400;font-style:italic;color:var(--forest)}.context-links{display:flex;gap:22px}.context-links button{border:0;background:transparent;padding:5px 0;color:#8a8d86;font-size:9.5px;font-weight:700;position:relative}.context-links button:after{content:"";position:absolute;left:0;right:0;bottom:1px;height:1px;background:var(--olive);transform:scaleX(0);transition:.2s}.context-links button:hover,.context-links button.active{color:var(--olive-dark)}.context-links button.active:after{transform:scaleX(1)}
+.content{max-width:1440px;margin:0 auto;padding:42px 38px 74px;position:relative}.page{display:none;animation:pageIn .28s cubic-bezier(.2,.7,.2,1)}.page.active{display:block}.hero{min-height:450px;position:relative}.hero:after{content:"";position:absolute;right:7%;top:8%;width:220px;height:220px;border:1px solid rgba(111,127,80,.22);border-radius:50%;box-shadow:34px 20px 0 -33px rgba(111,127,80,.18);pointer-events:none}.heroText{position:relative;z-index:1;max-width:720px;padding:44px 0}.heroText h1{font-family:Georgia,"Times New Roman",serif;font-weight:400;letter-spacing:-2.2px;font-size:58px;line-height:.99;color:var(--forest)}.heroText p{max-width:600px;font-size:14px;line-height:1.75;color:#69716a}.heroArt{font-size:0;position:absolute;right:8%;top:74px;width:250px;height:250px;border-radius:50% 48% 54% 46%;background:linear-gradient(145deg,#dfe5d6 0%,#cbd5c0 100%);opacity:.9}.heroArt:before,.heroArt:after{content:"";position:absolute;bottom:38px;left:50%;width:2px;background:var(--forest);transform-origin:bottom;opacity:.8}.heroArt:before{height:145px;transform:rotate(-20deg)}.heroArt:after{height:120px;transform:rotate(21deg)}
+.dashHead{padding-top:0;border-bottom:1px solid var(--line);padding-bottom:26px;margin-bottom:22px}.dashHead h1{font-family:Georgia,serif;font-weight:400;color:var(--forest);letter-spacing:-1.8px}.sectionKicker{font-size:8px;letter-spacing:.16em;font-weight:800;color:var(--olive-dark);margin-bottom:8px}.btn{transition:transform .2s,box-shadow .2s,background .2s}.btn:hover{transform:translateY(-1px);box-shadow:0 9px 22px rgba(34,42,37,.07)}
+.card{background:rgba(255,253,248,.82);border:1px solid var(--line);box-shadow:var(--shadow);border-radius:10px}.card h2{font-family:Georgia,serif;font-weight:400;color:var(--forest)}.summaryItem{background:transparent;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:16px 4px}.summaryItem strong{font-family:Georgia,serif;font-size:25px;font-weight:400;color:var(--forest)}.taskRow{border-top:1px solid var(--line)}.taskMark{font-family:Georgia,serif;color:var(--olive-dark)}.quickBar{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:transparent}.quickBar button{background:transparent}.signal{border-top:1px solid var(--line);border-radius:0;background:transparent}.badge{border-radius:100px;background:var(--sage);color:var(--olive-dark);border:0}
+@keyframes pageIn{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}@keyframes menuIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+@media(max-width:980px){.topbar-inner{padding:0 20px;gap:18px}.topnav{overflow:auto}.topnav-link{padding:8px 9px}.topnav-link:after{left:9px;right:9px}.location-chip{display:none}.content{padding:28px 20px 55px}.context-inner{padding:0 20px}.context-links{overflow:auto;white-space:nowrap}.heroArt{right:2%;opacity:.55}}
+@media(max-width:680px){.topbar-inner{height:62px;padding:0 14px}.topnav{display:none}.top-actions{margin-left:auto}.profile-chip span:not(.avatar):not(.chev){display:none}.contextbar{overflow:hidden}.context-inner{height:40px;padding:0 14px}.content{padding:22px 14px 45px}.nav-menu{position:fixed;top:60px;left:14px;right:14px;width:auto}.heroText h1{font-size:42px}.heroArt{width:150px;height:150px;right:4%;top:170px;opacity:.35}}
+.site-footer{max-width:1440px;margin:0 auto;padding:0 38px 35px;color:#9a9d96;font-size:9px;display:flex;justify-content:space-between}.site-footer span:first-child{font-family:Georgia,serif;font-style:italic;color:#68705f}@media(max-width:680px){.site-footer{padding:0 14px 25px}}
+
+/* V12 dashboard — browse-first, editorial product experience */
+.dashIntro{display:flex;justify-content:space-between;align-items:flex-end;gap:30px;margin-bottom:26px}.dashIntro h1{font-family:Georgia,serif;font-size:38px;line-height:1.05;letter-spacing:-.045em;margin:6px 0 8px}.dashLocation{font-size:12px;color:var(--muted);border-bottom:1px solid var(--line);padding:0 0 8px;white-space:nowrap}.dashLocation .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--olive);margin-right:7px}
+.featuredAdvice{min-height:310px;background:var(--forest);color:#f7f3e9;display:grid;grid-template-columns:1.1fr .9fr;position:relative;overflow:hidden;margin-bottom:42px}.featuredCopy{padding:42px 44px;position:relative;z-index:2;max-width:620px}.featuredCopy .eyebrow{color:#b9c5a4}.featuredCopy h2{font-family:Georgia,serif;font-weight:400;font-size:43px;line-height:1.05;letter-spacing:-.045em;margin:12px 0 15px}.featuredCopy p{color:#cbd2cc;max-width:490px;line-height:1.7;margin-bottom:26px}.featuredCrop{position:relative;min-height:310px;background:#26352e;overflow:hidden}.sunDisc{position:absolute;width:190px;height:190px;border-radius:50%;background:#d6bd76;opacity:.9;right:45px;top:32px}.cropStem{position:absolute;width:3px;background:#aebd82;bottom:-15px;transform-origin:bottom;border-radius:3px}.s1{height:235px;right:38%;transform:rotate(-10deg)}.s2{height:265px;right:26%;transform:rotate(5deg)}.s3{height:205px;right:16%;transform:rotate(15deg)}.leaf{position:absolute;width:80px;height:27px;border-radius:100% 0 100% 0;background:#718652;transform-origin:left center}.l1{right:39%;bottom:115px;transform:rotate(-28deg)}.l2{right:31%;bottom:160px;transform:rotate(24deg)}.l3{right:22%;bottom:105px;transform:rotate(-25deg)}.l4{right:13%;bottom:175px;transform:rotate(25deg)}
+.browseHead{display:flex;justify-content:space-between;align-items:end;margin-bottom:16px}.browseHead h2{font-family:Georgia,serif;font-weight:400;font-size:28px;letter-spacing:-.03em;margin:5px 0 0}.browseGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}.browseTile{border:1px solid var(--line);background:var(--surface);min-height:205px;padding:19px;text-align:left;display:flex;flex-direction:column;transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease;position:relative;overflow:hidden}.browseTile:hover{transform:translateY(-3px);border-color:var(--line-dark);box-shadow:var(--shadow)}.tileNumber{font-size:10px;color:var(--muted);letter-spacing:.1em}.tileIcon{font-size:28px;margin:20px 0 14px}.browseTile strong{font-family:Georgia,serif;font-size:21px;font-weight:400;letter-spacing:-.025em}.browseTile small{font-size:11.5px;color:var(--muted);line-height:1.5;margin-top:7px;max-width:190px}.browseTile em{font-style:normal;font-size:11px;font-weight:700;margin-top:auto;padding-top:18px;color:var(--ink2)}.cropTile{background:#eef1e7}.regionalTile{background:#f3eee4}.weatherTile{background:#e9eff0}.seasonTile{background:#f1e9d6}.quietStrip{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:18px 2px;display:flex;align-items:center;justify-content:space-between;gap:20px}.quietStrip strong{font-size:13px;font-weight:600;margin-left:16px;color:var(--ink2)}
+@media(max-width:900px){.browseGrid{grid-template-columns:repeat(2,1fr)}.featuredAdvice{grid-template-columns:1fr}.featuredCrop{min-height:180px}.dashIntro{align-items:flex-start;flex-direction:column}.dashLocation{align-self:flex-start}}
+@media(max-width:560px){.browseGrid{grid-template-columns:1fr}.featuredCopy{padding:30px 25px}.featuredCopy h2{font-size:34px}.featuredCrop{display:none}.quietStrip{align-items:flex-start;flex-direction:column}.quietStrip strong{display:block;margin:7px 0 0}}
+
+/* V12 — art-directed discovery dashboard */
+body{background:#f2eee5;background-image:radial-gradient(rgba(45,55,48,.045) .65px,transparent .65px);background-size:7px 7px}
+.content{max-width:1320px;padding-top:38px}
+.homeIntro{display:flex;justify-content:space-between;align-items:flex-end;gap:30px;margin-bottom:28px}
+.homeIntro h1{font-family:Georgia,serif;font-weight:400;font-size:51px;line-height:.98;letter-spacing:-2.5px;margin:8px 0 14px;color:#26352c}
+.homeIntro h1 em{font-style:italic;color:#66784e}
+.homeIntro .sub{max-width:620px;font-size:14px;line-height:1.7;margin:0}
+.placeMark{display:flex;align-items:center;gap:10px;padding:10px 0 4px;border-bottom:1px solid #cbc9be;min-width:190px}
+.placeMark .dot{width:7px;height:7px;border-radius:50%;background:#778b57;box-shadow:0 0 0 5px #dce3d4}
+.placeMark small{display:block;font-size:8px;letter-spacing:.14em;color:#7c7b73;margin-bottom:3px}.placeMark b{font-size:12px;font-weight:700;color:#38453c}
+.featureStory{display:grid;grid-template-columns:1.08fr .92fr;min-height:330px;border:1px solid #d4d1c5;background:#fffdf7;overflow:hidden;position:relative;margin-bottom:40px;box-shadow:0 10px 30px rgba(49,53,44,.035)}
+.storyCopy{padding:42px 44px;display:flex;flex-direction:column;justify-content:center;position:relative;z-index:2}.storyCopy h2{font-family:Georgia,serif;font-size:35px;line-height:1.05;font-weight:400;letter-spacing:-1.4px;max-width:570px;margin:2px 0 14px}.storyCopy p{font-size:13px;line-height:1.7;color:#6e736c;max-width:560px;margin:0 0 24px}.storyCopy .btn{width:max-content}
+.storyArt{position:relative;overflow:hidden;background:#dfe5d4;min-height:330px}
+.storyArt:before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.18),transparent 55%),repeating-linear-gradient(165deg,transparent 0 20px,rgba(71,89,57,.075) 21px 23px);mix-blend-mode:multiply}
+.textureCircle{position:absolute;border:1px solid rgba(52,69,53,.15);border-radius:50%}.c1{width:360px;height:360px;right:-95px;top:-110px}.c2{width:240px;height:240px;right:10px;top:-48px}.sun{position:absolute;width:94px;height:94px;border-radius:50%;background:#cda65b;right:88px;top:54px;opacity:.8}
+.fieldLine{position:absolute;height:1px;background:rgba(52,69,53,.2);width:390px;right:-15px;transform:rotate(-7deg)}.f1{bottom:77px}.f2{bottom:106px;right:-45px}.f3{bottom:135px;right:-75px}
+.plant{position:absolute;bottom:58px;width:52px;height:90px}.plant i,.plant b{position:absolute;display:block;background:#65784f;border-radius:100% 0 100% 0}.plant i{width:42px;height:18px;transform:rotate(-32deg);left:0;top:22px}.plant b{width:38px;height:17px;transform:rotate(28deg);right:0;top:43px;background:#839463}.plant:after{content:"";position:absolute;width:2px;height:70px;background:#536847;left:25px;top:18px}.p1{left:17%;transform:scale(.75)}.p2{left:37%;transform:scale(1.08)}.p3{left:61%;transform:scale(.88)}
+.discoverHeader{display:flex;align-items:end;justify-content:space-between;margin-bottom:14px}.discoverHeader h2{font-family:Georgia,serif;font-weight:400;font-size:25px;margin-top:2px}.discoverNote{font-size:10px;color:#8a887f;margin-bottom:6px}
+.discoverGrid{display:grid;grid-template-columns:1.25fr .75fr .75fr;gap:12px;margin-bottom:38px}.discoverCard{border:1px solid #d7d3c8;background:#fffdf8;text-align:left;padding:0;overflow:hidden;min-height:270px;position:relative;transition:transform .22s,box-shadow .22s,border-color .22s}.discoverCard:hover{transform:translateY(-3px);box-shadow:0 14px 30px rgba(43,49,43,.07);border-color:#c3c6b8}.largeCard{display:grid;grid-template-columns:1fr 1fr}.cardArt{min-height:270px;position:relative;overflow:hidden}.regionalArt{background:#d8dfcf}.regionalArt:before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(155deg,transparent 0 14px,rgba(68,83,54,.08) 15px 17px)}.regionalArt>span{position:absolute;left:18px;top:17px;font-size:8px;letter-spacing:.16em;color:#5c6d4b}.rings{position:absolute;width:175px;height:175px;border:1px solid rgba(66,82,54,.22);border-radius:50%;left:50%;top:52%;transform:translate(-50%,-50%);box-shadow:0 0 0 28px rgba(255,255,255,.05),0 0 0 56px rgba(255,255,255,.04)}.artLeaf{position:absolute;width:70px;height:28px;border-radius:100% 0 100% 0;background:#728456}.a1{left:29%;top:35%;transform:rotate(-32deg)}.a2{left:50%;top:53%;transform:rotate(32deg);background:#9a9d63}
+.discoverBody{padding:25px 24px;display:flex;flex-direction:column;justify-content:center}.discoverBody small,.weatherCardHome small,.seasonCardHome small{font-size:8px;letter-spacing:.14em;color:#7d8178;font-weight:800;margin-bottom:9px}.discoverBody strong{font-family:Georgia,serif;font-size:24px;font-weight:400;line-height:1.05;margin-bottom:9px;color:#2e3a32}.discoverBody p,.seasonCardHome p{font-size:11px;line-height:1.6;color:#747a72;margin:0 0 18px}.discoverCard em{font-size:10px;color:#61744d;font-style:normal;font-weight:750;margin-top:auto}
+.weatherCardHome{padding:23px;background:#e1e9e9}.weatherTop{display:flex;justify-content:space-between;color:#5d7074;font-size:8px;letter-spacing:.12em}.weatherTemp{font-family:Georgia,serif;font-size:64px;line-height:1;margin:42px 0 6px;color:#354c50;letter-spacing:-4px}.weatherWord{font-size:11px;color:#617176}.weatherRule{height:1px;background:rgba(71,93,96,.18);margin:34px 0 13px}
+.seasonCardHome{padding:23px;background:#ece5d4}.seasonStamp{width:43px;height:43px;border-radius:50%;border:1px solid #b9aa85;display:grid;place-items:center;color:#927a43;margin-bottom:30px}.seasonCardHome strong{display:block;font-family:Georgia,serif;font-size:27px;font-weight:400;color:#4c4536;margin:2px 0 9px}.seasonCardHome p{max-width:190px}
+.lowerPrompt{border-top:1px solid #d5d1c5;padding:25px 2px 8px;display:flex;justify-content:space-between;align-items:end}.lowerPrompt h2{font-family:Georgia,serif;font-size:23px;font-weight:400;margin:3px 0 4px}.lowerPrompt p{font-size:11px;color:#777a73;margin:0}.lowerPrompt .textBtn{font-size:11px;color:#61744d}
+@media(max-width:950px){.featureStory{grid-template-columns:1fr}.storyArt{min-height:220px}.discoverGrid{grid-template-columns:1fr 1fr}.largeCard{grid-column:1/-1}}
+@media(max-width:650px){.homeIntro{display:block}.homeIntro h1{font-size:42px}.placeMark{margin-top:20px}.discoverGrid{grid-template-columns:1fr}.largeCard{display:grid;grid-template-columns:1fr}.cardArt{min-height:190px}.discoverBody{min-height:210px}.lowerPrompt{display:block}.lowerPrompt .textBtn{margin-top:18px}}
+</style>
+
+<style id="v14-conscious-product-design">
+/* =========================================================
+   AgriSense V14 — consciously art-directed product system
+   Reference logic:
+   - Cropwise: connected decision journey, practical tools
+   - AGRIVI: agronomy + economics + operations kept connected
+   We translate those ideas into a lighter Indian farmer-first product,
+   rather than copying either visual language.
+   ========================================================= */
+
+:root{
+  --v14-ink:#26322d;
+  --v14-ink-soft:#59645d;
+  --v14-paper:#f7f4ec;
+  --v14-paper-2:#eeeadf;
+  --v14-white:#fffdf8;
+  --v14-green:#3e5a45;
+  --v14-green-2:#5f765d;
+  --v14-leaf:#d9e1d0;
+  --v14-clay:#b96d50;
+  --v14-clay-soft:#ead8cf;
+  --v14-sun:#d7b35b;
+  --v14-blue:#718c91;
+  --v14-rule:#d9d5c9;
+  --v14-shadow:0 12px 34px rgba(43,52,46,.055);
+}
+
+body{
+  background:
+    radial-gradient(circle at 10% 0%,rgba(120,140,100,.045),transparent 28%),
+    var(--v14-paper);
+  color:var(--v14-ink);
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+
+/* Remove the "AI template" feeling: flatter surfaces, stronger editorial rhythm. */
+.card,.insightCard,.featureTile,.quick,.reco,.fieldcard,.locationBox,
+.adviceBanner,.hero,.commandHero{
+  box-shadow:none;
+  border-radius:8px;
+}
+
+.topbar{
+  background:rgba(247,244,236,.92);
+  border-bottom:1px solid var(--v14-rule);
+  box-shadow:none;
+}
+
+.topbar-inner{max-width:1340px;height:76px;padding:0 30px;gap:42px}
+
+.brand{
+  letter-spacing:-.045em;
+  color:var(--v14-ink);
+}
+
+.brandMark{
+  width:30px;height:30px;border-radius:50%;
+  background:var(--v14-green);
+  position:relative;
+  box-shadow:none;
+}
+.brandMark:before{
+  content:"";
+  position:absolute;
+  width:11px;height:17px;
+  border:1.5px solid #f5f1e6;
+  border-left:0;border-bottom:0;
+  transform:rotate(38deg);
+  left:8px;top:6px;
+  border-radius:8px 8px 2px 8px;
+}
+.brandMark:after{
+  content:"";
+  position:absolute;
+  width:1px;height:11px;
+  background:#f5f1e6;
+  transform:rotate(38deg);
+  left:15px;top:11px;
+}
+
+.topnav{gap:24px}
+.topnav-link{
+  border-radius:0!important;
+  padding:10px 0!important;
+  color:#6b746d;
+  font-size:12px;
+  font-weight:650;
+}
+.topnav-link:hover{color:var(--v14-ink);background:transparent}
+.topnav-link:after{
+  height:1px!important;
+  bottom:2px!important;
+  background:var(--v14-green)!important;
+}
+
+.location-chip{
+  border:0!important;
+  background:transparent!important;
+  color:#6d756f!important;
+  padding:6px 0!important;
+}
+
+.content{max-width:1340px;padding:38px 30px 70px}
+
+/* Hero: one visual idea, not a grid of AI widgets. */
+.hero{
+  min-height:420px;
+  border:1px solid var(--v14-rule);
+  background:var(--v14-white);
+  overflow:hidden;
+  grid-template-columns:1.08fr .92fr;
+}
+
+.heroText{
+  padding:62px 58px;
+  justify-content:flex-start;
+}
+
+.heroText .eyebrow,
+.sectionKicker{
+  color:var(--v14-green);
+  font-size:10px;
+  letter-spacing:.18em;
+}
+
+.heroText h1{
+  font-family:Georgia,"Times New Roman",serif;
+  font-weight:400;
+  font-size:58px;
+  line-height:1.02;
+  letter-spacing:-2.6px;
+  max-width:610px;
+  margin-top:8px;
+}
+
+.heroText p{
+  max-width:540px;
+  font-size:15px;
+  line-height:1.72;
+  color:#687169;
+}
+
+.heroText .btn{
+  margin-top:20px;
+  width:max-content;
+  border-radius:4px;
+  background:var(--v14-green);
+  padding:12px 18px;
+  font-size:12px;
+  box-shadow:none;
+}
+
+.heroArt{
+  min-height:420px;
+  background:
+    linear-gradient(90deg,rgba(255,253,248,.12),transparent 32%),
+    #dfe5d8!important;
+}
+.heroArt:before{
+  width:360px!important;height:360px!important;
+  right:-120px!important;top:-110px!important;
+  border:1px solid rgba(62,90,69,.16)!important;
+}
+.heroArt:after{
+  width:250px!important;height:250px!important;
+  left:-100px!important;bottom:-120px!important;
+  border:1px solid rgba(62,90,69,.12)!important;
+}
+
+/* A small "field sketch" gives the visual a human design object. */
+.heroArt:global{overflow:hidden}
+.heroArt .fieldSketch{
+  position:absolute;inset:0;
+}
+
+.v14-field-lines{
+  position:absolute;left:11%;right:8%;bottom:17%;
+  height:48%;
+  transform:skewY(-8deg);
+  opacity:.75;
+}
+.v14-field-lines span{
+  display:block;height:1px;background:rgba(62,90,69,.28);
+  margin:18px 0;
+}
+.v14-field-stem{
+  position:absolute;width:2px;height:150px;background:rgba(62,90,69,.42);
+  left:55%;bottom:23%;transform:rotate(14deg);
+}
+.v14-field-leaf{
+  position:absolute;width:55px;height:26px;border:1px solid rgba(62,90,69,.42);
+  border-left:0;border-bottom:0;border-radius:100% 0;
+}
+.v14-field-leaf.a{left:49%;bottom:45%;transform:rotate(-24deg)}
+.v14-field-leaf.b{left:57%;bottom:38%;transform:rotate(35deg)}
+
+.sectionHead{
+  margin-top:46px!important;
+  margin-bottom:14px!important;
+}
+.sectionHead h2{
+  font-family:Georgia,"Times New Roman",serif;
+  font-weight:400;
+  font-size:29px!important;
+  letter-spacing:-1px;
+}
+.sectionHead p{font-size:12px;color:#747c75}
+
+/* Browse modules are treated like editorial index entries, not SaaS cards. */
+.discoveryGrid{
+  display:grid!important;
+  grid-template-columns:1.25fr .9fr .9fr!important;
+  gap:0!important;
+  border-top:1px solid var(--v14-rule);
+  border-bottom:1px solid var(--v14-rule);
+}
+.discoveryCard{
+  min-height:190px;
+  border:0!important;
+  border-right:1px solid var(--v14-rule)!important;
+  border-radius:0!important;
+  background:transparent!important;
+  padding:24px 22px!important;
+  transition:background .2s ease, transform .2s ease;
+}
+.discoveryCard:last-child{border-right:0!important}
+.discoveryCard:hover{
+  background:rgba(255,253,248,.68)!important;
+  transform:none!important;
+}
+.discoveryCard h3{
+  font-family:Georgia,"Times New Roman",serif;
+  font-weight:400;
+  font-size:22px!important;
+  margin-top:38px!important;
+}
+.discoveryCard p{font-size:11.5px!important;line-height:1.65!important}
+.discoveryCard .index{
+  font-size:10px;color:#8b918b;letter-spacing:.12em;
+}
+
+/* "More" tools become a horizontal index rather than four identical cards. */
+.v14-tool-index{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  border-top:1px solid var(--v14-rule);
+  border-bottom:1px solid var(--v14-rule);
+}
+.v14-tool{
+  min-height:112px;
+  padding:22px;
+  border-right:1px solid var(--v14-rule);
+  display:flex;justify-content:space-between;gap:20px;
+  text-decoration:none;color:inherit;
+  transition:background .18s ease;
+}
+.v14-tool:last-child{border-right:0}
+.v14-tool:hover{background:rgba(255,253,248,.7)}
+.v14-tool b{
+  font-family:Georgia,"Times New Roman",serif;
+  font-weight:400;font-size:19px;
+}
+.v14-tool small{display:block;color:#7b817b;font-size:10.5px;line-height:1.55;margin-top:5px;max-width:250px}
+.v14-tool .arrow{font-size:18px;color:var(--v14-green)}
+
+/* The dashboard brief: one useful status line, not a KPI wall. */
+.v14-brief{
+  display:grid;grid-template-columns:1.4fr .6fr;
+  border-top:1px solid var(--v14-rule);
+  border-bottom:1px solid var(--v14-rule);
+  margin-top:34px;
+}
+.v14-brief-main{padding:24px 0}
+.v14-brief-main .label{
+  font-size:9px;text-transform:uppercase;letter-spacing:.16em;color:#7c847d;
+}
+.v14-brief-main h3{
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:27px;font-weight:400;letter-spacing:-.8px;margin:8px 0;
+}
+.v14-brief-main p{font-size:12px;line-height:1.65;color:#707971;max-width:650px}
+.v14-brief-side{
+  padding:24px 0 24px 28px;
+  border-left:1px solid var(--v14-rule);
+  display:flex;flex-direction:column;justify-content:center;
+}
+.v14-brief-side span{font-size:10px;color:#858b85;text-transform:uppercase;letter-spacing:.12em}
+.v14-brief-side strong{font-family:Georgia,serif;font-size:24px;font-weight:400;margin-top:5px}
+
+/* Recommendation page: decision first, explanation second. */
+.reco{
+  background:var(--v14-white)!important;
+  border:1px solid var(--v14-rule)!important;
+  border-radius:8px!important;
+}
+.reco .score{font-family:Georgia,serif;font-weight:400}
+.visualScore{border-color:#d8dfd0!important}
+.visualScore:after{border-top-color:var(--v14-green)!important;border-right-color:var(--v14-green)!important}
+.positive{background:#edf1e9;border-left-color:var(--v14-green)}
+.limiting{background:#f3e9e3;border-left-color:var(--v14-clay)}
+.aiBox{background:#f1f2ec;border:1px solid #dfe3d9;border-radius:5px}
+
+/* Forms and location: quieter, more trustworthy. */
+.input{border-radius:4px!important;background:#fffdf8!important}
+.btn{border-radius:4px!important}
+.locOption{border-radius:5px!important;background:#fffdf8!important}
+.locOption.selected{border-color:var(--v14-green)!important;background:#eef2e9!important}
+
+/* Tiny details that make the page feel authored. */
+::selection{background:#dce5d4;color:#26322d}
+a{text-decoration:none}
+button{letter-spacing:.005em}
+.disclaimer{font-size:9.5px;color:#858b84}
+
+/* Mobile remains deliberately spacious rather than collapsing into a dashboard wall. */
+@media(max-width:900px){
+  .hero{grid-template-columns:1fr;min-height:auto}
+  .heroArt{min-height:260px}
+  .heroText{padding:42px 30px}
+  .heroText h1{font-size:45px}
+  .discoveryGrid{grid-template-columns:1fr!important}
+  .discoveryCard{border-right:0!important;border-bottom:1px solid var(--v14-rule)!important;min-height:150px}
+  .discoveryCard:last-child{border-bottom:0!important}
+  .v14-tool-index{grid-template-columns:1fr}
+  .v14-tool{border-right:0;border-bottom:1px solid var(--v14-rule)}
+  .v14-tool:last-child{border-bottom:0}
+  .v14-brief{grid-template-columns:1fr}
+  .v14-brief-side{border-left:0;border-top:1px solid var(--v14-rule);padding-left:0}
+}
+@media(max-width:680px){
+  .topbar-inner{height:64px;padding:0 15px}
+  .content{padding:24px 15px 55px}
+  .heroText h1{font-size:38px;letter-spacing:-1.8px}
+  .heroText{padding:34px 22px}
+}
+</style>
+
+</head>
+<body>
+<div class="app">
+
+
+<main>
+<header class="topbar">
+  <div class="topbar-inner">
+    <button class="brand" onclick="show('dashboard',this)"><span class="brand-mark">A</span><span>AgriSense</span></button>
+    <nav class="topnav" aria-label="Main navigation">
+      <button class="topnav-link active" data-page="dashboard" onclick="show('dashboard',this)">Overview</button>
+      <button class="topnav-link" data-page="fields" onclick="show('fields',this)"></button>
+      <button class="topnav-link" data-page="recommend" onclick="show('recommend',this)">Crop Advice</button>
+      <div class="nav-group">
+        <button class="topnav-link" data-page="insights" onclick="toggleMenu(event,'insightsMenu')">Insights <span class="chev">⌄</span></button>
+        <div class="nav-menu" id="insightsMenu">
+          <button onclick="show('weather',this);closeMenus()"><strong>Weather</strong><small>Conditions & forecast</small></button>
+          <button onclick="show('prediction',this);closeMenus()"><strong>Crop Prediction</strong><small>Expected crop performance</small></button>
+          <button onclick="show('fertilizer',this);closeMenus()"><strong>Fertilizer</strong><small>Nutrition guidance</small></button>
+          <button onclick="show('market',this);closeMenus()"><strong>Market Value</strong><small>Current crop prices</small></button>
+        </div>
+      </div>
+      <div class="nav-group">
+        <button class="topnav-link" onclick="toggleMenu(event,'moreMenu')">More <span class="chev">⌄</span></button>
+        <div class="nav-menu" id="moreMenu">
+          <button onclick="show('regional',this);closeMenus()"><strong>Regional Crops</strong><small>What grows well here</small></button>
+          <button onclick="show('season',this);closeMenus()"><strong>Season</strong><small>Crop timing</small></button>
+          <button onclick="show('history',this);closeMenus()"><strong>History</strong><small>Past recommendations</small></button>
+          <button onclick="show('alerts',this);closeMenus()"><strong>Alerts</strong><small>Important updates</small></button>
+          <button onclick="show('schemes',this);closeMenus()"><strong>Government Schemes</strong><small>Useful programmes</small></button>
+          <button onclick="show('settings',this);closeMenus()"><strong>Settings</strong><small>Your preferences</small></button>
+        </div>
+      </div>
+    </nav>
+    <div class="top-actions">
+      <button class="location-chip" onclick="show('location')"><span>⌖</span><span><small>YOUR FARM</small><b id="topLocation">Lucknow, Uttar Pradesh</b></span></button>
+      <button class="icon-btn" aria-label="Alerts" onclick="show('alerts')">◌<i></i></button>
+      <button class="profile-chip" onclick="show('settings')"><span class="avatar">A</span><span>Aditya</span><span class="chev">⌄</span></button>
+    </div>
+  </div>
+  <div class="contextbar" id="contextbar">
+    <div class="context-inner">
+      <span class="context-title" id="contextTitle">Overview</span>
+      <div class="context-links" id="contextLinks"></div>
+    </div>
+  </div>
+</header>
+
+<div class="content">
+
+<section id="landing" class="page">
+ <div class="hero"><div class="heroText"><span class="eyebrow">SMART CROP DECISIONS</span><h1>Choose the right crop<br>with confidence.</h1><p>AgriSense brings together your region, growing season, local weather and farm conditions to help you make a better crop decision — without complicated technical inputs.</p><div class="actions"><button class="btn" onclick="show('location')">Find the Best Crop →</button><button class="btn outline" onclick="show('dashboard')">Explore AgriSense</button></div></div><div class="heroArt">
+<div class="v14-field-lines">
+  <span></span><span></span><span></span><span></span><span></span>
+</div>
+<div class="v14-field-stem"></div>
+<div class="v14-field-leaf a"></div>
+<div class="v14-field-leaf b"></div>
+👨‍🌾</div></div>
+ <br><div class="grid three"><div class="card"><h2>Best Crop, Clearly Explained</h2><p class="muted">Get a ranked crop recommendation based on your field and local conditions.</p></div><div class="card"><h2>Local Weather</h2><p class="muted">See the conditions that matter for your next crop decision.</p></div><div class="card"><h2>Regional Intelligence</h2><p class="muted">Know which crops fit your region and current growing season.</p></div></div>
+</section>
+
+
+
+<section id="dashboard" class="page active">
+ <div class="homeIntro">
+  <div>
+   <div class="sectionKicker">AGRISENSE · YOUR FIELD, YOUR SEASON</div>
+   <h1>What feels right<br><em>for your farm?</em></h1>
+   <p class="sub">Explore a few decisions worth making today — starting with the crop that fits your region and season.</p>
+  </div>
+  <div class="placeMark"><span class="dot"></span><div><small>YOUR REGION</small><b>Jaipur · Rajasthan</b></div></div>
+ </div>
+
+ <div class="featureStory">
+  <div class="storyCopy">
+   <span class="eyebrow">THE PLACE TO START</span>
+   <h2>Find a crop that makes sense for this season.</h2>
+   <p>AgriSense brings together regional crop patterns, season and local weather to give you a short list worth considering.</p>
+   <button class="btn" onclick="show('recommend')">Find my best crop <span>→</span></button>
+  </div>
+  <div class="storyArt" aria-hidden="true">
+   <div class="textureCircle c1"></div><div class="textureCircle c2"></div>
+   <div class="sun"></div>
+   <div class="fieldLine f1"></div><div class="fieldLine f2"></div><div class="fieldLine f3"></div>
+   <div class="plant p1"><i></i><b></b></div><div class="plant p2"><i></i><b></b></div><div class="plant p3"><i></i><b></b></div>
+  </div>
+ </div>
+
+ <div class="discoverHeader">
+  <div><span class="sectionKicker">DISCOVER</span><h2>Take a look around</h2></div>
+  <span class="discoverNote">Nothing here is urgent.</span>
+ </div>
+ <div class="discoverGrid">
+  <button class="discoverCard largeCard" onclick="show('regional')">
+   <div class="cardArt regionalArt"><span>REGION</span><div class="rings"></div><div class="artLeaf a1"></div><div class="artLeaf a2"></div></div>
+   <div class="discoverBody"><small>01 · REGIONAL INTELLIGENCE</small><strong>What grows well here?</strong><p>See crops that suit your region before narrowing them down for your field.</p><em>Explore regional crops →</em></div>
+  </button>
+  <button class="discoverCard weatherCardHome" onclick="show('weather')">
+   <div class="weatherTop"><small>02 · WEATHER</small><span>JAIPUR</span></div><div class="weatherTemp">28°</div><div class="weatherWord">Clear skies · light wind</div><div class="weatherRule"></div><em>See the forecast →</em>
+  </button>
+  <button class="discoverCard seasonCardHome" onclick="show('season')">
+   <div class="seasonStamp">✦</div><small>03 · SEASON</small><strong>In season</strong><p>Kharif is here. Explore crops with a strong seasonal fit.</p><em>View crop window →</em>
+  </button>
+ </div>
+
+ <div class="lowerPrompt">
+  <div><span class="sectionKicker">WHEN YOU'RE READY</span><h2>Go a little deeper.</h2><p>Prediction, fertilizer guidance and market value live inside Insights.</p></div>
+  <button class="textBtn" onclick="show('prediction')">Explore Insights <span>→</span></button>
+ </div>
+</section>
+
+<section id="location" class="page">
+ <div><h1>Where is your field?</h1><p class="sub">बस अपना खेत चुनें। बाकी जानकारी AgriSense अपने आप समझेगा।</p></div>
+ <div class="card locationBox">
+  <div class="locationChoice">
+   <button class="locOption selected" onclick="selectLoc(this,'Current Location')"><div class="locIcon">📍</div><b>Use Current Location</b><p class="muted">GPS से आपका खेत automatically identify करें.</p></button>
+   <button class="locOption" onclick="selectLoc(this,'Choose Location')"><div class="locIcon">🗺️</div><b>Choose Location</b><p class="muted">State, district या village manually चुनें.</p></button>
+  </div><br>
+  <div id="manualLocation" style="display:none" class="form">
+   <div class="input"><label>State</label><select><option>Uttar Pradesh</option><option>Delhi</option><option>Haryana</option><option>Punjab</option><option>Bihar</option></select></div>
+   <div class="input"><label>District / Village</label><input placeholder="e.g. Lucknow"></div>
+  </div>
+  <div class="info"><strong>🔒 Simple for farmers:</strong> You only provide your location. AgriSense can use location + weather + regional agricultural data to prepare the technical inputs needed by the AI model.</div><br>
+  <div class="between"><span class="muted">No N, P, K or pH entry required.</span><button class="btn" onclick="startAnalysis()">Find Best Crops →</button></div>
+ </div>
+</section>
+
+<section id="analyzing" class="page">
+ <div class="card aiBox" style="max-width:760px;margin:50px auto;text-align:center;padding:45px">
+  <div style="font-size:55px">🌿</div><h1>Understanding Your Field...</h1><p class="sub">AgriSense is collecting the information needed for your recommendation.</p>
+  <div style="text-align:left;max-width:500px;margin:auto">
+   <div class="signal"><div class="signalLeft"><div class="signalIcon">📍</div>Location identified</div><span class="badge">✓ Done</span></div>
+   <div class="signal"><div class="signalLeft"><div class="signalIcon">☀️</div>Checking local weather</div><span class="badge">✓ Done</span></div>
+   <div class="signal"><div class="signalLeft"><div class="signalIcon">🌱</div>Understanding field conditions</div><span class="badge">✓ Done</span></div>
+   <div class="signal"><div class="signalLeft"><div class="signalIcon">🗺️</div>Checking regional crop patterns</div><span class="badge">✓ Done</span></div>
+   <div class="signal"><div class="signalLeft"><div class="signalIcon">🤖</div>Finding best crops</div><span class="badge blue">AI Ready</span></div>
+  </div>
+ </div>
+</section>
+
+<section id="recommend" class="page">
+ <div class="between"><div><div class="sectionKicker">CROP RECOMMENDATION</div><h1>Your best crop options</h1><p class="sub">Main Field · Lucknow, Uttar Pradesh · Kharif season</p></div><button class="btn outline" onclick="show('location')">Change Location</button></div>
+ <div class="grid two">
+  <div class="card reco"><div class="between"><span class="badge">#1 Best Choice</span><span class="muted">Suitability score</span></div><br><div class="crop"><div class="cropicon">🌾</div><div><h2>Rice · धान</h2><div class="score">87%</div><span class="muted">A strong fit for your current conditions</span></div></div><br>
+   <div class="metric"><div class="metricTop"><span>Weather</span><b>Very Good</b></div><div class="bar"><i style="width:90%"></i></div></div>
+   <div class="metric"><div class="metricTop"><span>Regional Suitability</span><b>Excellent</b></div><div class="bar"><i style="width:94%"></i></div></div>
+   <div class="metric"><div class="metricTop"><span>Current Season</span><b>Good</b></div><div class="bar"><i style="width:84%"></i></div></div>
+   <div class="actions"><button class="btn" onclick="show('why')">Why Rice?</button><button class="btn light" onclick="show('plan')">What Should I Do?</button></div>
+  </div>
+  <div class="card"><h2>Strong alternatives</h2><p class="muted">Compare these options before making your final choice.</p>
+   <div class="signal"><div class="signalLeft"><div class="signalIcon">🌽</div><div><b>Maize</b><br><span class="muted">81% · Good Match</span></div></div><span class="badge">#2</span></div>
+   <div class="signal"><div class="signalLeft"><div class="signalIcon">🥜</div><div><b>Cotton</b><br><span class="muted">74% · Suitable</span></div></div><span class="badge blue">#3</span></div>
+   <div class="signal"><div class="signalLeft"><div class="signalIcon">🫘</div><div><b>Soybean</b><br><span class="muted">68% · Suitable</span></div></div><span class="badge blue">#4</span></div><br>
+   <button class="btn outline" onclick="show('compare')">Compare Crops →</button>
+  </div>
+ </div><br>
+ <div class="card"><div class="between"><h2>Why this recommendation?</h2><span class="badge">Simple view</span></div><p class="muted">AgriSense combines local weather, regional crop patterns, season and available field information. The technical calculations stay in the background.</p>
+  <div class="grid four"><div><b>🌦 Weather</b><br><span class="muted">Temperature & rainfall</span></div><div><b>🌱 Field Conditions</b><br><span class="muted">Estimated soil suitability</span></div><div><b>🗺️ Region</b><br><span class="muted">Local crop patterns</span></div><div><b>📅 Season</b><br><span class="muted">Current growing period</span></div></div>
+ </div>
+</section>
+
+<section id="why" class="page">
+ <div><h1>Why is Rice a Good Choice?</h1><p class="sub">Simple explanation — no technical AI knowledge required.</p></div>
+ <div class="grid two">
+  <div class="card aiBox"><h2>🌾 In simple words</h2><p style="font-size:15px;line-height:1.75;color:#53615a">Your current weather and location are favorable for rice. Rice is also commonly grown in this region during this season. Based on the information available to AgriSense, it is currently one of the strongest choices for your field.</p><br><div class="positive">✓ <b>Good signs</b><br><small>Favorable weather · Suitable season · Strong regional fit</small></div><br><div class="limiting">⚠ <b>Keep an eye on</b><br><small>Rainfall and water conditions can change. Check alerts before major field activities.</small></div></div>
+  <div class="card"><h2>What affected the recommendation?</h2>
+   <div class="signal"><div class="signalLeft"><div class="signalIcon">🌧️</div><div><b>Rainfall</b><br><span class="muted">Favorable</span></div></div><span class="badge">Strong</span></div>
+   <div class="signal"><div class="signalLeft"><div class="signalIcon">🌡️</div><div><b>Temperature</b><br><span class="muted">Suitable range</span></div></div><span class="badge">Strong</span></div>
+   <div class="signal"><div class="signalLeft"><div class="signalIcon">🗺️</div><div><b>Local Region</b><br><span class="muted">Rice is commonly suitable</span></div></div><span class="badge">Strong</span></div>
+   <div class="signal"><div class="signalLeft"><div class="signalIcon">📅</div><div><b>Season</b><br><span class="muted">Currently favorable</span></div></div><span class="badge">Good</span></div>
+  </div>
+ </div>
+</section>
+
+<section id="plan" class="page"><div class="between"><div><h1>Rice — What To Do Next</h1><p class="sub">Practical guidance for your field.</p></div><span class="badge">Suitable for your field</span></div>
+<div class="grid two"><div class="card"><div class="crop"><div class="cropicon">🌾</div><div><h2>Rice · धान</h2><p class="muted">Recommended for your current conditions</p></div></div><br><div class="grid three"><div class="card"><b>📅 Season</b><br><span class="muted">June–July</span></div><div class="card"><b>⏱ Duration</b><br><span class="muted">120–150 days</span></div><div class="card"><b>💧 Water</b><br><span class="muted">High</span></div></div></div>
+<div class="card"><div class="plan"><div class="planIcon">🌱</div><div><b>Prepare the field</b><p class="muted">Keep the field level and ready for planting.</p></div></div><div class="plan"><div class="planIcon">🌾</div><div><b>Plant at the right time</b><p class="muted">Follow the recommended local sowing/planting window.</p></div></div><div class="plan"><div class="planIcon">💧</div><div><b>Manage water</b><p class="muted">Use rainfall forecasts before deciding irrigation.</p></div></div><div class="plan"><div class="planIcon">⚠️</div><div><b>Watch alerts</b><p class="muted">AgriSense will highlight important weather or crop risks.</p></div></div></div></div></section>
+
+<section id="compare" class="page"><h1>Compare Your Options</h1><p class="sub">A simple decision view for your current field.</p><div class="card"><table class="table"><thead><tr><th>Factor</th><th>🌾 Rice</th><th>🌽 Maize</th><th>🥜 Cotton</th></tr></thead><tbody><tr><td>Overall suitability</td><td><b>87%</b></td><td>81%</td><td>74%</td></tr><tr><td>Weather fit</td><td>Very Good</td><td>Good</td><td>Moderate</td></tr><tr><td>Regional fit</td><td>Excellent</td><td>High</td><td>Medium</td></tr><tr><td>Water need</td><td>High</td><td>Medium</td><td>Medium</td></tr><tr><td>Current season</td><td>Good</td><td>Good</td><td>Moderate</td></tr></tbody></table></div></section>
+
+<section id="fields" class="page"><div class="between"><div><h1>My Fields</h1><p class="sub">Simple field overview. No technical data entry.</p></div><button class="btn">+ Add Field</button></div><div class="grid three">
+<div class="card fieldcard"><div class="fieldimg">🌾</div><div class="fieldbody"><h3>Main Field <span class="badge">Good</span></h3><div class="meta">2.5 acres · Lucknow · Rice</div><button class="btn small" onclick="show('recommend')">View Advice</button></div></div>
+<div class="card fieldcard"><div class="fieldimg">🌱</div><div class="fieldbody"><h3>North Field <span class="badge warn">Attention</span></h3><div class="meta">1.8 acres · Lucknow · Wheat</div><button class="btn small" onclick="show('recommend')">View Advice</button></div></div>
+<div class="card fieldcard"><div class="fieldimg">🌾</div><div class="fieldbody"><h3>South Field <span class="badge">Good</span></h3><div class="meta">3.2 acres · Barabanki</div><button class="btn small" onclick="show('recommend')">View Advice</button></div></div>
+</div></section>
+
+<section id="weather" class="page"><h1>Weather for Your Field</h1><p class="sub">Automatically linked to your selected location.</p><div class="card"><div class="between"><div><h2>📍 Lucknow, Uttar Pradesh</h2><span class="badge">Location connected</span></div><div style="font-size:34px">☀️ <b>28°C</b></div></div><br><div class="grid weather"><div class="day">Now<b>☀️ 28°</b>Clear</div><div class="day">6 PM<b>☁️ 25°</b>Cloudy</div><div class="day">9 PM<b>☁️ 23°</b>Cloudy</div><div class="day">Tomorrow<b>🌧 27°</b>Rain</div><div class="day">Friday<b>☀️ 28°</b>Clear</div></div></div><br><div class="card"><h2>What this means for you</h2><p class="muted">Rain expected tomorrow. Plan important field activities around the expected rain.</p></div></section>
+
+<section id="calendar" class="page"><h1>Crop Calendar</h1><p class="sub">See the important stages for your recommended crop.</p><div class="card"><h2>🌾 Rice growing cycle</h2><br><div class="calendar"><div class="month active"><b>June</b>Land preparation</div><div class="month active"><b>July</b>Planting</div><div class="month"><b>Aug</b>Early growth</div><div class="month"><b>Sep</b>Growth</div><div class="month"><b>Oct</b>Grain formation</div><div class="month"><b>Nov</b>Harvest window</div></div></div></section>
+
+<section id="history" class="page"><h1>My Recommendations</h1><p class="sub">Your previous crop advice.</p><div class="grid three"><div class="card"><span class="badge">Rice · 87%</span><h2 style="margin-top:13px">Main Field</h2><p class="muted">06 Oct 2026 · Lucknow</p><button class="btn outline small" onclick="show('recommend')">View Advice</button></div><div class="card"><span class="badge blue">Maize · 81%</span><h2 style="margin-top:13px">North Field</h2><p class="muted">28 Sep 2026 · Lucknow</p><button class="btn outline small">View Advice</button></div><div class="card"><span class="badge">Wheat · 79%</span><h2 style="margin-top:13px">South Field</h2><p class="muted">14 Sep 2026 · Barabanki</p><button class="btn outline small">View Advice</button></div></div></section>
+
+<section id="alerts" class="page"><h1>Alerts & Important Updates</h1><p class="sub">Only alerts that matter to your field.</p><div class="grid two"><div class="card"><div class="alert"><div class="alertIcon">🌧️</div><div><b>Rain expected tomorrow</b><br><span class="muted">Consider postponing outdoor field work.</span></div></div><br><div class="alert"><div class="alertIcon">🌱</div><div><b>Crop advice available</b><br><span class="muted">Rice currently has the highest suitability for your Main Field.</span></div></div></div><div class="card"><h2>Alert preference</h2><p class="muted">Choose what you want AgriSense to notify you about.</p><div class="signal"><span>🌧️ Weather changes</span><span class="badge">ON</span></div><div class="signal"><span>🌾 Crop recommendations</span><span class="badge">ON</span></div><div class="signal"><span>⚠️ Important field alerts</span><span class="badge">ON</span></div></div></div></section>
+
+
+<section id="doctor" class="page">
+ <div class="sectionKicker">CROP PROTECTION</div><h1>Crop Doctor</h1>
+ <p class="sub">Take a clear photo of a leaf and AgriSense can screen it for possible disease, pest damage or visible nutrient stress.</p>
+ <div class="grid two">
+  <div class="card">
+   <div class="scanBox">
+    <div><div class="scanIcon">⌁</div><h2>Scan a crop leaf</h2><p class="muted">Use a well-lit photo with the affected area clearly visible.</p>
+     <div class="uploadActions"><button class="btn">Upload Photo</button><button class="btn outline">Use Camera</button></div>
+    </div>
+   </div>
+   <div class="disclaimer">This is a screening aid, not a laboratory diagnosis. If the result is uncertain, severe, or spreading quickly, confirm it with a qualified agriculture expert before treatment.</div>
+  </div>
+  <div class="card aiBox">
+   <div class="between"><h2>Recent scan</h2><span class="badge">Demo result</span></div><br>
+   <div class="adviceBanner"><b>Rice · Leaf</b><br><span class="muted">Possible fungal leaf symptom pattern</span><div class="metricNumber" style="font-size:25px">Low–Medium risk</div></div>
+   <br><div class="signal"><div class="signalLeft"><div class="signalIcon">🔎</div><div><b>What to check</b><br><span class="muted">Look for spreading spots and affected lower leaves.</span></div></div></div>
+   <div class="signal"><div class="signalLeft"><div class="signalIcon">🌦️</div><div><b>Weather context</b><br><span class="muted">Recent humidity and rainfall can increase fungal pressure.</span></div></div></div>
+   <button class="btn light" onclick="show('care')">Open Crop Care →</button>
+  </div>
+ </div>
+</section>
+
+
+<section id="care" class="page">
+ <div class="sectionKicker">CROP HEALTH</div><h1>Crop Care</h1>
+ <p class="sub">Move from “What is wrong?” to “What should I check next?” without guessing.</p>
+ <div class="card">
+  <div class="between"><div><h2>Rice · Main Field</h2><span class="muted">Current crop stage: Vegetative</span></div><span class="badge">Health 87/100</span></div><br>
+  <div class="adviceGrid">
+   <div class="adviceChip"><b>🌧 Disease pressure</b><span class="riskMed">Moderate watch</span><p class="muted">Humidity and rainfall make scouting worthwhile.</p></div>
+   <div class="adviceChip"><b>🐛 Pest scouting</b><span class="riskLow">Low risk</span><p class="muted">Inspect leaves and new growth before spraying.</p></div>
+   <div class="adviceChip"><b>🌱 Nutrient stress</b><span class="riskLow">No strong signal</span><p class="muted">Use soil-test results where available.</p></div>
+  </div>
+ </div><br>
+ <div class="grid two">
+  <div class="card"><h2>7-day crop protection outlook</h2><br>
+   <div class="signal"><div class="signalLeft"><div class="signalIcon">📅</div><div><b>Today</b><br><span class="muted">Scout lower leaves</span></div></div><span class="badge">Do</span></div>
+   <div class="signal"><div class="signalLeft"><div class="signalIcon">🌧️</div><div><b>Tomorrow</b><br><span class="muted">Rain — avoid unnecessary spraying</span></div></div><span class="badge warn">Watch</span></div>
+   <div class="signal"><div class="signalLeft"><div class="signalIcon">🔎</div><div><b>Next 3 days</b><br><span class="muted">Repeat scouting if symptoms appear</span></div></div><span class="badge">Monitor</span></div>
+  </div>
+  <div class="card"><h2>Fertilizer & nutrient guidance</h2><p class="muted">AgriSense should use actual soil-test values when available rather than inventing a prescription.</p>
+   <div class="adviceBanner"><b>Soil report not connected</b><br><span class="muted">Upload a soil report or connect a soil record to receive nutrient-specific guidance.</span></div><br>
+   <button class="btn outline">Add Soil Report</button>
+  </div>
+ </div>
+</section>
+
+
+
+
+
+<section id="market" class="page">
+ <div class="sectionKicker">MARKET INTELLIGENCE</div><h1>Market Value</h1>
+ <p class="sub">Check recent mandi prices and compare markets before selling.</p>
+ <div class="card">
+  <div class="between"><div><h2>Rice · Lucknow region</h2><span class="muted">Prototype display — connect live mandi data for production.</span></div><span class="badge">Source-ready</span></div><br>
+  <div class="grid three">
+   <div class="card" style="padding:16px;background:#f7f6f0"><span class="metric">Model price</span><strong class="metricNumber">₹2,390</strong><p class="muted">per quintal · demo</p></div>
+   <div class="card" style="padding:16px;background:#f7f6f0"><span class="metric">Min / Max</span><strong style="font-size:22px">— / —</strong><p class="muted">live values pending</p></div>
+   <div class="card" style="padding:16px;background:#f7f6f0"><span class="metric">Last updated</span><strong style="font-size:18px">—</strong><p class="muted">timestamp from source</p></div>
+  </div>
+ </div><br>
+ <div class="grid two">
+  <div class="card"><h2>Nearby market comparison</h2><div class="signal"><div class="signalLeft"><div class="signalIcon green">₹</div><div><b>Lucknow Mandi</b><br><span class="muted">Model price · live connector pending</span></div></div><span class="badge">—</span></div><div class="signal"><div class="signalLeft"><div class="signalIcon yellow">₹</div><div><b>Nearby mandi</b><br><span class="muted">Compare district markets</span></div></div><span class="badge blue">—</span></div><div class="signal"><div class="signalLeft"><div class="signalIcon blue">↗</div><div><b>Price trend</b><br><span class="muted">7 / 30 day history from verified source</span></div></div><span class="badge">Pending</span></div></div>
+  <div class="card reco"><h2>How it connects to crop advice</h2><p class="muted">Market value should be a decision-support factor—not the only reason to choose a crop. The system can show regional suitability, expected season and current market value together.</p><button class="btn outline" onclick="show('recommend')">Back to Crop Recommendation →</button><div class="disclaimer">Agmarknet provides market prices, arrivals and related market information across agricultural markets. Production should display the source and timestamp with live values.</div></div>
+ </div>
+</section>
+
+
+<section id="schemes" class="page">
+ <div class="sectionKicker">FARMER SERVICES</div><h1>Government Schemes</h1>
+ <p class="sub">A single place to discover schemes relevant to your location and farm profile.</p>
+ <div class="grid three">
+  <div class="card"><span class="badge">Insurance</span><h2 style="margin-top:13px">PMFBY</h2><p class="muted">Crop insurance information, eligibility and official application route.</p><button class="btn outline small">View details →</button></div>
+  <div class="card"><span class="badge blue">Income Support</span><h2 style="margin-top:13px">PM-KISAN</h2><p class="muted">Show eligibility guidance and the official government portal.</p><button class="btn outline small">View details →</button></div>
+  <div class="card"><span class="badge warn">Soil</span><h2 style="margin-top:13px">Soil Health Card</h2><p class="muted">Connect soil-test information with your farm recommendations.</p><button class="btn outline small">View details →</button></div>
+ </div>
+ <div class="disclaimer">For a real deployment, scheme eligibility and application links must come from official government sources and should be refreshed when policies change.</div>
+</section>
+
+
+<section id="prediction" class="page">
+ <div class="sectionKicker">CROP FORECAST</div><h1>Crop Prediction</h1>
+ <p class="sub">Estimate expected crop performance using the selected crop, region, season, weather and available field data.</p>
+ <div class="grid two">
+  <div class="card reco">
+   <div class="between"><span class="badge">Prototype prediction</span><span class="muted">Main Field</span></div><br>
+   <h2>Rice · धान</h2><p class="muted">Expected performance under the current conditions.</p>
+   <div class="metricNumber" style="font-size:40px;margin:18px 0 4px">—</div>
+   <p class="muted">Yield estimate will appear when the trained prediction model and historical field data are connected.</p>
+   <div class="grid three" style="margin-top:18px">
+    <div><b>Region</b><br><span class="muted">Lucknow, UP</span></div><div><b>Season</b><br><span class="muted">Kharif</span></div><div><b>Weather</b><br><span class="muted">Connected</span></div>
+   </div>
+  </div>
+  <div class="card">
+   <h2>What affects the prediction?</h2>
+   <div class="signal"><div class="signalLeft"><div class="signalIcon green">🌱</div><div><b>Crop & variety</b><br><span class="muted">Selected crop and, later, variety where available.</span></div></div></div>
+   <div class="signal"><div class="signalLeft"><div class="signalIcon blue">☀</div><div><b>Weather</b><br><span class="muted">Temperature, rainfall and humidity patterns.</span></div></div></div>
+   <div class="signal"><div class="signalLeft"><div class="signalIcon yellow">⌖</div><div><b>Regional history</b><br><span class="muted">Historical crop performance for the region.</span></div></div></div>
+   <div class="disclaimer">Do not show a fabricated yield number. The production model should return a prediction only after it is trained, validated and connected to verified historical data.</div>
+  </div>
+ </div>
+</section>
+
+<section id="fertilizer" class="page">
+ <div class="sectionKicker">NUTRIENT MANAGEMENT</div><h1>Fertilizer Recommendation</h1>
+ <p class="sub">Use soil-test information to decide what nutrients the crop actually needs.</p>
+ <div class="grid two">
+  <div class="card">
+   <div class="between"><h2>Rice · Main Field</h2><span class="badge">Soil-test based</span></div><br>
+   <div class="grid three">
+    <div class="card" style="padding:14px;background:#f7f6f0"><span class="metric">Nitrogen</span><strong style="font-size:22px">—</strong><p class="muted">Awaiting soil data</p></div>
+    <div class="card" style="padding:14px;background:#f7f6f0"><span class="metric">Phosphorus</span><strong style="font-size:22px">—</strong><p class="muted">Awaiting soil data</p></div>
+    <div class="card" style="padding:14px;background:#f7f6f0"><span class="metric">Potassium</span><strong style="font-size:22px">—</strong><p class="muted">Awaiting soil data</p></div>
+   </div><br>
+   <div class="adviceBanner"><b>Add a soil report to unlock the recommendation</b><br><span class="muted">AgriSense should calculate nutrient guidance from actual soil-test values, crop and regional recommendations.</span></div>
+   <button class="btn outline">Add Soil Report →</button>
+  </div>
+  <div class="card">
+   <h2>How it will work</h2>
+   <div class="plan"><div class="planIcon">1</div><div><b>Read soil values</b><br><span class="muted">N, P, K, pH and other available soil indicators.</span></div></div>
+   <div class="plan"><div class="planIcon">2</div><div><b>Match crop & region</b><br><span class="muted">Use crop requirement and regional guidance.</span></div></div>
+   <div class="plan"><div class="planIcon">3</div><div><b>Give practical guidance</b><br><span class="muted">Explain what to apply, why, and when—without guessing.</span></div></div>
+   <div class="disclaimer">Production recommendations should follow soil-test-based agronomy and verified agricultural guidance. Fertilizer quantities must come from the validated recommendation engine, not hard-coded demo values.</div>
+  </div>
+ </div>
+</section>
+
+<section id="regional" class="page">
+ <div class="sectionKicker">REGIONAL INTELLIGENCE</div><h1>Regional Crop Recommendation</h1>
+ <p class="sub">See what crops are commonly suitable for your region before the AI ranks your individual field.</p>
+ <div class="card">
+  <div class="between"><div><h2>Lucknow, Uttar Pradesh</h2><span class="muted">Regional profile · Current season: Kharif</span></div><button class="btn outline small" onclick="show('location')">Change Region</button></div><br>
+  <div class="grid three">
+   <div class="card"><span class="badge">Strong fit</span><h2 style="margin-top:13px">Rice</h2><p class="muted">Strong regional relevance. Final ranking should also consider field conditions.</p></div>
+   <div class="card"><span class="badge blue">Good fit</span><h2 style="margin-top:13px">Maize</h2><p class="muted">Potential option depending on local weather, soil and water availability.</p></div>
+   <div class="card"><span class="badge blue">Alternative</span><h2 style="margin-top:13px">Pulses</h2><p class="muted">Consider as an alternative where regional and field conditions support them.</p></div>
+  </div>
+ </div><br>
+ <div class="grid two">
+  <div class="card"><h2>Regional recommendation logic</h2><div class="signal"><div class="signalLeft"><div class="signalIcon green">⌖</div><div><b>Location</b><br><span class="muted">State → district → agro-climatic context</span></div></div></div><div class="signal"><div class="signalLeft"><div class="signalIcon yellow">◷</div><div><b>Season</b><br><span class="muted">Kharif / Rabi / Zaid growing window</span></div></div></div><div class="signal"><div class="signalLeft"><div class="signalIcon blue">☀</div><div><b>Weather</b><br><span class="muted">Current and forecast conditions</span></div></div></div></div>
+  <div class="card aiBox"><h2>Regional + field recommendation</h2><p class="muted">This layer should narrow the candidate crops first. The AI recommendation then ranks them using the individual field's available soil, weather and other inputs.</p><button class="btn" onclick="show('recommend')">Run Field Recommendation →</button></div>
+ </div>
+</section>
+
+<section id="season" class="page">
+ <div class="sectionKicker">CROP SEASON</div><h1>Season & Crop Window</h1>
+ <p class="sub">Know which growing season you are in and which crops fit the current regional window.</p>
+ <div class="grid three">
+  <div class="card" style="border-color:var(--olive);background:#f1f3eb"><span class="badge">Current</span><h2 style="margin-top:13px">Kharif</h2><p class="muted">Monsoon season. Regional crop choice depends on rainfall, irrigation, soil and sowing window.</p></div>
+  <div class="card"><span class="badge blue">Next</span><h2 style="margin-top:13px">Rabi</h2><p class="muted">Winter growing window. Recommendations should update as the sowing period approaches.</p></div>
+  <div class="card"><span class="badge">Later</span><h2 style="margin-top:13px">Zaid</h2><p class="muted">Short summer season. Water availability becomes especially important.</p></div>
+ </div><br>
+ <div class="card"><div class="between"><div><h2>Current decision</h2><p class="muted">For your selected region, AgriSense should combine the current season with local crop calendars before recommending crops.</p></div><span class="badge">Season-aware</span></div><div class="calendar" style="margin-top:18px"><div class="month active"><b>Jun</b><br>Kharif begins</div><div class="month active"><b>Jul</b><br>Sowing window</div><div class="month active"><b>Aug</b><br>Crop growth</div><div class="month"><b>Sep</b><br>Growth</div><div class="month"><b>Oct</b><br>Harvest planning</div><div class="month"><b>Nov</b><br>Rabi preparation</div></div></div>
+ <div class="disclaimer">Season dates shown here are interface examples. Production should use a validated state/district crop calendar and update it by region.</div>
+</section>
+
+<section id="settings" class="page"><h1>Settings</h1><p class="sub">Keep AgriSense simple and useful for you.</p><div class="grid two"><div class="card"><h2>Language</h2><p class="muted">Choose the language you are comfortable with.</p><button class="btn light">English + हिंदी</button></div><div class="card"><h2>Location</h2><p class="muted">Current field: Lucknow, Uttar Pradesh</p><button class="btn outline" onclick="show('location')">Change Location</button></div></div></section>
+
+<footer class="site-footer"><span>AgriSense</span><span>Decision support for better crop choices.</span></footer></div></main></div>
+<div class="toast" id="toast"></div>
+
+<script>
+const contexts={
+ dashboard:{title:'Overview',links:[['dashboard','Today'],['fields',''],['recommend','Crop Advice']]},
+ fields:{title:'',links:[['fields','Fields'],['location','Location']]},
+ recommend:{title:'Crop Advice',links:[['recommend','Best Crop'],['regional','Regional Fit'],['prediction','Prediction'],['fertilizer','Fertilizer'],['market','Market Value']]},
+ weather:{title:'Insights',links:[['weather','Weather'],['prediction','Prediction'],['fertilizer','Fertilizer'],['market','Market Value']]},
+ prediction:{title:'Insights',links:[['weather','Weather'],['prediction','Prediction'],['fertilizer','Fertilizer'],['market','Market Value']]},
+ fertilizer:{title:'Insights',links:[['weather','Weather'],['prediction','Prediction'],['fertilizer','Fertilizer'],['market','Market Value']]},
+ market:{title:'Insights',links:[['weather','Weather'],['prediction','Prediction'],['fertilizer','Fertilizer'],['market','Market Value']]},
+ regional:{title:'More',links:[['regional','Regional Crops'],['season','Season'],['history','History'],['alerts','Alerts']]},
+ season:{title:'More',links:[['regional','Regional Crops'],['season','Season'],['history','History'],['alerts','Alerts']]},
+ history:{title:'More',links:[['regional','Regional Crops'],['season','Season'],['history','History'],['alerts','Alerts']]},
+ alerts:{title:'More',links:[['regional','Regional Crops'],['season','Season'],['history','History'],['alerts','Alerts']]},
+ doctor:{title:'Crop Tools',links:[['doctor','Crop Doctor'],['care','Crop Care']]},
+ care:{title:'Crop Tools',links:[['doctor','Crop Doctor'],['care','Crop Care']]},
+ calendar:{title:'More',links:[['calendar','Crop Calendar'],['history','History']]},
+ schemes:{title:'More',links:[['schemes','Government Schemes'],['settings','Settings']]},
+ settings:{title:'More',links:[['schemes','Government Schemes'],['settings','Settings']]},
+ landing:{title:'AgriSense',links:[]}
+};
+function renderContext(id){
+ const c=contexts[id]||contexts.dashboard;
+ document.getElementById('contextTitle').textContent=c.title;
+ const box=document.getElementById('contextLinks');
+ box.innerHTML=c.links.map(([pid,label])=>`<button class="${pid===id?'active':''}" onclick="show('${pid}',this)">${label}</button>`).join('');
+ document.querySelectorAll('.topnav-link').forEach(b=>b.classList.remove('active'));
+ const map={dashboard:'dashboard',fields:'fields',recommend:'recommend',weather:'insights',prediction:'insights',fertilizer:'insights',market:'insights',regional:'more',season:'more',history:'more',alerts:'more',schemes:'more',settings:'more',calendar:'more',doctor:'more',care:'more'};
+ const target=map[id]||'dashboard';
+ document.querySelectorAll('.topnav-link').forEach(b=>{if((b.textContent||'').toLowerCase().includes(target==='insights'?'insights':target==='more'?'more':target==='fields'?'my farm':target==='recommend'?'crop advice':'overview'))b.classList.add('active')});
+}
+function show(id,btn){
+ document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active',p.id===id));
+ renderContext(id);
+ closeMenus();
+ window.scrollTo({top:0,behavior:'smooth'});
+}
+function toggleMenu(e,id){e.stopPropagation();const m=document.getElementById(id);document.querySelectorAll('.nav-menu').forEach(x=>{if(x!==m)x.classList.remove('open')});m.classList.toggle('open')}
+function closeMenus(){document.querySelectorAll('.nav-menu').forEach(x=>x.classList.remove('open'))}
+document.addEventListener('click',e=>{if(!e.target.closest('.nav-group'))closeMenus()});
+renderContext('dashboard');
+function selectLoc(el,label){
+ document.querySelectorAll('.locOption').forEach(x=>x.classList.remove('selected'));
+ el.classList.add('selected');
+ document.getElementById('manualLocation').style.display=label==='Choose Location'?'grid':'none';
+}
+function startAnalysis(){
+ show('analyzing');
+ setTimeout(()=>show('recommend'),900);
+}
+</script>
+
+<footer id="v14-footer" style="max-width:1340px;margin:0 auto;padding:0 30px 34px;color:#8a9089;font-size:9.5px;letter-spacing:.02em">
+  AgriSense · Decisions made clearer, one season at a time.
+</footer>
+</body>
+</html>

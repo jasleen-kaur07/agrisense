@@ -1,0 +1,19 @@
+# secrets / env
+.env
+.env.*
+!.env.example
+# python
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+# node
+node_modules/
+.next/
+# java
+target/
+# raw data: license unverified, not redistributed (see data/SOURCES.md)
+data/raw/
+# os / ide
+.DS_Store
+.idea/

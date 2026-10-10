@@ -1,0 +1,115 @@
+name: agrisense
+x-service-env: &internal
+  INTERNAL_API_TOKEN: ${INTERNAL_API_TOKEN:?set in .env}
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: agrisense
+      POSTGRES_USER: agrisense_admin
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set in .env}
+      IDENTITY_DB_PASSWORD: ${IDENTITY_DB_PASSWORD:?}
+      ADVISORY_DB_PASSWORD: ${ADVISORY_DB_PASSWORD:?}
+      DATA_DB_PASSWORD: ${DATA_DB_PASSWORD:?}
+      ML_DB_PASSWORD: ${ML_DB_PASSWORD:?}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./infra/postgres/01-init-schemas.sh:/docker-entrypoint-initdb.d/01-init-schemas.sh:ro
+    ports: ["127.0.0.1:5433:5432"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U agrisense_admin -d agrisense"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  identity-service:
+    build: ./services/identity-service
+    environment:
+      <<: *internal
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/agrisense?currentSchema=identity
+      SPRING_DATASOURCE_USERNAME: identity_svc
+      SPRING_DATASOURCE_PASSWORD: ${IDENTITY_DB_PASSWORD}
+      JWT_PRIVATE_KEY_PEM: ${JWT_PRIVATE_KEY_PEM:-}
+      COOKIE_SECURE: ${COOKIE_SECURE:-false}
+      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-http://localhost:3000}
+      MAIL_MODE: ${MAIL_MODE:-log}
+      ADMIN_BOOTSTRAP_EMAIL: ${ADMIN_BOOTSTRAP_EMAIL:-}
+      ADMIN_BOOTSTRAP_PASSWORD: ${ADMIN_BOOTSTRAP_PASSWORD:-}
+    depends_on: { postgres: { condition: service_healthy } }
+    healthcheck: &javahc
+      test: ["CMD-SHELL", "wget -qO- http://localhost:$$PORT/ready >/dev/null || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 40s
+
+  data-service:
+    build: ./services/data-service
+    environment:
+      <<: *internal
+      DATABASE_URL: postgresql+psycopg://data_svc:${DATA_DB_PASSWORD}@postgres:5432/agrisense
+      IDENTITY_JWKS_URL: http://identity-service:8081/.well-known/jwks.json
+      OPEN_METEO_BASE_URL: https://api.open-meteo.com
+      WEATHER_CACHE_TTL_CURRENT_MIN: "30"
+      WEATHER_CACHE_TTL_FORECAST_MIN: "180"
+    depends_on: { postgres: { condition: service_healthy } }
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request,sys; urllib.request.urlopen('http://localhost:8083/ready', timeout=3)"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 15s
+
+  ml-service:
+    build: ./services/ml-service
+    environment:
+      <<: *internal
+      ENABLE_MODEL1: ${ENABLE_MODEL1:-false}
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request,sys; urllib.request.urlopen('http://localhost:8084/health', timeout=3)"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 15s
+
+  farm-advisory-service:
+    build: ./services/farm-advisory-service
+    environment:
+      <<: *internal
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/agrisense?currentSchema=advisory
+      SPRING_DATASOURCE_USERNAME: advisory_svc
+      SPRING_DATASOURCE_PASSWORD: ${ADVISORY_DB_PASSWORD}
+      IDENTITY_JWKS_URL: http://identity-service:8081/.well-known/jwks.json
+      DATA_SERVICE_URL: http://data-service:8083
+      ML_SERVICE_URL: http://ml-service:8084
+    depends_on:
+      postgres: { condition: service_healthy }
+      data-service: { condition: service_healthy }
+      identity-service: { condition: service_healthy }
+    healthcheck: *javahc
+
+  gateway:
+    build: ./services/gateway
+    environment:
+      <<: *internal
+      IDENTITY_JWKS_URL: http://identity-service:8081/.well-known/jwks.json
+      IDENTITY_SERVICE_URL: http://identity-service:8081
+      FARM_ADVISORY_SERVICE_URL: http://farm-advisory-service:8082
+      DATA_SERVICE_URL: http://data-service:8083
+      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-http://localhost:3000}
+    depends_on:
+      identity-service: { condition: service_healthy }
+      farm-advisory-service: { condition: service_healthy }
+      data-service: { condition: service_healthy }
+    healthcheck: *javahc
+
+  web:
+    build: ./apps/web
+    environment:
+      GATEWAY_URL: http://gateway:8080
+    depends_on: { gateway: { condition: service_healthy } }
+    ports: ["3000:3000"]
+
+volumes:
+  pgdata:

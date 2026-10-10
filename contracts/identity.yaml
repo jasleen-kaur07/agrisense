@@ -1,0 +1,89 @@
+openapi: 3.0.3
+info: { title: AgriSense identity-service, version: 1.0.0, description: Accounts, sessions, farmer profile, user administration. See docs/architecture/conventions.md for cookie/CSRF/JWT rules. }
+servers: [{ url: http://identity-service:8081 }]
+paths:
+  /health: { get: { summary: Liveness, responses: { '200': { description: ok } } } }
+  /ready: { get: { summary: Readiness, responses: { '200': { description: ok }, '503': { description: not ready } } } }
+  /.well-known/jwks.json: { get: { summary: Public signing keys (internal), responses: { '200': { description: JWKS } } } }
+  /v1/auth/register:
+    post:
+      summary: Create a farmer account and sign in (sets cookies)
+      requestBody: { required: true, content: { application/json: { schema: { $ref: '#/components/schemas/RegisterRequest' } } } }
+      responses: { '201': { $ref: '#/components/responses/Session' }, '409': { $ref: '#/components/responses/Problem' }, '422': { $ref: '#/components/responses/Problem' }, '429': { $ref: '#/components/responses/Problem' } }
+  /v1/auth/login:
+    post:
+      summary: Sign in (sets cookies). Generic 401 on any failure.
+      requestBody: { required: true, content: { application/json: { schema: { $ref: '#/components/schemas/LoginRequest' } } } }
+      responses: { '200': { $ref: '#/components/responses/Session' }, '401': { $ref: '#/components/responses/Problem' }, '429': { $ref: '#/components/responses/Problem' } }
+  /v1/auth/refresh:
+    post:
+      summary: Rotate refresh token and issue a new access token (cookie based)
+      responses: { '204': { description: cookies rotated }, '401': { $ref: '#/components/responses/Problem' } }
+  /v1/auth/logout:
+    post: { summary: Revoke the refresh family and clear cookies, responses: { '204': { description: done } } }
+  /v1/auth/forgot:
+    post:
+      summary: Request a reset link. Always 202 whether or not the account exists.
+      requestBody: { required: true, content: { application/json: { schema: { type: object, required: [email], properties: { email: { type: string, format: email } } } } } }
+      responses: { '202': { description: accepted }, '429': { $ref: '#/components/responses/Problem' } }
+  /v1/auth/reset:
+    post:
+      summary: Set a new password with a single-use token (revokes all sessions)
+      requestBody: { required: true, content: { application/json: { schema: { type: object, required: [token, newPassword], properties: { token: { type: string }, newPassword: { type: string, minLength: 10 } } } } } }
+      responses: { '204': { description: password changed }, '400': { $ref: '#/components/responses/Problem' } }
+  /v1/auth/me:
+    get: { summary: Current user, responses: { '200': { description: ok, content: { application/json: { schema: { $ref: '#/components/schemas/User' } } } }, '401': { $ref: '#/components/responses/Problem' } } }
+  /v1/profile:
+    get: { summary: Farmer profile, responses: { '200': { description: ok, content: { application/json: { schema: { $ref: '#/components/schemas/Profile' } } } } } }
+    put:
+      summary: Update profile; onboardingCompleted=true ends onboarding. No soil data is ever required.
+      requestBody: { required: true, content: { application/json: { schema: { $ref: '#/components/schemas/ProfileUpdate' } } } }
+      responses: { '200': { description: ok, content: { application/json: { schema: { $ref: '#/components/schemas/Profile' } } } }, '422': { $ref: '#/components/responses/Problem' } }
+  /v1/admin/users:
+    get:
+      summary: List users (ADMIN)
+      parameters: [{ name: page, in: query, schema: { type: integer, default: 0 } }, { name: size, in: query, schema: { type: integer, default: 20, maximum: 100 } }, { name: q, in: query, schema: { type: string } }]
+      responses: { '200': { description: ok, content: { application/json: { schema: { $ref: '#/components/schemas/UserPage' } } } }, '403': { $ref: '#/components/responses/Problem' } }
+  /v1/admin/users/{id}:
+    patch:
+      summary: Enable/disable a user or change roles (ADMIN). Disabling revokes sessions.
+      parameters: [{ name: id, in: path, required: true, schema: { type: string, format: uuid } }]
+      requestBody: { required: true, content: { application/json: { schema: { type: object, properties: { enabled: { type: boolean }, roles: { type: array, items: { type: string, enum: [FARMER, ADMIN] } } } } } } }
+      responses: { '200': { description: ok, content: { application/json: { schema: { $ref: '#/components/schemas/User' } } } }, '403': { $ref: '#/components/responses/Problem' }, '404': { $ref: '#/components/responses/Problem' } }
+components:
+  responses:
+    Problem: { description: problem+json, content: { application/problem+json: { schema: { $ref: '#/components/schemas/Problem' } } } }
+    Session:
+      description: Sets as_access, as_refresh and as_csrf cookies; body is the user
+      content: { application/json: { schema: { $ref: '#/components/schemas/User' } } }
+  schemas:
+    RegisterRequest:
+      type: object
+      required: [email, password]
+      properties: { email: { type: string, format: email }, password: { type: string, minLength: 10, maxLength: 128 }, displayName: { type: string, maxLength: 80 }, language: { type: string, enum: [en, hi], default: en } }
+    LoginRequest: { type: object, required: [email, password], properties: { email: { type: string, format: email }, password: { type: string } } }
+    User:
+      type: object
+      required: [id, email, roles, language, onboardingCompleted, enabled]
+      properties: { id: { type: string, format: uuid }, email: { type: string }, displayName: { type: string, nullable: true }, roles: { type: array, items: { type: string } }, language: { type: string, enum: [en, hi] }, onboardingCompleted: { type: boolean }, enabled: { type: boolean }, createdAt: { type: string, format: date-time } }
+    Profile:
+      type: object
+      required: [displayName, language, onboardingCompleted]
+      properties:
+        displayName: { type: string, nullable: true }
+        language: { type: string, enum: [en, hi] }
+        experienceLevel: { type: string, enum: [BEGINNER, INTERMEDIATE, EXPERIENCED], nullable: true }
+        preferredStateKey: { type: string, nullable: true }
+        preferredDistrictKey: { type: string, nullable: true }
+        onboardingCompleted: { type: boolean }
+    ProfileUpdate:
+      type: object
+      properties:
+        displayName: { type: string, maxLength: 80 }
+        language: { type: string, enum: [en, hi] }
+        experienceLevel: { type: string, enum: [BEGINNER, INTERMEDIATE, EXPERIENCED] }
+        preferredStateKey: { type: string }
+        preferredDistrictKey: { type: string }
+        onboardingCompleted: { type: boolean }
+    UserPage: { type: object, properties: { items: { type: array, items: { $ref: '#/components/schemas/User' } }, page: { type: integer }, size: { type: integer }, totalItems: { type: integer }, totalPages: { type: integer } } }
+    Problem: { type: object, required: [type, title, status], properties: { type: { type: string }, title: { type: string }, status: { type: integer }, detail: { type: string }, instance: { type: string }, traceId: { type: string }, errors: { type: array, items: { type: object, properties: { field: { type: string }, message: { type: string } } } } } }
