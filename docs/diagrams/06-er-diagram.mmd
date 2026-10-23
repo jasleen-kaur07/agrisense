@@ -1,0 +1,102 @@
+erDiagram
+    USERS ||--o{ USER_ROLES : has
+    USERS ||--o{ REFRESH_TOKENS : owns
+    USERS ||--o{ PASSWORD_RESET_TOKENS : requests
+    USERS ||--o{ FARMS : "owns (logical)"
+    USERS ||--o{ FEEDBACK : "writes (logical)"
+    FARMS ||--o{ FIELDS : contains
+    FARMS ||--o{ ALERTS : "raises"
+    FIELDS ||--o{ RECOMMENDATIONS : "gets"
+    FIELDS ||--o{ ALERTS : "about"
+    RECOMMENDATIONS ||--o{ IDEMPOTENCY_KEYS : "deduplicated by"
+    USERS {
+        uuid id PK
+        varchar email UK
+        varchar password_hash
+        varchar display_name
+        varchar language
+        varchar experience_level
+        varchar preferred_state_key
+        varchar preferred_district_key
+        boolean onboarding_completed
+        boolean enabled
+        int token_version
+        timestamptz created_at
+    }
+    USER_ROLES {
+        uuid user_id FK
+        varchar role
+    }
+    REFRESH_TOKENS {
+        uuid id PK
+        uuid user_id FK
+        uuid family_id
+        char token_hash
+        timestamptz expires_at
+        timestamptz absolute_expires_at
+        boolean used
+        boolean revoked
+    }
+    PASSWORD_RESET_TOKENS {
+        uuid id PK
+        uuid user_id FK
+        char token_hash
+        timestamptz expires_at
+        timestamptz used_at
+    }
+    FARMS {
+        uuid id PK
+        uuid owner_id
+        varchar name
+        varchar state_key
+        varchar district_key
+        double latitude
+        double longitude
+    }
+    FIELDS {
+        uuid id PK
+        uuid farm_id FK
+        uuid owner_id
+        varchar name
+        numeric area_acres
+        numeric soil_n
+        numeric soil_p
+        numeric soil_k
+        numeric soil_ph
+        date soil_tested_on
+    }
+    RECOMMENDATIONS {
+        uuid id PK
+        uuid owner_id
+        uuid field_id FK
+        varchar kind
+        varchar season
+        jsonb regional_json
+        jsonb weather_json
+        jsonb limitations
+        timestamptz created_at
+    }
+    ALERTS {
+        uuid id PK
+        uuid owner_id
+        uuid farm_id FK
+        uuid field_id FK
+        varchar type
+        varchar severity
+        varchar title
+        text message
+        varchar dedupe_key
+        timestamptz read_at
+    }
+    FEEDBACK {
+        uuid id PK
+        uuid owner_id
+        varchar category
+        varchar message
+        int rating
+    }
+    IDEMPOTENCY_KEYS {
+        uuid owner_id
+        uuid key
+        uuid recommendation_id FK
+    }

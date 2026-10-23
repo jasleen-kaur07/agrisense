@@ -1,5 +1,8 @@
-import "@testing-library/jest-dom/vitest";
-import { cleanup } from "@testing-library/react";
 import { afterEach } from "vitest";
 
-afterEach(() => cleanup());
+afterEach(() => {
+  document.body.innerHTML = "";
+});
+
+// jsdom does not implement scrolling; the router calls it on every navigation.
+window.scrollTo = () => undefined;

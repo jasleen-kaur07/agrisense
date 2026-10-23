@@ -1,0 +1,146 @@
+@import "@fontsource-variable/inter";
+@import "@fontsource-variable/newsreader";
+@import "tailwindcss";
+
+/*
+ * AgriSense design tokens, extracted from design-refs/AgriSense_V14 (final
+ * :root override). Text-bearing variants (-ink) are darkened to meet WCAG AA
+ * on their paired backgrounds. See README "Design tokens".
+ */
+:root {
+  --paper: #f4f0e7;
+  --surface: #fffdf8;
+  --surface2: #ece8dc;
+  --ink: #252b28;
+  --ink2: #46504a;
+  --muted: #5f6760;
+  --forest: #19342d;
+  --forest2: #27473d;
+  --olive: #6f7f50;
+  --olive-ink: #52623a;
+  --sage: #dfe4d5;
+  --sage2: #edf0e7;
+  --terracotta: #b96e51;
+  --terracotta-ink: #8f4a30;
+  --terracotta-soft: #eedbd0;
+  --ochre: #b99a59;
+  --ochre-ink: #6f5a22;
+  --ochre-soft: #eee5cf;
+  --blue: #708c94;
+  --blue-ink: #3f5a62;
+  --blue-soft: #dde7e8;
+  --line: #dcd8cd;
+  --line-dark: #c7c3b8;
+}
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-surface: var(--surface);
+  --color-surface2: var(--surface2);
+  --color-ink: var(--ink);
+  --color-ink2: var(--ink2);
+  --color-muted: var(--muted);
+  --color-forest: var(--forest);
+  --color-forest2: var(--forest2);
+  --color-olive: var(--olive);
+  --color-olive-ink: var(--olive-ink);
+  --color-sage: var(--sage);
+  --color-sage2: var(--sage2);
+  --color-terracotta: var(--terracotta);
+  --color-terracotta-ink: var(--terracotta-ink);
+  --color-terracotta-soft: var(--terracotta-soft);
+  --color-ochre: var(--ochre);
+  --color-ochre-ink: var(--ochre-ink);
+  --color-ochre-soft: var(--ochre-soft);
+  --color-blue: var(--blue);
+  --color-blue-ink: var(--blue-ink);
+  --color-blue-soft: var(--blue-soft);
+  --color-line: var(--line);
+  --color-line-dark: var(--line-dark);
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, -apple-system, "Segoe UI", "Noto Sans Devanagari", sans-serif;
+  --font-serif: "Newsreader Variable", Georgia, "Times New Roman", "Noto Serif Devanagari", serif;
+}
+
+html {
+  background: var(--paper);
+}
+
+body {
+  overflow-x: clip;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  letter-spacing: -0.005em;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  color: var(--forest);
+  letter-spacing: -0.02em;
+}
+
+:focus-visible {
+  outline: 3px solid var(--olive-ink);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.on-dark :focus-visible {
+  outline-color: #f4f0e7;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@keyframes as-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.45; }
+}
+.skeleton {
+  background: var(--surface2);
+  border-radius: 6px;
+  animation: as-pulse 1.6s ease-in-out infinite;
+}
+@keyframes as-spin { to { transform: rotate(360deg); } }
+.spin { animation: as-spin 1s linear infinite; }
+
+/* ---- Professional polish layer ---- */
+:root {
+  --shadow-card: 0 1px 2px rgba(25, 52, 45, 0.05), 0 6px 20px -10px rgba(25, 52, 45, 0.18);
+  --shadow-lift: 0 2px 4px rgba(25, 52, 45, 0.06), 0 16px 32px -16px rgba(25, 52, 45, 0.28);
+}
+.hero-bg {
+  position: relative;
+  isolation: isolate;
+}
+.hero-bg::before {
+  content: "";
+  position: absolute;
+  inset: 0 calc(50% - 50vw);
+  z-index: -1;
+  background:
+    radial-gradient(60rem 28rem at 85% -10%, rgba(111, 127, 80, 0.22), transparent 60%),
+    radial-gradient(40rem 24rem at -5% 10%, rgba(185, 154, 89, 0.18), transparent 60%),
+    linear-gradient(180deg, var(--surface) 0%, var(--paper) 100%);
+}
+.dot-grid {
+  background-image: radial-gradient(rgba(25, 52, 45, 0.16) 1px, transparent 1px);
+  background-size: 18px 18px;
+}
+.card-lift {
+  box-shadow: var(--shadow-card);
+  transition: box-shadow 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+}
+.card-lift:hover {
+  box-shadow: var(--shadow-lift);
+  transform: translateY(-2px);
+  border-color: var(--line-dark);
+}

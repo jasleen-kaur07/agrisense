@@ -25,7 +25,7 @@ spring:
             - id: farm-advisory
               uri: ${FARM_ADVISORY_SERVICE_URL:http://localhost:8082}
               predicates:
-                - Path=/api/v1/farms/**,/api/v1/fields/**,/api/v1/recommendations/**,/api/v1/plans/**,/api/v1/alerts/**,/api/v1/feedback/**,/api/v1/admin/recommendations/**,/api/v1/admin/feedback/**,/api/v1/admin/stats/**
+                - Path=/api/v1/farms/**,/api/v1/fields/**,/api/v1/recommendations/**,/api/v1/predictions/**,/api/v1/plans/**,/api/v1/alerts/**,/api/v1/feedback/**,/api/v1/admin/recommendations/**,/api/v1/admin/feedback/**,/api/v1/admin/stats/**
               filters:
                 - StripPrefix=1
             - id: data

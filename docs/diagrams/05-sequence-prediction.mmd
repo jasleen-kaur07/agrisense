@@ -1,0 +1,18 @@
+sequenceDiagram
+    autonumber
+    actor U as Farmer
+    participant W as Web app
+    participant G as Gateway
+    participant A as Farm-advisory service
+    participant M as ML service
+    U->>W: Enter N, P, K, temperature, humidity, pH, rainfall
+    W->>W: Validate required values and ranges
+    W->>G: POST /api/v1/predictions/crop
+    G->>A: Forward (JWT validated)
+    A->>M: POST /internal/v1/model1/predict (X-Internal-Token)
+    M->>M: Range check, MinMax scale, Random Forest vote
+    M->>M: SHAP factors for top 3 crops
+    M-->>A: Top 3 crops, model score, factors, limitations
+    A-->>G: 200 (nothing is stored)
+    G-->>W: Response
+    W-->>U: Show results labelled experimental, not a probability

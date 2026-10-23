@@ -187,7 +187,7 @@ class GatewayIntegrationTest {
             assertThat(IDENTITY.last().path()).isEqualTo(p.substring(4));
         }
         for (String p : List.of("/api/v1/farms/1/fields", "/api/v1/fields/2/soil", "/api/v1/recommendations/3",
-                "/api/v1/alerts", "/api/v1/feedback")) {
+                "/api/v1/alerts", "/api/v1/feedback", "/api/v1/predictions/crop")) {
             client.get().uri(p).cookie("as_access", jwt).exchange().expectStatus().isOk();
             assertThat(FARM.last().path()).isEqualTo(p.substring(4));
         }

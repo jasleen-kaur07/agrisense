@@ -1,88 +1,104 @@
 # AgriSense web
 
-Next.js 16 (App Router) + TypeScript (strict) + Tailwind v4 PWA. It talks only to the public API
-contracts (`contracts/identity.yaml`, `farm-advisory.yaml`, `data.yaml`) under `/api/v1`.
+Vue 3 (script setup) + TypeScript (strict) + Vite + Vue Router 4 (history mode) + Pinia + Tailwind CSS v4 + vue-i18n +
+Zod, served in production by nginx (static files + `/api/*` reverse proxy). It talks only to the public API contracts
+(`contracts/*.yaml`) under `/api/v1`.
+
+`apps/web-next-legacy` is the **retired Next.js reference implementation** (read-only, not built, not tested in CI).
+This app ports its behaviour, wording and look 1:1.
 
 ## Scripts
 
 | Command | What it does |
 |---|---|
-| `npm run dev` | dev server on :3000 (`GATEWAY_URL` default `http://localhost:8080`) |
-| `npm run build` / `npm start` | production build (standalone output) |
-| `npm run lint` / `npm run typecheck` | ESLint / `tsc --noEmit` |
-| `npm test` | Vitest + Testing Library unit tests |
-| `npm run e2e` | build, then Playwright (desktop + mobile) against the **DEMO mock API** |
-| `npm run mock-api` | start the DEMO mock API alone on :8090 (`MOCK_PORT`, `MOCK_HOST`) |
-| `npm run icons` | regenerate PNG icons from the leaf mark (needs `sharp`) |
+| `npm run dev` | Vite dev server on :3000, `/api` proxied to `GATEWAY_URL` (default `http://localhost:8080`) |
+| `npm run build` / `npm run preview` | `vue-tsc` + production build into `dist/`; preview serves it (also proxies `/api`) |
+| `npm run lint` / `npm run typecheck` | ESLint (typescript-eslint + eslint-plugin-vue) / `vue-tsc` (app and node configs) |
+| `npm test` | Vitest + Vue Test Utils unit tests |
+| `npm run e2e` | build, then Playwright (desktop + mobile) against the **DEMO mock API** (preview on :3100, mock on :8090) |
+| `npx playwright test -c playwright.real.config.ts` | browser suite against the **real stack** at `http://localhost:3000` (`WEB_URL` to override) |
+| `npm run test:nginx` | builds the image and tests the nginx config against a fake gateway (both X-Forwarded-For modes) |
+| `npm run mock-api` | DEMO mock API alone on :8090 (`MOCK_PORT`, `MOCK_HOST`) |
+| `npm run icons` | regenerate PNG icons (needs `sharp`) |
 
 First time: `npx playwright install chromium`.
 
 ## Running
 
-Against the mock (no backend needed):
+Against the mock (no backend):
 
 ```
-npm run mock-api &                      # DEMO data, port 8090
+npm run mock-api &                       # DEMO data on :8090
 GATEWAY_URL=http://127.0.0.1:8090 npm run dev
 ```
-Register any email (use `admin@demo.test` to get the ADMIN role). Mock records are labelled DEMO and live only in `tests/mock-api`, which is excluded from the Docker image and the bundle.
+Register any email (`admin@demo.test` gets ADMIN). Mock records are labelled DEMO and live only in `tests/mock-api`, which is
+not part of the bundle or the image (`.dockerignore`).
 
-Against the real gateway: `GATEWAY_URL=http://localhost:8080 npm run dev` (or set it in the container environment).
+Against the real gateway: `npm run dev` (gateway on `http://localhost:8080`), or from the repo root
+`docker compose up -d --build --no-deps web` (use `--no-deps` to leave the other services untouched) and open http://localhost:3000.
 
-Docker: `docker build -t agrisense-web .` then `docker run -p 3000:3000 -e GATEWAY_URL=http://gateway:8080 agrisense-web`.
-The build downloads Google Fonts (Inter, Newsreader) through `next/font`, so it needs network access.
+## nginx proxy (production image)
 
-## API proxy
+`Dockerfile`: node:24-alpine build, then `nginxinc/nginx-unprivileged` serving `dist/` on port **3000**.
+`nginx/default.conf.template` is rendered at container start (envsubst):
 
-`app/api/[...path]/route.ts` (logic in `lib/proxy.ts`) forwards `/api/*` to `${GATEWAY_URL}/api/*` per request, so
-`GATEWAY_URL` is runtime configuration (Next rewrites would freeze it at build time). It forwards the `Cookie`, `Origin`,
-`X-CSRF-Token`, `Idempotency-Key` headers and every `Set-Cookie` separately, never caches, strips `X-Internal-Token`, and
-returns a 503 problem+json if the gateway is unreachable.
+| Env | Default | Meaning |
+|---|---|---|
+| `GATEWAY_URL` | `http://gateway:8080` | where `/api/*` is proxied (no path; DNS is re-resolved, so gateway restarts are fine) |
+| `TRUST_CLIENT_FORWARDED_FOR` | `false` | see below |
 
-## Auth model (browser)
+`/api/`: forwards Cookie, Origin, X-CSRF-Token, Idempotency-Key, X-Request-ID; passes every Set-Cookie; strips client
+`X-Internal-Token`, `X-Client-IP`, `X-User-*`; sets X-Forwarded-Proto/Host; `Cache-Control: no-store`; 1 MB body limit;
+a failed upstream becomes a 503 `application/problem+json`. SPA fallback via `try_files`; `/sw.js`, `/index.html`,
+`/manifest.webmanifest`, `/offline.html` are `no-cache`; `/assets/*` is immutable. Security headers: nosniff, Referrer-Policy,
+X-Frame-Options DENY, Permissions-Policy (geolocation allowed for the origin), and a strict CSP (no inline script/style, no eval).
 
-The app never stores tokens. `as_access`/`as_refresh` are HttpOnly (set by the backend); the client reads the
-non-HttpOnly `as_csrf` cookie and sends it as `X-CSRF-Token` on POST/PUT/PATCH/DELETE (except login/register/forgot/reset).
-On a 401 for any other call `lib/api/client.ts` does one shared `POST /auth/refresh` and retries once, then redirects to
-`/login?next=...`. `proxy.ts` (Next 16's middleware) only checks that an auth cookie exists (UX). Because `as_refresh` is scoped
-to `/api/v1/auth`, page requests only see `as_access`; when it has expired the login page makes one silent session resume
-attempt (only when `?next=` is present) before showing the form. The Admin nav item is UX only; the backend enforces ADMIN.
+**X-Forwarded-For modes.** The gateway keys its per-IP rate limits on X-Forwarded-For, so nginx is the trusted proxy:
+
+- `TRUST_CLIENT_FORWARDED_FOR=false` (image default, production): the header is **overwritten** with `$remote_addr`.
+- `TRUST_CLIENT_FORWARDED_FOR=true` (set in `docker-compose.yml` for local/test only): the client's header is passed through,
+  so a test machine can simulate many visitors (the real-stack specs set a per-visitor header). Production must keep `false`
+  and put a trusted proxy in front.
+
+Switch modes by restarting the container with the other value. `npm run test:nginx` demonstrates both with curl.
 
 ## Structure
 
 ```
-app/            routes: (public) landing/auth, (app) authenticated pages, api/[...path] proxy, manifest
-components/     ui primitives, layout (shells, nav), data (loading/error/empty), weather, advice, location
-features/       auth, onboarding, farms, advice, overview, insights, more, settings, admin, marketing
-lib/            api client + typed endpoints, i18n, proxy, hooks, format
-messages/       en.json, hi.json (hi needs native-speaker review)
-public/         sw.js, offline.html, icons
-tests/          unit (Vitest), e2e (Playwright), mock-api (DEMO server)
+src/main.ts, App.vue        bootstrap, app-level error boundary
+src/router/                 routes (same URLs as the Next app), global auth guard, document titles
+src/stores/                 Pinia: session (GET /auth/me, once per page load), locale (EN/HI)
+src/lib/api/                client (CSRF, one silent refresh + retry, problem+json), typed endpoints, types, errors
+src/lib/query.ts, form.ts   small server-state helper (cache, invalidate, mutations) and Zod form helper
+src/composables/            shared queries (profile, farms, fields, season, home location)
+src/i18n/                   vue-i18n setup, messages/en.json + hi.json (hi needs native-speaker review)
+src/components/             ui primitives, layout shells, data states, weather, advice, location
+src/features/               auth, onboarding, farms, advice, overview, insights, marketing, more, settings, admin
+src/views/                  thin route views (auth, landing, 404, error)
+src/assets/main.css         Tailwind v4 + design tokens
+public/                     sw.js, offline.html, manifest.webmanifest, icons
+tests/                      unit (Vitest), e2e (mock API), e2e-real (real stack), mock-api (DEMO server)
+nginx/, Dockerfile          production serving and proxy
 ```
-No agricultural logic lives in components: they render what the API returns (ranks, percentages, caveats, season rule).
+No agricultural logic lives in components: they render what the API returns.
 
-## i18n
+## Auth model
 
-Hand-rolled (`lib/i18n`). All user-visible strings are in `messages/*.json`; `tests/unit/i18n.test.ts` checks key parity,
-placeholders, and that every literal `t("key")` exists. Choice is kept in the `as_lang` cookie (+ localStorage fallback) and,
-when signed in, saved with `PUT /profile`. Crop names, season rule text, caveats and alerts come from the API and are not translated.
+Tokens are HttpOnly cookies, so the SPA cannot read them. The router guard awaits the session store, which calls
+`GET /auth/me` once per page load (the API client does one shared `POST /auth/refresh` and retries on 401). Signed-out
+users go to `/login?next=...`, signed-in users skip `/login` and `/register`, unfinished onboarding redirects to `/onboarding`,
+`/admin` needs the ADMIN role (UX only; the backend enforces it). CSRF: the readable `as_csrf` cookie is sent as
+`X-CSRF-Token` on POST/PUT/PATCH/DELETE except login/register/forgot/reset. Visitors without an `as_csrf` cookie cannot
+have a session, so `/login` and `/register` make no request for them.
 
 ## PWA
 
-`app/manifest.ts`, icons in `public/icons` (SVG, 192/512, maskable), hand-written `public/sw.js`. The worker precaches only
-`/offline.html`, icons and the manifest, caches `/_next/static/*` and `/icons/*` after first use, and serves `/offline.html`
-when a navigation fails. It never touches `/api/*` and never stores any HTML or data. This is not full offline support:
-data screens need a connection and show an offline state.
+`public/sw.js` (registered in production only) precaches `/offline.html`, icons and the manifest, runtime-caches `/assets/*`
+and `/icons/*`, serves `/offline.html` when a navigation fails, and never touches `/api/*` or stores HTML. This is not
+full offline support. Page titles and `<html lang>` follow the selected language.
 
 ## Design tokens
 
-Extracted from `design-refs/AgriSense_V14...html` (final `:root` override) into `app/globals.css`:
-paper `#f4f0e7`, surface `#fffdf8`, ink `#252b28`, forest `#19342d`, olive `#6f7f50`, terracotta `#b96e51`, ochre `#b99a59`,
-dusty blue `#708c94` (weather), line `#dcd8cd`. Text-bearing accents use darker `-ink` variants (olive-ink `#52623a`,
-terracotta-ink `#8f4a30`, ochre-ink `#6f5a22`, blue-ink `#3f5a62`, muted `#5f6760`) so pairs meet WCAG AA (checked: 4.5:1 or better).
-Headings use Newsreader (serif), body Inter; borders instead of shadows. The design file's demo values are never used.
-
-## Deviations / notes
-
-- Admin feedback response shape is unspecified in the contract; the admin page accepts an array or a page object.
-- GPS (`GET /locations/nearest`) is opt-in by explicit button click in onboarding and the farm form; coordinates are not stored.
+From `design-refs/AgriSense_V14...html`, in `src/assets/main.css`: paper `#f4f0e7`, surface `#fffdf8`, ink `#252b28`,
+forest `#19342d`, olive `#6f7f50`, terracotta `#b96e51`, ochre `#b99a59`, dusty blue `#708c94`, line `#dcd8cd`; darker `-ink`
+variants for text (WCAG AA). Fonts are self-hosted via `@fontsource-variable/inter` and `@fontsource-variable/newsreader`.

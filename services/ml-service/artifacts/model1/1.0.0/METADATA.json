@@ -1,7 +1,7 @@
 {
   "name": "model1-rf",
   "version": "1.0.0",
-  "status": "EXPERIMENTAL_DISABLED_FOR_USERS",
+  "status": "EXPERIMENTAL_USER_VISIBLE",
   "framework": "scikit-learn 1.9.0 RandomForestClassifier (100 trees)",
   "files": {
     "model.pkl": "9ce1ebbd1066fc90e7cfe9dfcc860989acf337c4e372801d7f5107a4f5d46502",

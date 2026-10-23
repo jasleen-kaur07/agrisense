@@ -1,0 +1,23 @@
+sequenceDiagram
+    autonumber
+    actor U as Farmer
+    participant W as Web app
+    participant G as Gateway
+    participant A as Farm-advisory service
+    participant D as Data service
+    participant O as Open-Meteo
+    U->>W: Choose field and season, press Start
+    W->>G: POST /api/v1/recommendations (cookie, X-CSRF-Token, Origin)
+    G->>G: Validate JWT (JWKS), CSRF, Origin, cookie to Bearer
+    G->>A: Forward with Authorization and X-Request-ID
+    A->>A: Load field and farm, check ownership
+    A->>D: GET /v1/regional/guide (X-Internal-Token)
+    D-->>A: Ranked crops by historical prevalence
+    A->>D: GET /v1/weather
+    D->>O: Fetch forecast (or serve cached)
+    O-->>D: Weather data
+    D-->>A: LIVE, CACHED or UNAVAILABLE + data
+    A->>A: Save recommendation (guide + weather snapshot)
+    A-->>G: 201 recommendation
+    G-->>W: Response
+    W-->>U: Show guide, weather status and limits

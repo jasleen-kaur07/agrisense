@@ -1,0 +1,37 @@
+flowchart TB
+    F(["Farmer"])
+    AD(["Admin"])
+    OM(["Open-Meteo"])
+    P1(("1.0<br/>Authenticate"))
+    P2(("2.0<br/>Manage farms<br/>and fields"))
+    P3(("3.0<br/>Generate<br/>crop guide"))
+    P4(("4.0<br/>Get weather"))
+    P5(("5.0<br/>Predict crop<br/>(experimental)"))
+    P6(("6.0<br/>Raise alerts"))
+    P7(("7.0<br/>Administer"))
+    DS1[("D1 Users and tokens")]
+    DS2[("D2 Farms, fields, alerts")]
+    DS3[("D3 Recommendations")]
+    DS4[("D4 Crop datasets<br/>and gazetteer")]
+    DS5[("D5 Weather cache")]
+    F -->|"credentials"| P1
+    P1 <--> DS1
+    F -->|"farm and field data"| P2
+    P2 <--> DS2
+    F -->|"field + season"| P3
+    P3 --> DS3
+    DS4 --> P3
+    P3 -->|"crop guide"| F
+    P3 --> P4
+    P4 <-->|"request / data"| OM
+    P4 <--> DS5
+    P4 -->|"weather"| F
+    F -->|"seven soil and weather values"| P5
+    P5 -->|"model score and factors"| F
+    DS2 --> P6
+    DS5 --> P6
+    P6 --> DS2
+    P6 -->|"alerts"| F
+    AD -->|"admin requests"| P7
+    P7 <--> DS1
+    P7 <--> DS3

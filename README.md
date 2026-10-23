@@ -7,7 +7,7 @@ It is **not** a crop-suitability or yield prediction.
 ## Architecture (polyglot, synchronous REST)
 
 ```
-browser -> web (Next.js PWA, /api proxy) -> gateway (Spring Cloud Gateway)
+browser -> web (Vue 3 SPA PWA served by nginx, /api proxy) -> gateway (Spring Cloud Gateway)
               -> identity-service (Spring Boot)       schema identity
               -> farm-advisory-service (Spring Boot)  schema advisory  -> data-service, ml-service
               -> data-service (FastAPI)               schema data      -> Open-Meteo
@@ -34,8 +34,10 @@ Per-service tests (see each service README): `mvn verify` (Java), `pytest` (Pyth
 ## What is deliberately not here
 
 No irrigation module, Crop Doctor, Crop Care, yield prediction, fertilizer dosage or market prices.
-Model 1 (soil-test) exists for validation only and is disabled for users (`ENABLE_MODEL1=false`) until its
-inputs, units and rainfall definition are verified (`docs/ml/rainfall-definition.md`).
+Model 1 (soil-test) is shown only as an **experimental** Crop Prediction page (Insights menu). Its inputs, units and rainfall
+definition are unverified (`docs/ml/rainfall-definition.md`), so every value is typed by the user, results carry a
+"model score" (not a probability) and an experimental label, and it is never mixed into the Regional Crop Guide.
+Set `ENABLE_MODEL1=false` to switch it off.
 
 ## Status
 

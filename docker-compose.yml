@@ -109,10 +109,18 @@ services:
     build: ./apps/web
     environment:
       GATEWAY_URL: http://gateway:8080
-      # Local default. In production put a trusted reverse proxy in front that OVERWRITES X-Forwarded-For.
-      TRUST_FORWARDED_FOR: ${TRUST_FORWARDED_FOR:-true}
+      # LOCAL/TEST ONLY. true = nginx passes the client's X-Forwarded-For through to the gateway (the gateway keys its
+      # per-IP rate limits on it), which lets a test machine simulate many visitors. Production MUST set false (the
+      # default of the image) and put a trusted proxy in front that overwrites X-Forwarded-For.
+      TRUST_CLIENT_FORWARDED_FOR: ${TRUST_CLIENT_FORWARDED_FOR:-true}
     depends_on: { gateway: { condition: service_healthy } }
     ports: ["3000:3000"]
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:3000/healthz"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
 
 volumes:
   pgdata:

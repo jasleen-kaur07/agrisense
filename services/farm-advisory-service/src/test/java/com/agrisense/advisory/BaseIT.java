@@ -59,6 +59,9 @@ abstract class BaseIT {
         r.add("advisory.data.internal-token", () -> INTERNAL);
         r.add("advisory.data.read-timeout-ms", () -> "1500");
         r.add("advisory.data.cb-min-calls", () -> "100000");
+        r.add("advisory.ml.url", WM::baseUrl);
+        r.add("advisory.ml.internal-token", () -> INTERNAL);
+        r.add("advisory.ml.read-timeout-ms", () -> "1500");
         r.add("advisory.security.jwks-url", () -> WM.baseUrl() + "/jwks.json");
         r.add("advisory.alerts.enabled", () -> "false");
     }

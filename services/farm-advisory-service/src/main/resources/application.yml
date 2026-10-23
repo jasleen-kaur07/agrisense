@@ -36,6 +36,11 @@ advisory:
     cb-min-calls: 10
     cb-failure-rate: 50
     cb-open-seconds: 30
+  ml:
+    url: ${ML_SERVICE_URL:http://ml-service:8084}
+    internal-token: ${INTERNAL_API_TOKEN:}
+    connect-timeout-ms: 2000
+    read-timeout-ms: 8000
   alerts:
     enabled: ${ALERTS_ENABLED:true}
     interval-ms: ${ALERTS_INTERVAL_MS:3600000}

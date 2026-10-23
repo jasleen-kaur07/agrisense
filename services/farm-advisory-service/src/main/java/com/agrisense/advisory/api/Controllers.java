@@ -1,6 +1,7 @@
 package com.agrisense.advisory.api;
 
 import com.agrisense.advisory.api.Dto.*;
+import com.agrisense.advisory.client.MlClient;
 import com.agrisense.advisory.domain.Feedback;
 import com.agrisense.advisory.domain.Repos.*;
 import com.agrisense.advisory.service.*;
@@ -8,6 +9,8 @@ import com.agrisense.advisory.web.Auth;
 import com.agrisense.advisory.web.PageResponse;
 import jakarta.validation.Valid;
 import java.time.Instant;
+import com.fasterxml.jackson.databind.JsonNode;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -134,6 +137,27 @@ public final class Controllers {
         @PostMapping("/{id}/plan") ActionPlan plan(@AuthenticationPrincipal Jwt jwt, @PathVariable UUID id,
                 @Valid @RequestBody PlanRequest req) {
             return recs.plan(Auth.userId(jwt), id, req.crop());
+        }
+    }
+
+    @RestController
+    @RequestMapping("/v1/predictions")
+    public static class PredictionController {
+        private final MlClient ml;
+
+        public PredictionController(MlClient ml) { this.ml = ml; }
+
+        /** Experimental soil-test crop prediction (Model 1). Stateless: inputs are not stored. */
+        @PostMapping("/crop") JsonNode crop(@Valid @RequestBody CropPredictionRequest req) {
+            Map<String, Double> features = new LinkedHashMap<>();
+            features.put("N", req.nitrogen());
+            features.put("P", req.phosphorus());
+            features.put("K", req.potassium());
+            features.put("temperature", req.temperature());
+            features.put("humidity", req.humidity());
+            features.put("ph", req.ph());
+            features.put("rainfall", req.rainfall());
+            return ml.predictCrop(features);
         }
     }
 

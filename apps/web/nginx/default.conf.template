@@ -1,0 +1,154 @@
+# AgriSense web: static SPA + reverse proxy for /api/*.
+# Rendered by the nginx image entrypoint (envsubst). Substituted variables:
+#   GATEWAY_URL                 base URL of the API gateway, default http://gateway:8080 (no path)
+#   TRUST_CLIENT_FORWARDED_FOR  "true" = pass the client's X-Forwarded-For through (local/test only), default "false"
+#   NGINX_LOCAL_RESOLVERS       set by the image from /etc/resolv.conf (Docker's DNS in Compose)
+# Everything written $like_this and not listed above is an nginx variable and is left alone.
+
+# Gateway base URL without trailing slashes (a trailing slash would change how nginx builds the upstream URI).
+map "${GATEWAY_URL}" $gateway_base {
+    "~^(?<base>.*?)/*$" $base;
+}
+
+# X-Forwarded-For sent to the gateway. The gateway keys its per-IP rate limits on it, so it must not be client-controlled.
+#  - default (TRUST_CLIENT_FORWARDED_FOR=false): ALWAYS overwritten with the TCP peer address ($remote_addr).
+#  - TRUST_CLIENT_FORWARDED_FOR=true: the client's own header is passed through (falls back to $remote_addr when absent).
+#    Only for local/test stacks where one machine simulates many visitors. In production put a trusted proxy in front
+#    that overwrites X-Forwarded-For, and keep this false.
+map $http_x_forwarded_for $xff_client_supplied {
+    default $http_x_forwarded_for;
+    ""      $remote_addr;
+}
+map "${TRUST_CLIENT_FORWARDED_FOR}" $xff_to_gateway {
+    default   $remote_addr;
+    "~*^true$" $xff_client_supplied;
+}
+
+server {
+    listen 3000;
+    server_name _;
+    server_tokens off;
+
+    root /usr/share/nginx/html;
+    index index.html;
+
+    client_max_body_size 1m;
+    resolver ${NGINX_LOCAL_RESOLVERS} valid=10s ipv6=off;
+
+    gzip on;
+    gzip_min_length 1024;
+    gzip_types text/css application/javascript application/json image/svg+xml application/manifest+json;
+
+    include /etc/nginx/snippets/security-headers.conf;
+
+    # Liveness for Docker/Compose.
+    location = /healthz {
+        access_log off;
+        default_type text/plain;
+        include /etc/nginx/snippets/security-headers.conf;
+        add_header Cache-Control "no-store" always;
+        return 200 "ok\n";
+    }
+
+    # ---- API proxy -------------------------------------------------------------------------------------------
+    location /api/ {
+        proxy_pass $gateway_base;           # no URI part: the request URI (/api/v1/...) is forwarded unchanged
+        proxy_http_version 1.1;
+        proxy_set_header Connection "";
+
+        # Cookie, Origin, X-CSRF-Token, Idempotency-Key and X-Request-ID are forwarded as sent by the browser;
+        # every Set-Cookie of the response is passed back (nginx keeps repeated headers).
+        proxy_set_header X-Forwarded-For   $xff_to_gateway;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-Host  $http_host;
+
+        # Headers only the platform may set. (The gateway also strips X-User-* and X-Request-ID it did not create.)
+        proxy_set_header X-Internal-Token "";
+        proxy_set_header X-Client-IP      "";
+        proxy_set_header X-User-Id        "";
+        proxy_set_header X-User-Ids       "";
+        proxy_set_header X-User-Email     "";
+        proxy_set_header X-User-Name      "";
+        proxy_set_header X-User-Role      "";
+        proxy_set_header X-User-Roles     "";
+        proxy_set_header X-User-Ver       "";
+        proxy_set_header X-User-Version   "";
+
+        proxy_connect_timeout 5s;
+        proxy_send_timeout    60s;
+        proxy_read_timeout    60s;
+
+        # API responses are never cached by the browser or by the service worker.
+        proxy_hide_header Cache-Control;
+        proxy_hide_header Pragma;
+        proxy_hide_header Expires;
+        proxy_hide_header X-Powered-By;
+        # nginx adds its own security headers below; drop the gateway's copies to avoid duplicates.
+        proxy_hide_header X-Content-Type-Options;
+        proxy_hide_header X-Frame-Options;
+        proxy_hide_header Referrer-Policy;
+        include /etc/nginx/snippets/security-headers.conf;
+        add_header Cache-Control "no-store" always;
+
+        # nginx-generated failures (gateway unreachable) become the same problem+json the SPA already understands.
+        error_page 502 503 504 = @gateway_unavailable;
+    }
+
+    location @gateway_unavailable {
+        default_type application/problem+json;
+        include /etc/nginx/snippets/security-headers.conf;
+        add_header Cache-Control "no-store" always;
+        return 503 '{"type":"https://agrisense.local/problems/upstream-unavailable","title":"Service unavailable","status":503,"detail":"The AgriSense service could not be reached. Please try again shortly."}';
+    }
+
+    # ---- static files ----------------------------------------------------------------------------------------
+    # Hashed build output: immutable.
+    location /assets/ {
+        include /etc/nginx/snippets/security-headers.conf;
+        add_header Cache-Control "public, max-age=31536000, immutable" always;
+        try_files $uri =404;
+    }
+
+    location /icons/ {
+        include /etc/nginx/snippets/security-headers.conf;
+        add_header Cache-Control "public, max-age=86400" always;
+        try_files $uri =404;
+    }
+
+    # Must always be revalidated so a new deploy (and a new service worker) is picked up.
+    location = /sw.js {
+        include /etc/nginx/snippets/security-headers.conf;
+        add_header Cache-Control "no-cache" always;
+        add_header Service-Worker-Allowed "/" always;
+        try_files $uri =404;
+    }
+
+    location = /manifest.webmanifest {
+        include /etc/nginx/snippets/security-headers.conf;
+        add_header Cache-Control "no-cache" always;
+        try_files $uri =404;
+    }
+
+    # The offline fallback is a self-contained page with an inline style and a reload button.
+    location = /offline.html {
+        add_header X-Content-Type-Options "nosniff" always;
+        add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+        add_header X-Frame-Options "DENY" always;
+        add_header Content-Security-Policy "default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'" always;
+        add_header Cache-Control "no-cache" always;
+        try_files $uri =404;
+    }
+
+    location = /index.html {
+        include /etc/nginx/snippets/security-headers.conf;
+        add_header Cache-Control "no-cache" always;
+        try_files $uri =404;
+    }
+
+    # SPA fallback: every other URL is a client-side route.
+    location / {
+        include /etc/nginx/snippets/security-headers.conf;
+        add_header Cache-Control "no-cache" always;
+        try_files $uri /index.html;
+    }
+}

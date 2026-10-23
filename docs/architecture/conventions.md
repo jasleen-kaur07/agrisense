@@ -6,7 +6,7 @@ Status: v1, 2026-10-10. Changing anything here requires updating `contracts/*.ya
 
 | Component | Tech | Port | Public? | DB schema |
 |---|---|---|---|---|
-| web | Next.js (TypeScript) | 3000 | yes (browser) | - |
+| web | Vue 3 + TypeScript SPA behind nginx | 3000 | yes (browser) | - |
 | gateway | Spring Cloud Gateway (Java 21) | 8080 | via web `/api/*` rewrite | - |
 | identity-service | Spring Boot 3.5 (Java 21) | 8081 | no | `identity` |
 | farm-advisory-service | Spring Boot 3.5 (Java 21) | 8082 | no | `advisory` |
@@ -15,7 +15,7 @@ Status: v1, 2026-10-10. Changing anything here requires updating `contracts/*.ya
 | postgres | PostgreSQL 16 | 5432 (host 5433) | no | all four schemas |
 
 Synchronous REST only. No message broker. Browser traffic goes
-`browser -> web (/api/* rewrite) -> gateway -> service`.
+`browser -> web (nginx, /api/* proxy) -> gateway -> service`.
 
 ## Public API paths (all via gateway, prefix `/api/v1`)
 
@@ -24,6 +24,7 @@ Synchronous REST only. No message broker. Browser traffic goes
 | `/auth/register`, `/auth/login`, `/auth/refresh`, `/auth/forgot`, `/auth/reset` | identity | public |
 | `/auth/logout`, `/auth/me`, `/profile`, `/admin/users/**` | identity | cookie JWT (admin for `/admin/**`) |
 | `/farms`, `/fields`, `/recommendations`, `/plans`, `/alerts`, `/feedback`, `/admin/recommendations`, `/admin/feedback`, `/admin/stats` | farm-advisory | cookie JWT |
+| `/predictions/crop` | farm-advisory (calls ml-service) | cookie JWT |
 | `/locations/**`, `/regional/**`, `/seasons/**`, `/weather` | data | cookie JWT |
 
 The gateway strips `/api` and forwards `/v1/...` to the owning service
@@ -42,7 +43,7 @@ The gateway strips `/api` and forwards `/v1/...` to the owning service
 * **Refresh rotation**: each refresh issues a new refresh token and invalidates the previous one. Tokens stored as SHA-256 hashes with a `family_id`. Presenting an already-used token revokes the whole family. Logout revokes the family. Password reset/change revokes all families of that user.
 * Passwords: Argon2id, min length 10. Login and reset endpoints are rate limited. Login errors are generic. Forgot-password always returns 202.
 * **Internal calls** (farm-advisory -> data-service / ml-service): header `X-Internal-Token: <INTERNAL_API_TOKEN>` (constant-time compare). `ml-service` accepts only this; `data-service` accepts either a valid user JWT or the internal token. These services are not published outside the Docker network.
-* Gateway sets `X-Client-IP` (its own view of the caller: first `X-Forwarded-For` hop when the peer is a private address, else the socket address) and strips any client-supplied value. Identity uses it for per-IP rate limiting. The web proxy forwards only the last `X-Forwarded-For` hop and only when `TRUST_FORWARDED_FOR=true` (a trusted reverse proxy must overwrite that header in production).
+* Gateway sets `X-Client-IP` (its own view of the caller: first `X-Forwarded-For` hop when the peer is a private address, else the socket address) and strips any client-supplied value. Identity uses it for per-IP rate limiting. The web tier (nginx) is the trusted proxy: it sets `X-Forwarded-For` from `$remote_addr`, or passes a client-supplied value through only when `TRUST_CLIENT_FORWARDED_FOR=true` (local/test use; production must have a trusted proxy in front).
 * Gateway removes any incoming `X-Request-ID`/`X-User-*`/`X-Internal-Token` headers from clients.
 
 ## Correlation, logging, health
@@ -77,7 +78,7 @@ Regional results carry `basis`, `yearsCovered`, `stateFallbackUsed`.
 
 `DATABASE_URL`/`SPRING_DATASOURCE_*` (per-service role), `INTERNAL_API_TOKEN`, `IDENTITY_JWKS_URL`,
 `JWT_PRIVATE_KEY_PEM` (identity; dev generates an ephemeral key if empty), `COOKIE_SECURE`,
-`ALLOWED_ORIGINS`, `DATA_SERVICE_URL`, `ML_SERVICE_URL`, `ENABLE_MODEL1` (default `false`),
+`ALLOWED_ORIGINS`, `DATA_SERVICE_URL`, `ML_SERVICE_URL`, `ENABLE_MODEL1` (`true` in `.env.example`; `false` disables the prediction page),
 `OPEN_METEO_BASE_URL`, `OPEN_METEO_GEOCODING_URL`, `WEATHER_CACHE_TTL_CURRENT_MIN` (30; one TTL for the whole snapshot, see ADR 0004),
 `MAIL_MODE` (`log` in dev), `ADMIN_BOOTSTRAP_EMAIL`, `ADMIN_BOOTSTRAP_PASSWORD` (dev only).
 
@@ -85,6 +86,6 @@ Regional results carry `basis`, `yearsCovered`, `stateFallbackUsed`.
 
 * Default Crop Advice = **Regional Crop Guide** (historical prevalence). Never label it suitability, "best crop" or a probability.
 * Soil values are optional everywhere. No imputation. No weather/rainfall fed to any model.
-* Model 1 (soil-test) is disabled for users (`ENABLE_MODEL1=false`); the endpoint returns 403 `model-disabled`.
+* Model 1 (soil-test) is an **experimental, user-visible** feature (`ENABLE_MODEL1=true`; with `false` the ml-service returns 403 `model-disabled` and farm-advisory answers 503). It is reached only through `POST /v1/predictions/crop`, takes all seven values from the user (no imputed values, no API-derived rainfall), and every result is labelled experimental with a model score that is never called a probability. It is never merged into the Regional Crop Guide.
 * No irrigation module, Crop Doctor, Crop Care, yield prediction, fertilizer dosage or market prices.
 * No business or agricultural logic in the frontend.

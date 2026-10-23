@@ -1,0 +1,24 @@
+flowchart LR
+    U(["User browser"])
+    subgraph HOST["Docker Compose host (docker compose up)"]
+        direction LR
+        W["web<br/>nginx + Vue build<br/>:3000"]
+        G["gateway<br/>:8080"]
+        I["identity-service<br/>:8081"]
+        A["farm-advisory-service<br/>:8082"]
+        D["data-service<br/>:8083"]
+        M["ml-service<br/>:8084"]
+        P[("postgres 16<br/>:5432 (host 5433)<br/>volume: pgdata")]
+    end
+    X(["Open-Meteo<br/>(internet)"])
+    U -->|"HTTP :3000"| W
+    W --> G
+    G --> I
+    G --> A
+    G --> D
+    A --> D
+    A --> M
+    I --> P
+    A --> P
+    D --> P
+    D --> X

@@ -1,0 +1,11 @@
+flowchart LR
+    F(["Farmer"])
+    AD(["Admin"])
+    OM(["Open-Meteo<br/>weather API"])
+    SYS(("0<br/>AgriSense<br/>system"))
+    F -->|"registration, login, district, field details, soil values"| SYS
+    SYS -->|"crop guide, weather, prediction, alerts"| F
+    AD -->|"admin login, queries"| SYS
+    SYS -->|"users, recommendations, feedback, statistics"| AD
+    SYS -->|"location request"| OM
+    OM -->|"current weather and forecast"| SYS

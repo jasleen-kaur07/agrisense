@@ -1,0 +1,16 @@
+flowchart TB
+    B["Browser (farmer / admin)"] --> W["Web app<br/>Vue 3 + nginx :3000"]
+    W -->|"/api/*"| G["API Gateway<br/>Spring Cloud Gateway :8080<br/>JWT cookies, CSRF, rate limits"]
+    G --> I["Identity service<br/>Spring Boot :8081"]
+    G --> A["Farm-advisory service<br/>Spring Boot :8082"]
+    G --> D["Data service<br/>FastAPI :8083"]
+    A -->|"internal token"| D
+    A -->|"internal token"| M["ML service<br/>FastAPI :8084 (internal)<br/>soil-test model"]
+    D -->|"weather"| OM(["Open-Meteo API"])
+    I --> DB[("PostgreSQL 16<br/>schemas: identity, advisory, data, ml")]
+    A --> DB
+    D --> DB
+    classDef ext fill:#eee5cf,stroke:#6f5a22;
+    classDef exp fill:#dfe4d5,stroke:#52623a,stroke-width:2px;
+    class OM ext;
+    class M exp;

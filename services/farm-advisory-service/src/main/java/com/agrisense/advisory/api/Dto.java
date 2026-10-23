@@ -16,6 +16,11 @@ public final class Dto {
     public record FarmCreate(@NotBlank @Size(max = 80) String name, @NotBlank String stateKey,
                              @NotBlank String districtKey) {}
 
+    /** Soil-test input for the experimental Model 1 prediction. Every value is required; nothing is imputed. */
+    public record CropPredictionRequest(@NotNull Double nitrogen, @NotNull Double phosphorus, @NotNull Double potassium,
+                                        @NotNull Double temperature, @NotNull Double humidity, @NotNull Double ph,
+                                        @NotNull Double rainfall) {}
+
     public record FarmView(UUID id, String name, String stateKey, String districtKey, String state, String district,
                            double latitude, double longitude, Instant createdAt) {}
 

@@ -1,0 +1,9 @@
+flowchart LR
+    R[("Historical district crop records<br/>area by crop, season, year")] --> F1["Filter district + season"]
+    F1 --> W1["Recency weighting<br/>half-life 1 year"]
+    W1 --> S1["Area share per crop"]
+    ST[("State-level records")] --> SF["State share<br/>(fallback / shrinkage k = 2)"]
+    S1 --> BL["Blend district and state"]
+    SF --> BL
+    BL --> RK["Rank crops<br/>historical prevalence %"]
+    RK --> OUT(["Regional Crop Guide<br/>+ years covered, caveats"])

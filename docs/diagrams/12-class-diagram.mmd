@@ -1,0 +1,73 @@
+classDiagram
+    class User {
+        +UUID id
+        +String email
+        +String passwordHash
+        +String displayName
+        +String language
+        +String experienceLevel
+        +String preferredStateKey
+        +String preferredDistrictKey
+        +boolean onboardingCompleted
+        +boolean enabled
+        +int tokenVersion
+    }
+    class Role {
+        <<enumeration>>
+        FARMER
+        ADMIN
+    }
+    class RefreshToken {
+        +UUID id
+        +UUID familyId
+        +String tokenHash
+        +Instant expiresAt
+        +boolean used
+        +boolean revoked
+    }
+    class Farm {
+        +UUID id
+        +UUID ownerId
+        +String name
+        +String stateKey
+        +String districtKey
+        +double latitude
+        +double longitude
+    }
+    class Field {
+        +UUID id
+        +String name
+        +BigDecimal areaAcres
+        +BigDecimal soilN
+        +BigDecimal soilP
+        +BigDecimal soilK
+        +BigDecimal soilPh
+    }
+    class Recommendation {
+        +UUID id
+        +String kind
+        +String season
+        +JSON regionalGuide
+        +JSON weatherSnapshot
+        +JSON limitations
+    }
+    class Alert {
+        +UUID id
+        +String type
+        +String severity
+        +String message
+        +Instant readAt
+    }
+    class Feedback {
+        +UUID id
+        +String category
+        +String message
+        +int rating
+    }
+    User "1" --> "*" Role : has
+    User "1" --> "*" RefreshToken : owns
+    User "1" --> "*" Farm : owns
+    User "1" --> "*" Feedback : writes
+    Farm "1" --> "*" Field : contains
+    Farm "1" --> "*" Alert : raises
+    Field "1" --> "*" Recommendation : gets

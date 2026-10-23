@@ -1,0 +1,14 @@
+flowchart LR
+    DS[("Crop dataset<br/>2,200 rows, 22 crops<br/>N, P, K, temp, humidity, pH, rainfall")] --> SP["Train / test split<br/>80 / 20, seed 42"]
+    SP --> SC["MinMaxScaler<br/>fit on train set"]
+    SC --> RF["Random Forest<br/>100 trees"]
+    RF --> EV["Evaluation<br/>held-out accuracy 0.9955<br/>(dataset-internal)"]
+    RF --> AR["Artifacts: model.pkl, scaler.pkl<br/>+ SHA-256 checksums"]
+    SC --> AR
+    AR --> LD["ml-service startup<br/>verify checksums, load"]
+    IN(["User input<br/>7 values"]) --> VA["Range validation<br/>no imputation"]
+    VA --> SC2["Scale"]
+    LD --> SC2
+    SC2 --> PR["predict_proba<br/>top 3 crops"]
+    PR --> SH["SHAP factors"]
+    SH --> OUT(["Response:<br/>model score, factors,<br/>limitations (experimental)"])

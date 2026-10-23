@@ -1,12 +1,7 @@
 node_modules
-.next
-.git
-.env*
-!.env.example
-tests
+dist
 test-results
 playwright-report
-coverage
+tests
+.env*
 *.md
-Dockerfile
-.dockerignore

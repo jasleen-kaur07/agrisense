@@ -1,30 +1,22 @@
 # syntax=docker/dockerfile:1
-FROM node:24-alpine AS deps
+# Build: Vue SPA (Vite). Fonts are self-hosted npm packages, so the build needs no external font fetch.
+FROM node:24-alpine AS build
 WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci
-
-FROM node:24-alpine AS build
-WORKDIR /app
-ENV NEXT_TELEMETRY_DISABLED=1
-COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 RUN npm run build
 
-FROM node:24-alpine AS run
-WORKDIR /app
-ENV NODE_ENV=production \
-    NEXT_TELEMETRY_DISABLED=1 \
-    PORT=3000 \
-    HOSTNAME=0.0.0.0 \
-    GATEWAY_URL=http://gateway:8080
-RUN addgroup -S -g 1001 app && adduser -S -u 1001 -G app app
-COPY --from=build --chown=app:app /app/.next/standalone ./
-COPY --from=build --chown=app:app /app/.next/static ./.next/static
-COPY --from=build --chown=app:app /app/public ./public
-USER app
+# Run: nginx (unprivileged) serves dist/ and proxies /api/* to the gateway on port 3000.
+FROM nginxinc/nginx-unprivileged:1.30-alpine
+# GATEWAY_URL is read when the container starts (envsubst on the nginx template), not at build time.
+# NGINX_ENTRYPOINT_LOCAL_RESOLVERS makes the image export NGINX_LOCAL_RESOLVERS (Docker's DNS) for the template.
+ENV GATEWAY_URL=http://gateway:8080 \
+    TRUST_CLIENT_FORWARDED_FOR=false \
+    NGINX_ENTRYPOINT_LOCAL_RESOLVERS=1
+COPY nginx/default.conf.template /etc/nginx/templates/default.conf.template
+COPY nginx/security-headers.conf /etc/nginx/snippets/security-headers.conf
+COPY --from=build /app/dist /usr/share/nginx/html
 EXPOSE 3000
-HEALTHCHECK --interval=30s --timeout=5s --start-period=15s --retries=3 \
-  CMD wget -qO- http://127.0.0.1:3000/how-it-works >/dev/null 2>&1 || exit 1
-# GATEWAY_URL is read per request by app/api/[...path]/route.ts, so it can be set at `docker run` time.
-CMD ["node", "server.js"]
+HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
+  CMD wget -qO- http://127.0.0.1:3000/healthz >/dev/null 2>&1 || exit 1

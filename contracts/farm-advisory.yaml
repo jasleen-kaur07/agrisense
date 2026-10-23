@@ -71,6 +71,14 @@ paths:
       summary: Build (or return) the sourced action plan for a crop in this recommendation
       requestBody: { required: true, content: { application/json: { schema: { type: object, required: [crop], properties: { crop: { type: string } } } } } }
       responses: { '200': { description: ok, content: { application/json: { schema: { $ref: '#/components/schemas/ActionPlan' } } } }, '422': { $ref: '#/components/responses/Problem' } }
+  /v1/predictions/crop:
+    post:
+      summary: Experimental soil-test crop prediction (Model 1). Stateless; inputs are not stored. All seven values are required and nothing is imputed.
+      requestBody: { required: true, content: { application/json: { schema: { type: object, required: [nitrogen, phosphorus, potassium, temperature, humidity, ph, rainfall], properties: { nitrogen: { type: number }, phosphorus: { type: number }, potassium: { type: number }, temperature: { type: number, description: degC }, humidity: { type: number, description: percent }, ph: { type: number }, rainfall: { type: number, description: mm; averaging period of the training data is unverified } } } } } }
+      responses:
+        '200': { description: 'kind MODEL1_EXPERIMENTAL; results[] of {rank, crop, modelScore (forest vote fraction, not a probability), factors[]}, plus scoreNote and limitations', content: { application/json: { schema: { type: object } } } }
+        '422': { $ref: '#/components/responses/Problem' }
+        '503': { $ref: '#/components/responses/Problem' }
   /v1/alerts:
     get: { summary: My alerts (newest first), parameters: [{ name: unreadOnly, in: query, schema: { type: boolean, default: false } }], responses: { '200': { description: ok, content: { application/json: { schema: { type: array, items: { $ref: '#/components/schemas/Alert' } } } } } } }
   /v1/alerts/{id}/read:

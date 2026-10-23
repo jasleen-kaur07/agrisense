@@ -77,11 +77,15 @@ test("insights pages are honest and schemes link to official portals only", asyn
   await page.getByRole("button", { name: "Sign in" }).last().click();
   await expect(page).toHaveURL(/\/overview/);
 
-  for (const [path, re] of [["/insights/prediction", /validated yield model/], ["/insights/fertilizer", /verified source/], ["/insights/market", /verified data provider/]] as const) {
+  for (const [path, re] of [["/insights/fertilizer", /verified source/], ["/insights/market", /verified data provider/]] as const) {
     await page.goto(path);
     await expect(page.getByText(re)).toBeVisible();
     expect(await page.locator("main").innerText()).not.toMatch(/₹|Rs\.? ?\d|\d+ ?kg/);
   }
+  await page.goto("/insights/prediction");
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Soil-test crop prediction");
+  await expect(page.getByTestId("prediction-warning")).toContainText("experimental");
+
   await page.goto("/insights/weather");
   await expect(page.getByRole("table")).toBeVisible();
 
