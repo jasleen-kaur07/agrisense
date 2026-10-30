@@ -64,7 +64,6 @@ const account = [
       <div>
         <p class="text-[11px] font-bold uppercase tracking-[0.14em] text-ochre-soft">{{ t("footer.data") }}</p>
         <p class="mt-3 text-sm leading-relaxed text-sage/90">{{ t("footer.weatherCredit") }}</p>
-        <p class="mt-2 text-sm leading-relaxed text-sage/90">{{ t("footer.dataNote") }}</p>
       </div>
     </div>
     <div class="border-t border-surface/15">

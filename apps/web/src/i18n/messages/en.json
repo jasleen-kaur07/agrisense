@@ -59,7 +59,6 @@
     "product": "Product",
     "account": "Account",
     "data": "Data and credits",
-    "dataNote": "Crop records are historical and end in 2014. Source licences are listed under data and credits.",
     "rights": "© AgriSense. Not a substitute for advice from your local agriculture office."
   },
   "errors": {
