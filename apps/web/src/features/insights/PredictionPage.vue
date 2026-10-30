@@ -8,7 +8,6 @@ import type { CropPrediction } from "@/lib/api/types";
 import type { Lang } from "@/i18n/core";
 import { formatNumber } from "@/lib/format";
 import { useForm } from "@/lib/form";
-import AppBadge from "@/components/ui/AppBadge.vue";
 import AppButton from "@/components/ui/AppButton.vue";
 import AppCard from "@/components/ui/AppCard.vue";
 import LinkButton from "@/components/ui/LinkButton.vue";
@@ -84,19 +83,7 @@ const feature = (f: string) => t(`prediction.feature.${f}`);
 
 <template>
   <div class="mx-auto max-w-3xl">
-    <PageHeader :kicker="t('nav.insights')" :title="t('prediction.title')" :lead="t('prediction.lead')">
-      <template #actions><AppBadge tone="ochre">{{ t("prediction.badge") }}</AppBadge></template>
-    </PageHeader>
-
-    <AppCard class="mb-6 space-y-2 border-ochre-ink/30" data-testid="prediction-warning">
-      <h2 class="text-lg">{{ t("prediction.warnTitle") }}</h2>
-      <ul class="list-disc space-y-1 pl-5 text-sm leading-relaxed text-ink2">
-        <li>{{ t("prediction.warn1") }}</li>
-        <li>{{ t("prediction.warn2") }}</li>
-        <li>{{ t("prediction.warn3") }}</li>
-        <li>{{ t("prediction.warn4") }}</li>
-      </ul>
-    </AppCard>
+    <PageHeader :kicker="t('nav.insights')" :title="t('prediction.title')" :lead="t('prediction.lead')" />
 
     <AppCard>
       <h2 class="mb-4 text-lg">{{ t("prediction.formTitle") }}</h2>
@@ -123,17 +110,13 @@ const feature = (f: string) => t(`prediction.feature.${f}`);
     </AppCard>
 
     <AppCard v-if="result" class="mt-6 space-y-5" data-testid="prediction-result">
-      <div class="flex flex-wrap items-center justify-between gap-2">
-        <h2 class="text-2xl">{{ t("prediction.resultsTitle") }}</h2>
-        <AppBadge tone="ochre">{{ t("prediction.badge") }}</AppBadge>
-      </div>
-      <p class="text-sm text-ink2">{{ result.scoreNote }}</p>
+      <h2 class="text-2xl">{{ t("prediction.resultsTitle") }}</h2>
       <ol class="space-y-4">
         <li v-for="r in result.results" :key="r.rank" class="rounded-lg border border-line p-4" data-testid="prediction-item">
           <div class="flex flex-wrap items-baseline justify-between gap-2">
             <p class="text-xl">{{ r.rank }}. {{ crop(r.crop) }}</p>
             <p class="text-sm text-ink2">
-              {{ t("prediction.score", { score: formatNumber(r.modelScore, lang(), 2) }) }} · {{ t("prediction.scoreHint") }}
+              {{ t("prediction.score", { score: formatNumber(r.modelScore, lang(), 2) }) }}
             </p>
           </div>
           <div v-if="r.factors.length" class="mt-3">
@@ -146,13 +129,6 @@ const feature = (f: string) => t(`prediction.feature.${f}`);
           </div>
         </li>
       </ol>
-      <div>
-        <p class="text-xs font-bold uppercase tracking-wide text-muted">{{ t("prediction.limitationsTitle") }}</p>
-        <ul class="mt-1 list-disc space-y-0.5 pl-5 text-sm text-ink2">
-          <li v-for="l in result.limitations" :key="l">{{ l }}</li>
-        </ul>
-        <p class="mt-3 text-xs text-muted">{{ t("prediction.modelLine", { name: result.modelName, version: result.modelVersion }) }}</p>
-      </div>
       <LinkButton to="/crop-advice" variant="secondary">{{ t("prediction.toGuide") }}</LinkButton>
     </AppCard>
   </div>

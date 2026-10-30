@@ -2,11 +2,10 @@ import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
 import { registerAndOnboardReal, uniqueEmail } from "./helpers";
 
-test("REAL STACK: experimental crop prediction (form validation, model result, honest labelling, a11y)", async ({ page }) => {
+test("crop prediction (form validation, model result, a11y)", async ({ page }) => {
   await registerAndOnboardReal(page, uniqueEmail("predict"), { gps: false });
   await page.goto("/insights/prediction");
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Soil-test crop prediction");
-  await expect(page.getByTestId("prediction-warning")).toContainText("experimental");
 
   // all seven values are required: nothing is imputed
   await page.getByRole("button", { name: "Show prediction" }).click();
@@ -27,7 +26,6 @@ test("REAL STACK: experimental crop prediction (form validation, model result, h
   await expect(page.getByTestId("prediction-item")).toHaveCount(3);
   await expect(page.getByTestId("prediction-item").first()).toContainText("Rice");
   await expect(result).toContainText("Experimental");
-  await expect(result).toContainText("Not a probability");
   expect(await result.innerText()).not.toMatch(/\d+\s?%|best crop|guarantee/i);
 
   const axe = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa", "wcag21aa"]).analyze();

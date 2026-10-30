@@ -18,18 +18,22 @@ PostgreSQL 16, one schema + role per service.
 Binding conventions: `docs/architecture/conventions.md`. API contracts: `contracts/*.yaml`.
 Decisions: `docs/adr/`. Data provenance and licences: `data/SOURCES.md`. ML evidence: `docs/ml/`.
 
-## Run locally
+## Run
 
-Open **http://localhost:3000** after the stack is healthy. Dev bootstrap admin: the `ADMIN_BOOTSTRAP_*` values in `.env`.
-
-Prerequisites: Docker, (for development) JDK 21, Maven, Node 24, Python 3.12+.
+Only Docker is required (Docker Desktop on macOS/Windows, Docker Engine + Compose v2 on Linux). No JDK, Node or Python needed.
 
 ```bash
-cp .env.example .env        # then change the secrets
-docker compose up --build   # web on http://localhost:3000
+git clone <repo-url> agrisense && cd agrisense
+./start.sh            # macOS / Linux / Git Bash / WSL
 ```
 
-Per-service tests (see each service README): `mvn verify` (Java), `pytest` (Python), `npm test` (web).
+`start.sh` creates `.env` with freshly generated secrets on first run, builds every service and waits until all are healthy.
+Open **http://localhost:3000**. The admin login is printed on first run and stored in `.env`.
+
+Without the script: `cp .env.example .env`, set the secrets, then `docker compose up --build -d`.
+Stop with `docker compose down` (add `-v` to also delete the database).
+
+Development prerequisites: JDK 21, Maven, Node 24, Python 3.12+. Per-service tests: `mvn verify` (Java), `pytest` (Python), `npm test` (web).
 
 ## What is deliberately not here
 

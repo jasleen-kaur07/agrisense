@@ -5,7 +5,7 @@ import tailwindcss from "@tailwindcss/vite";
 
 /**
  * Dev and `vite preview` forward /api to the gateway (the production image does the same with nginx).
- * GATEWAY_URL (or VITE_GATEWAY) selects the target: the real gateway by default, the DEMO mock API in e2e.
+ * GATEWAY_URL (or VITE_GATEWAY) selects the target: the real gateway by default.
  */
 const gateway = process.env.GATEWAY_URL || process.env.VITE_GATEWAY || "http://localhost:8080";
 const proxy = { "/api": { target: gateway, changeOrigin: false } };

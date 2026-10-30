@@ -15,24 +15,13 @@ This app ports its behaviour, wording and look 1:1.
 | `npm run build` / `npm run preview` | `vue-tsc` + production build into `dist/`; preview serves it (also proxies `/api`) |
 | `npm run lint` / `npm run typecheck` | ESLint (typescript-eslint + eslint-plugin-vue) / `vue-tsc` (app and node configs) |
 | `npm test` | Vitest + Vue Test Utils unit tests |
-| `npm run e2e` | build, then Playwright (desktop + mobile) against the **DEMO mock API** (preview on :3100, mock on :8090) |
-| `npx playwright test -c playwright.real.config.ts` | browser suite against the **real stack** at `http://localhost:3000` (`WEB_URL` to override) |
+| `npm run test:e2e` | browser suite against the running stack at `http://localhost:3000` (`WEB_URL` to override) |
 | `npm run test:nginx` | builds the image and tests the nginx config against a fake gateway (both X-Forwarded-For modes) |
-| `npm run mock-api` | DEMO mock API alone on :8090 (`MOCK_PORT`, `MOCK_HOST`) |
 | `npm run icons` | regenerate PNG icons (needs `sharp`) |
 
 First time: `npx playwright install chromium`.
 
 ## Running
-
-Against the mock (no backend):
-
-```
-npm run mock-api &                       # DEMO data on :8090
-GATEWAY_URL=http://127.0.0.1:8090 npm run dev
-```
-Register any email (`admin@demo.test` gets ADMIN). Mock records are labelled DEMO and live only in `tests/mock-api`, which is
-not part of the bundle or the image (`.dockerignore`).
 
 Against the real gateway: `npm run dev` (gateway on `http://localhost:8080`), or from the repo root
 `docker compose up -d --build --no-deps web` (use `--no-deps` to leave the other services untouched) and open http://localhost:3000.
@@ -77,7 +66,7 @@ src/features/               auth, onboarding, farms, advice, overview, insights,
 src/views/                  thin route views (auth, landing, 404, error)
 src/assets/main.css         Tailwind v4 + design tokens
 public/                     sw.js, offline.html, manifest.webmanifest, icons
-tests/                      unit (Vitest), e2e (mock API), e2e-real (real stack), mock-api (DEMO server)
+tests/                      unit (Vitest), e2e-real (browser suite against the running stack)
 nginx/, Dockerfile          production serving and proxy
 ```
 No agricultural logic lives in components: they render what the API returns.

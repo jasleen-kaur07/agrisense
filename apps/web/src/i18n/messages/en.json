@@ -37,7 +37,7 @@
     "fertilizer": "Fertilizer",
     "market": "Market Value",
     "weatherDesc": "Current conditions and the 7-day forecast.",
-    "predictionDesc": "Experimental soil-test model.",
+    "predictionDesc": "Soil-test crop model.",
     "fertilizerDesc": "Not available yet.",
     "marketDesc": "Not available yet.",
     "regional": "Regional Crops",
@@ -53,14 +53,14 @@
     "getStarted": "Get started"
   },
   "footer": {
-    "tagline": "Historical records, shown honestly.",
+    "tagline": "Crop guidance from historical records.",
     "weatherCredit": "Weather data by Open-Meteo.com.",
-    "about": "AgriSense turns public historical crop records into a plain, honest guide for farmers.",
+    "about": "AgriSense turns public historical crop records into a clear guide for farmers.",
     "product": "Product",
     "account": "Account",
     "data": "Data and credits",
-    "dataNote": "Crop records are historical and end in 2014. Licences of the underlying datasets are still being verified.",
-    "rights": "A final-year project. Not a substitute for advice from your local agriculture office."
+    "dataNote": "Crop records are historical and end in 2014. Source licences are listed under data and credits.",
+    "rights": "© AgriSense. Not a substitute for advice from your local agriculture office."
   },
   "errors": {
     "title": "Something went wrong",
@@ -156,14 +156,13 @@
     "feat2Title": "Weather",
     "feat2Body": "Current conditions and a 7-day forecast, labelled live, cached or unavailable, with the source and time.",
     "feat3Title": "Soil-test prediction",
-    "feat3Body": "An experimental model ranks crops from seven values you enter. Clearly labelled, never a guarantee.",
+    "feat3Body": "A model ranks crops from seven values you enter.",
     "feat4Title": "Action plans",
     "feat4Body": "A short, sourced checklist for a crop, built from the guide's data and official resources.",
     "feat5Title": "Alerts",
     "feat5Body": "Heads-up notices about weather that may matter for your fields.",
     "feat6Title": "Government schemes",
     "feat6Body": "Links to the official portals for soil health, crop insurance and farmer support.",
-    "experimental": "Experimental",
     "ctaTitle": "Start with your own district",
     "ctaBody": "Create an account, choose your district and see the guide in under a minute."
   },
@@ -596,14 +595,8 @@
     "error": "Something went wrong"
   },
   "prediction": {
-    "badge": "Experimental",
     "title": "Soil-test crop prediction",
-    "lead": "Enter the seven values from your soil and weather readings. An experimental model ranks the crops whose conditions are closest to its training data.",
-    "warnTitle": "Read this first",
-    "warn1": "This is an experimental model trained on a public dataset that looks synthetic. It has not been checked on real farms.",
-    "warn2": "The score is a vote share from the model, not a probability or a promise of yield.",
-    "warn3": "It knows only 22 crops. Wheat, sugarcane, mustard, soybean and potato are not among them.",
-    "warn4": "Rainfall must be entered by you; the period the model's rainfall figures cover is not documented, so AgriSense never fills it in.",
+    "lead": "Enter the seven values from your soil and weather readings. A model ranks the crops whose conditions are closest to its training data.",
     "formTitle": "Your values",
     "nitrogen": "Nitrogen (N)",
     "phosphorus": "Phosphorus (P)",
@@ -621,7 +614,6 @@
     "reset": "Clear",
     "resultsTitle": "Closest matches from the model",
     "score": "Model score {score}",
-    "scoreHint": "Not a probability.",
     "factorsTitle": "What moved this score",
     "supports": "raises it",
     "limits": "lowers it",
@@ -634,9 +626,7 @@
       "ph": "Soil pH",
       "rainfall": "Rainfall"
     },
-    "limitationsTitle": "Limits of this model",
     "unavailable": "Crop prediction is not available right now. Please try again later.",
-    "toGuide": "See what is historically grown in your district",
-    "modelLine": "Model {name} version {version}"
+    "toGuide": "See what is historically grown in your district"
   }
 }

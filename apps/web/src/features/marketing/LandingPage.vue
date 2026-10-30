@@ -2,7 +2,6 @@
 import { RouterLink } from "vue-router";
 import { useI18n } from "vue-i18n";
 import { BellRing, CloudSun, FlaskConical, History, Landmark, ListChecks, MapPin, Sprout } from "lucide-vue-next";
-import AppBadge from "@/components/ui/AppBadge.vue";
 import KickerText from "@/components/ui/KickerText.vue";
 import LinkButton from "@/components/ui/LinkButton.vue";
 import BrandMark from "@/components/layout/BrandMark.vue";
@@ -95,7 +94,6 @@ const honest = ["landing.honest1", "landing.honest2", "landing.honest3", "landin
             <span class="grid h-11 w-11 place-items-center rounded-lg bg-sage text-forest">
               <component :is="f.icon" aria-hidden="true" class="h-5 w-5" />
             </span>
-            <AppBadge v-if="f.experimental" tone="ochre">{{ t("landing.experimental") }}</AppBadge>
           </div>
           <h3 class="mb-2 text-xl">{{ t(`${f.k}Title`) }}</h3>
           <p class="text-[15px] leading-relaxed text-ink2">{{ t(`${f.k}Body`) }}</p>
